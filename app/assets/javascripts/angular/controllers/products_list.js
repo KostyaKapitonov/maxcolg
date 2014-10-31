@@ -3,10 +3,12 @@ INVEST.controller('ProductsListController', ['$scope', '$routeParams', 'Products
     $scope.name = "ProductsListController";
     $scope.params = $routeParams;
 
-    Products.getAll(function(data){
-        $scope.products = prepareData(data.products, data.categories);
-        //$scope.type_options = data.type_options;
-    });
+//    Products.getAll(function(data){
+//        $scope.products = prepareData(data.products, data.categories);
+//        //$scope.type_options = data.type_options;
+//    });
+
+    $scope.products = $scope.$parent.products;
 
     $scope.htmlSafe = function(html_code) {
         return $sce.trustAsHtml(html_code);

@@ -6,6 +6,13 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-%w(Котлы Насосы Бойлеры Трубы).each do |to|
-  Category.create(name: to)
+Category.destroy_all
+%w(Гольфы Колготки Леггинсы Чулки Носки).each do |c|
+  Category.create(name: c)
 end
+
+Firm.destroy_all
+%w(Andra\ Shape Enrico\ Coveri Marlin Rossoporpora).each do |f|
+  Firm.create(name: f)
+end
+

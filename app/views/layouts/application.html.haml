@@ -1,8 +1,8 @@
 %html{'x-ng-app'=>'invest'}
   %head
-    %link{rel: 'shortcut icon', href: image_path('favicon.ico')}
+    %link{rel: 'shortcut icon', href: image_path('favicon.png')}
     %title
-      ТеплоИнвест
+      Antalex
     = stylesheet_link_tag    'application.css', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application.js', 'data-turbolinks-track' => true
     = csrf_meta_tags
@@ -12,43 +12,41 @@
     -#    - if name == 'error' || name == 'highlight'
     -#      %script{type: 'text/javascript'}
     -#        = "$('<div><div style=\"padding: 10;\" class=\"ui-state-#{name}\">#{msg}</div></div>').dialog({width: 330});".html_safe
-    =image_tag 'truba.png', style: 'position: absolute; width: 182px; left: 41%; top: 0px; z-index: -3;'
-    %table.global_table
-      %tbody
-        %tr
-          %td.left_side_bar.side_bar
-          %td.head_panel
-            %table
-              %tr
-                %td
-                  = link_to 'Главная', root_path
-                %td
-                  = link_to 'О компании', ''
-                %td
-                  = link_to 'Партнёры', ''
-                %td
-                  = link_to 'Прайс лист', ''
-                %td
-                  = link_to 'Контакты', ''
-                %td
-                  = link_to 'Монтаж сервис', ''
-          %td.login.side_bar
-        %tr
-          %td.left_side_bar.side_bar
-            %ul{style: 'list-style-type: none;'}
-              %li
-                = link_to 'Главная', root_path
-              %li
-                = link_to 'Товары', products_path
-              %li
-                = link_to 'Пользователи', users_path
 
+    .global
+      %div{style: 'text-align: right; vertical-align: middle; margin: 7px;'}
+        %table{style: 'float: right; font-size: 12;'}
+          %tr
+            %td
+              = current_user.blank? ? 'Войти через' : "Вы зашли как #{current_user.username}"
+            %td
+              -if current_user.blank?
+                = link_to(("#{image_tag 'vk.png', style: 'width: 20px;'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
+              -else
+                = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
+      %table.head_panel
+        %tbody
+          %tr
+            %td
+              .tdBox
+                = link_to '<div style="padding: 20 0;">Главная</div>'.html_safe, root_path
+            %td
+              .tdBox
+                = link_to '<div style="padding: 20 0;">Товары</div>'.html_safe, products_path
+            %td
+              .tdBox
+                = link_to '<div style="padding: 20 0;">Контакты</div>'.html_safe, ''
+            %td
+              .tdBox
+                = link_to '<div style="padding: 20 0;">Корзина</div>'.html_safe, ''
+      %div
+        %table{style: 'width: 100%;'}
+          %tbody
+            %tr
+              %td.assortment{'x-ng-hide'=>'form_displayed'}
+              %td
+                .main{'ng-view'=>''}
+                  = yield
 
-          %td.global
-
-            %div{'ng-view'=>''}
-              = yield
-          %td.login.side_bar
-            = current_user.blank? ? ('Войти через:<br/><br/>'.html_safe+link_to(("#{image_tag 'vk.png'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')) : (("Вы зашли как #{current_user.username}. <br/>").html_safe+link_to(' Выйти', destroy_user_session_path, target: '_self', method: :delete))
 
 
