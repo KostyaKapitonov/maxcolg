@@ -1,0 +1,18 @@
+
+%p
+  Зарегистрированные пользователи:
+%div
+  - if @users.size == 0
+    Отсутствуют
+  %table
+    %tbody
+      %tr
+      - @users.each do |f|
+        %tr{style: 'vertical-align: top;'}
+          %td
+            - unless f.photo.blank?
+              %img{src: "#{f.photo}"}
+          %td
+            = link_to f.username, f.url, target: '_blank'
+          %td
+            = "(#{f.nickname})"

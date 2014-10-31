@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="1414165030">
+    <data-source source="LOCAL" name="Rails max-colg: development" uuid="281ebb6d-f2fc-4e31-a3bf-d9f50988efc0">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/maxstore_development</jdbc-url>
+      <user-name>blog_admin</user-name>
+      <user-password>dfe8dfcbdf9edf99df92df9ddfe8dfcb</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails max-colg: test" uuid="b68634cf-ee8b-43cf-b92a-676b5b9bc610">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/maxstore_test</jdbc-url>
+      <user-name>blog_admin</user-name>
+      <user-password>dfe8dfcbdf9edf99df92df9ddfe8dfcb</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails max-colg: production" uuid="af0986b8-b95d-4c7a-aab4-8d498caf64ca">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/maxstore_production</jdbc-url>
+      <user-name>maxstore</user-name>
+      <user-password>df96df8fdf97df8adfefdfe4dffcdff1df8ddffedfefdffadfe6dfe5dfe3dfe4dffcdfefdff9dffedff5dfeedfebdffedfebdfe8dfebdff9dfefdff5dffadfebdff9dff9dffddfe5dff8dfeedf8ddff7df8adf8fdf94</user-password>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

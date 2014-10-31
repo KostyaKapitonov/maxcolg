@@ -1,0 +1,315 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require jquery-ui
+ */
+
+body {
+    margin:0px 0px;
+    text-align:center;
+    background-color: #2d0f1e;
+    min-width: 1100px;
+
+    background: rgba(94,0,63,1);
+    background: -moz-linear-gradient(left, rgba(94,0,63,1) 0%, rgba(45,15,30,1) 15%, rgba(45,15,30,1) 85%, rgba(94,0,63,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(94,0,63,1)), color-stop(15%, rgba(45,15,30,1)), color-stop(85%, rgba(45,15,30,1)), color-stop(100%, rgba(94,0,63,1)));
+    background: -webkit-linear-gradient(left, rgba(94,0,63,1) 0%, rgba(45,15,30,1) 15%, rgba(45,15,30,1) 85%, rgba(94,0,63,1) 100%);
+    background: -o-linear-gradient(left, rgba(94,0,63,1) 0%, rgba(45,15,30,1) 15%, rgba(45,15,30,1) 85%, rgba(94,0,63,1) 100%);
+    background: -ms-linear-gradient(left, rgba(94,0,63,1) 0%, rgba(45,15,30,1) 15%, rgba(45,15,30,1) 85%, rgba(94,0,63,1) 100%);
+    background: linear-gradient(to right, rgba(94,0,63,1) 0%, rgba(45,15,30,1) 15%, rgba(45,15,30,1) 85%, rgba(94,0,63,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5e003f', endColorstr='#5e003f', GradientType=1 );
+
+}
+
+.global{
+    background-color: #f0e6eb;
+    width: 800px;
+    margin:0px auto;
+    text-align:left;
+    padding:15px;
+    border:2px solid deepskyblue;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    -webkit-border-bottom-left-radius: 15px;
+    -webkit-border-bottom-right-radius: 15px;
+    -moz-border-bottom-left-radius: 15px;
+    -moz-border-bottom-right-radius: 15px;
+}
+
+.head_panel{
+    text-align: center;
+    margin:0px auto;
+    background-color: #2d0f1e;
+    width: 800px;
+    text-align:left;
+    padding:15px;
+    border-style: double;
+    border-color: deepskyblue;
+    border-bottom: 2px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-top-left-radius: 15px;
+    -moz-border-top-right-radius: 15px;
+
+    background: rgba(240,230,235,1);
+    background: -moz-linear-gradient(top, rgba(240,230,235,1) 0%, rgba(45,15,30,1) 33%, rgba(45,15,30,1) 70%, rgba(240,230,235,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(240,230,235,1)), color-stop(33%, rgba(45,15,30,1)), color-stop(70%, rgba(45,15,30,1)), color-stop(100%, rgba(240,230,235,1)));
+    background: -webkit-linear-gradient(top, rgba(240,230,235,1) 0%, rgba(45,15,30,1) 33%, rgba(45,15,30,1) 70%, rgba(240,230,235,1) 100%);
+    background: -o-linear-gradient(top, rgba(240,230,235,1) 0%, rgba(45,15,30,1) 33%, rgba(45,15,30,1) 70%, rgba(240,230,235,1) 100%);
+    background: -ms-linear-gradient(top, rgba(240,230,235,1) 0%, rgba(45,15,30,1) 33%, rgba(45,15,30,1) 70%, rgba(240,230,235,1) 100%);
+    background: linear-gradient(to bottom, rgba(240,230,235,1) 0%, rgba(45,15,30,1) 33%, rgba(45,15,30,1) 70%, rgba(240,230,235,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0e6eb', endColorstr='#f0e6eb', GradientType=0 );
+
+}
+
+.head_panel a {
+    color: deepskyblue;
+    font-weight: bold;
+}
+
+.head_panel table {
+    width: 100%;
+    text-align: center;
+}
+
+.login {
+    text-align: center;
+    color: aliceblue;
+    font-weight: bold;
+}
+
+.left_side_bar{
+    color: aliceblue;
+    text-align: left;
+    float: left;
+    width: 180px;
+}
+
+.left_side_bar li {
+    padding: 8px;
+    border: 2px solid #2d0f1e;
+    font-weight: bold;
+    margin: 0 10 10 0;
+
+}
+
+ul {
+    width: 150px;
+}
+
+.left_side_bar li {
+    border: none;
+}
+
+.left_side_bar li:hover {
+    background-color: #703060;
+    -webkit-box-shadow: 0px 0px 40px 10px #843672;
+    -moz-box-shadow: 0px 0px 40px 10px #843672;
+    box-shadow: 0px 0px 40px 10px #843672;
+}
+
+.head_panel td a:hover {
+    background-color: #650015;
+    -webkit-box-shadow: 0px 0px 20px 10px #702;
+    -moz-box-shadow: 0px 0px 20px 10px #702;
+    box-shadow: 0px 0px 20px 10px #702;
+}
+
+.side_bar {
+    min-width: 190px;
+}
+
+.side_bar a{
+    color: deepskyblue;
+}
+
+.global_table{
+    margin: 110px auto;
+    width: auto;
+}
+
+.global_table td{
+    vertical-align: top;
+}
+
+.td_sep {
+    width: 20px;
+}
+
+.row_label {
+    text-align: right;
+    padding-top: 5px;
+    width: 25%;
+}
+
+.in_form, .form_description{
+
+}
+
+.in_form{
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+table.in_form td.input input,
+table.in_form td.input select {
+    width: 75%;
+}
+
+.form_description textarea,
+table.in_form input,
+table.in_form select {
+    border-width: 2px;
+    background-color: #eef;
+    padding: 5px;
+    border-radius: 8px;
+    border-style: ridge;
+}
+
+button.input_buttons {
+    margin: 2px;
+    width: 23px;
+}
+
+.form_description textarea:focus,
+table.in_form input:focus,
+table.in_form select:focus {
+    background-color: #efe;;
+    border-color: deepskyblue;
+    padding: 5px;
+    border-radius: 8px;
+    border-style: ridge;
+    outline: 0;
+}
+
+table.in_form tr {
+    height: 45px;
+}
+
+.form_description, .form_description textarea {
+    width: 100%;
+}
+
+.form_description textarea {
+    height: 150px;
+    width: 100%;
+    margin: 10px 0px;
+    resize: vertical;
+}
+
+.button_section {
+    text-align: center;
+}
+
+.head_button {
+    color: #6600ff;
+    font-weight: bold;
+    border: 1px solid deepskyblue;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-decoration: none;
+
+    background: #ccffee;
+    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
+    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
+    background: -o-linear-gradient(top, #cccccc, #aaaaff);
+    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+}
+.head_button:hover {
+    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
+    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
+    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
+    background: -o-linear-gradient(top, #bbbbff, #dddddd);
+    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+}
+
+.button {
+    color: #4400aa;
+    border: 1px solid deepskyblue;
+    padding: 3px;
+    text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-decoration: none;
+    margin: 5px;
+    cursor: pointer;
+
+    background: #ccffee;
+    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
+    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
+    background: -o-linear-gradient(top, #cccccc, #aaaaff);
+    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+}
+
+.button:focus{
+    outline: 0;
+}
+
+.button:hover {
+    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
+    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
+    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
+    background: -o-linear-gradient(top, #bbbbff, #dddddd);
+    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+}
+
+.product_table {
+    width: 100%;
+}
+
+.product_table p {
+    text-indent: 0px;
+}
+div.center {
+    text-align: center;
+}
+
+.center p {
+    text-indent: 20px;
+    margin: 0px 10px;
+}
+
+.center h1 {
+    text-align: left;
+    margin-left: 240px;
+    text-indent: 20px;
+    color: #843672;
+}
+
+.product_header {
+    width: 100%;
+    border-bottom: 1px solid deepskyblue;
+    margin-bottom: 10px;
+}
+
+tr.product_row {
+    border-bottom: 2px solid deepskyblue;
+    border-top: 2px solid deepskyblue;
+}
+
+tr.product_row td {
+    padding: 10px 0px;
+}
+
+.global a {
+
+}

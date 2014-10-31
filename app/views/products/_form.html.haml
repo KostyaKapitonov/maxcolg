@@ -1,0 +1,30 @@
+%form{'x-ng-controller' => 'ProductFormController', 'novalidate'=>''}
+  %table{style:'width: 100%;'}
+    %tr
+      %td{style:'width: 50%;'}
+        %table.in_form
+          %tr
+            =table_row 'Название', (tag :input, 'x-ng-model' => 'product.name', 'required'=>'')
+          %tr
+            =table_row 'Цена', (tag :input, 'x-ng-model' => 'product.price')
+      %td{style:'width: 50%;'}
+        %table.in_form
+          %tr{'x-ng-show'=>'new_category_name == null'}
+            =table_row 'Категория', '<select x-ng-model="product.category_id" x-ng-options="c.id as c.name for c in categories | orderBy:\'name\'"></select>', [{title: '+', action: 'new_category()'},{title: 'X', action: 'delete_category()'}]
+          %tr{'x-ng-hide'=>'new_category_name == null'}
+            =table_row 'Название', (tag :input, 'x-ng-model' => 'new_category_name'), [{title: '√', action: 'add_category()'},{title: 'X', action: 'cancel_category()'}]
+
+          %tr{'x-ng-show'=>'new_firm_name == null'}
+            =table_row 'Фирма', '<select x-ng-model="product.firm_id" x-ng-options="f.id as f.name for f in firms | orderBy:\'name\'"></select>', [{title: '+', action: 'new_firm()'},{title: 'X', action: 'delete_firm()'}]
+          %tr{'x-ng-hide'=>'new_firm_name == null'}
+            =table_row 'Название', (tag :input, 'x-ng-model' => 'new_firm_name'), [{title: '√', action: 'add_firm()'},{title: 'X', action: 'cancel_firm()'}]
+
+  .form_description
+    Описание (возможно использование html тэгов):
+    %br
+    =tag :textarea, 'x-ng-model' => 'product.description'
+  .button_section
+    %a.button{'x-ng-click'=>'save();'}
+      Сохранить
+    %a.button{'x-ng-click'=>'cancel();'}
+      Отмена
