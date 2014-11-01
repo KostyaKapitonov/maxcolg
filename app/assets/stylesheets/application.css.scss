@@ -1,0 +1,299 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+
+ */
+
+body {
+    background-color: #f7f5f6;
+    background-image: asset-data-url('bg.jpg');
+    background-position: top center;
+    background-attachment: fixed;
+    font-family: arial, verdana, tahoma, helvetica, sans-serif;
+    font-size: 11px;
+    color: #736d69;
+    margin: 0px 0px 0px 0px;
+    font-weight: normal;
+}
+
+.global{
+    background-color: #cec6c0;
+    width: 770px;
+    margin: 30px auto;
+    text-align:left;
+    /*padding:15px;*/
+    /*border:2px solid deepskyblue;*/
+}
+
+.head_panel{
+    text-align: center;
+    margin:0px;
+    background-color: #dfc9c0;
+    width: 100%;
+    /*padding:15px;*/
+}
+
+.head_panel a {
+    color: #736d69;
+    font-weight: bold;
+}
+
+.head_panel a:hover {
+    background-color: bisque;
+}
+
+.head_panel table {
+    width: 100%;
+    text-align: center;
+}
+
+.login {
+    text-align: center;
+    color: aliceblue;
+    font-weight: bold;
+}
+
+.left_side_bar{
+    color: aliceblue;
+    text-align: left;
+    float: left;
+    width: 180px;
+}
+
+.left_side_bar li {
+    padding: 8px;
+    border: 2px solid #2d0f1e;
+    font-weight: bold;
+    margin: 0 10 10 0;
+
+}
+
+ul {
+    width: 150px;
+}
+
+.left_side_bar li {
+    border: none;
+}
+
+.left_side_bar li:hover {
+    background-color: #703060;
+    -webkit-box-shadow: 0px 0px 40px 10px #843672;
+    -moz-box-shadow: 0px 0px 40px 10px #843672;
+    box-shadow: 0px 0px 40px 10px #843672;
+}
+
+
+
+.tdBox
+{
+    width: 100%;
+    height: 60px;
+}
+.tdBox a
+{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.side_bar {
+    min-width: 190px;
+}
+
+.side_bar a{
+    color: deepskyblue;
+}
+
+.global_table{
+    margin: 110px auto;
+    width: auto;
+}
+
+
+
+.td_sep {
+    width: 20px;
+}
+
+.row_label {
+    text-align: right;
+    padding-top: 5px;
+    width: 25%;
+}
+
+.in_form, .form_description{
+
+}
+
+.in_form{
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+table.in_form td.input input,
+table.in_form td.input select {
+    width: 75%;
+}
+
+.form_description textarea,
+table.in_form input,
+table.in_form select {
+    border-width: 2px;
+    background-color: #eef;
+    padding: 5px;
+    border-radius: 8px;
+    border-style: ridge;
+}
+
+button.input_buttons {
+    margin: 2px;
+    width: 23px;
+}
+
+.form_description textarea:focus,
+table.in_form input:focus,
+table.in_form select:focus {
+    background-color: #efe;;
+    border-color: deepskyblue;
+    padding: 5px;
+    border-radius: 8px;
+    border-style: ridge;
+    outline: 0;
+}
+
+table.in_form tr {
+    height: 45px;
+}
+
+.form_description, .form_description textarea {
+    width: 100%;
+}
+
+.form_description textarea {
+    height: 150px;
+    width: 100%;
+    margin: 10px 0px;
+    resize: vertical;
+}
+
+.button_section {
+    text-align: center;
+}
+
+.head_button {
+    color: #6600ff;
+    font-weight: bold;
+    border: 1px solid deepskyblue;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-decoration: none;
+
+    background: #ccffee;
+    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
+    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
+    background: -o-linear-gradient(top, #cccccc, #aaaaff);
+    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+}
+.head_button:hover {
+    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
+    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
+    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
+    background: -o-linear-gradient(top, #bbbbff, #dddddd);
+    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+}
+
+.button {
+    color: #4400aa;
+    border: 1px solid deepskyblue;
+    padding: 3px;
+    text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    text-decoration: none;
+    margin: 5px;
+    cursor: pointer;
+
+    background: #ccffee;
+    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
+    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
+    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
+    background: -o-linear-gradient(top, #cccccc, #aaaaff);
+    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+}
+
+.button:focus{
+    outline: 0;
+}
+
+.button:hover {
+    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
+    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
+    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
+    background: -o-linear-gradient(top, #bbbbff, #dddddd);
+    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+}
+
+.product_table {
+    width: 100%;
+}
+
+.product_table p {
+    text-indent: 0px;
+}
+
+.center p {
+    text-indent: 20px;
+}
+
+.center h1 {
+    margin-left: 240px;
+    text-indent: 20px;
+    color: #843672;
+}
+
+.center img {
+    margin: 0px 10px 10px 0px;
+}
+
+.product_header {
+    width: 100%;
+    border-bottom: 1px solid deepskyblue;
+    margin-bottom: 10px;
+}
+
+tr.product_row {
+    border-bottom: 2px solid deepskyblue;
+    border-top: 2px solid deepskyblue;
+}
+
+tr.product_row td {
+    padding: 10px 0px;
+}
+
+.global a {
+
+}
+
+.assortment {
+    width: 150px;
+    padding: 15px;
+}
+
+.main {
+    padding: 10px;
+}
