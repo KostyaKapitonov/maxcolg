@@ -20,7 +20,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render json: {products: Product.all, categories: Category.all, firms: Firm.all, images: Image.all}
+        render json: {products: Product.all, categories: Category.all, firms: Firm.all}
       }
     end
   end

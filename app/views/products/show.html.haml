@@ -7,12 +7,14 @@
         Править
       %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete(product.id)'}
         Удалить
-
+    -unless admin?
+      %a.button.cart_button{'x-ng-click'=>'addToCart()'}
+        Добавить в корзину
+        %img#cart_image{'x-ng-src'=>image_path('Shopping-Cart-orange.png')}
   %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}
   %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
   %h3
     {{product.name}}
-  %div
-    {{product.description}}
+  %div{'x-ng-bind-html'=>'htmlSafe(product.description)'}
   %p.price
     Цена: {{product.price}} руб.

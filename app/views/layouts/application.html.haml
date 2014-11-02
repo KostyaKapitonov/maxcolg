@@ -15,7 +15,7 @@
 
     .global{id: 'glob'}
       %div{style: 'text-align: right; vertical-align: middle; margin: 7px;'}
-        %table{style: 'float: right; font-size: 12;'}
+        %table.login
           %tr
             %td
               = current_user.blank? ? 'Войти через' : "Вы зашли как #{current_user.username}"
@@ -35,7 +35,7 @@
                 = link_to '<div style="padding: 5 0;">Товары</div>'.html_safe, products_path
             %td
               .tdBox
-                = link_to '<div style="padding: 5 0;">Контакты</div>'.html_safe, ''
+                = link_to '<div style="padding: 5 0;">Контакты</div>'.html_safe, '/contacts'
             %td
               .tdBox
                 = link_to '<div style="padding: 5 0;">Корзина</div>'.html_safe, ''

@@ -8,6 +8,7 @@
 //= require angular-resource.min
 //= require angular-sanitize.min
 //= require angular/angular_setup
+//= require ck_editor/ckeditor
 //= require_tree .
 
 

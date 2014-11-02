@@ -19,6 +19,10 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
         .when('/', {
             templateUrl: '/main_content.html',
             controller: 'MainPageController'
+        })
+        .when('/contacts', {
+            templateUrl: '/main_content.html',
+            controller: 'MainPageController'
         });
 
     $locationProvider.html5Mode(true);

@@ -19,7 +19,6 @@ def rnd(from, to = nil)
   end
 end
 
-
 product_count = 150
 Product.destroy_all
 cats = Category.all
@@ -58,17 +57,12 @@ images = [
 
 product_count.times do
   cat = cats.sample
-  Product.create(name: "#{cat.name} #{name2.sample}",
-                 category: cat,
-                 firm: firms.sample,
-                 description: descriptions.sample,
-                 price: rnd(30,290)
+  Product.create(
+      name: "#{cat.name} #{name2.sample}",
+      category: cat,
+      firm: firms.sample,
+      description: descriptions.sample,
+      price: rnd(30,290),
+      image: images.sample
   )
-end
-
-p 'products ready'
-
-Image.destroy_all
-Product.all.each do |p|
-  Image.create(url: images.sample, product: p, is_main: true)
 end

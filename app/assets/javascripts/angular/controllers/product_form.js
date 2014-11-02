@@ -51,13 +51,15 @@ ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products
         if($scope.product.id){
             Products.update({product: $scope.product, id: $scope.product.id, action:'update'}, function(data){
                 if(data.success){
-                    $location.path('/products');
+                    $location.path('/products/'+$scope.product.id);
+                    $location.hash('glob');
                 }
             });
         } else {
             Products.save({product: $scope.product}, function(data){
                 if(data.success){
-                    $location.path('/products');
+                    $location.path('/products/'+data.id);
+                    $location.hash('glob');
                     $scope.product.id = data.id;
                     console.log(data);
                     $scope.$parent.products.push($scope.product);
@@ -69,6 +71,7 @@ ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products
     $scope.cancel = function(){
         $scope.product = null;
         $location.path('/products');
+        $location.hash('glob');
     };
 
     // TODO: category

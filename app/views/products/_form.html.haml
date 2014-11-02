@@ -7,6 +7,8 @@
             =table_row 'Название', (tag :input, 'x-ng-model' => 'product.name', 'required'=>'')
           %tr
             =table_row 'Цена', (tag :input, 'x-ng-model' => 'product.price')
+          %tr
+            =table_row 'Картинка', (tag :input, 'x-ng-model' => 'product.image')
       %td{style:'width: 50%;'}
         %table.in_form
           %tr{'x-ng-show'=>'new_category_name == null'}
@@ -22,7 +24,7 @@
   .form_description
     Описание (возможно использование html тэгов):
     %br
-    =tag :textarea, 'x-ng-model' => 'product.description'
+    =tag :textarea, 'x-ng-model' => 'product.description', class: 'ck-editor'
   .button_section
     %a.button{'x-ng-click'=>'save();'}
       Сохранить

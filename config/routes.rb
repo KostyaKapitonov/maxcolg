@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   post '/create_category_or_firm_option' => 'products#create_category_or_firm_option'
   delete '/delete_category_or_firm_option' => 'products#delete_category_or_firm_option'
 
+  post 'update_settings' => 'settings#update'
+  get '/contacts' => 'products#main'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -22,7 +22,9 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize'])
         }
 
         $scope.$on('delivered', function() {
-            $scope.reportUnDelived = false;
+            setTimeout(function(){
+                $scope.reportUnDelived = false;
+            },110);
         });
 
         $scope.$on('$routeChangeSuccess', function () {
@@ -42,24 +44,18 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize'])
         $scope.getProducts = function(){
             Products.getAll(function(data){
                 $scope.products = data.products;
-                $scope.images = data.images;
                 $scope.categories = data.categories;
                 $scope.firms = data.firms;
-                bindAssortmentAndImages();
+                bindAssortment();
                 $scope.loadFinished = true;
                 report('dataLoaded');
             });
         };
 
-        function bindAssortmentAndImages(){
+        function bindAssortment(){
             $scope.assortment = {};
             $scope.assortmentList = [];
             $scope.products.each(function(p){
-                $scope.images.each(function(i){
-                    if(p.id == i.product_id && i.is_main){
-                        p.image = i.url;
-                    }
-                });
                 $scope.categories.each(function(c){
                     if(p.category_id == c.id){
                         $scope.firms.each(function(f){

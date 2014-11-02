@@ -17,25 +17,29 @@ $buttonBorder: indianred;
 }
 
 body {
-    background-color: #f7f5f6;
-    background-image: asset-data-url('bg.jpg');
-    background-position: top center;
-    background-attachment: fixed;
-    font-family: arial, verdana, tahoma, helvetica, sans-serif;
-    font-size: 11px;
-    color: $primary-color;
-    margin: 0px 0px 0px 0px;
-    font-weight: normal;
+  background-color: #f7f5f6;
+  background-image: asset-data-url('antalex_bg.jpeg');
+  background-position: center center;
+  background-attachment: fixed;
+  -moz-background-size: 100%; /* Firefox 3.6+ */
+  -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+  -o-background-size: 100%; /* Opera 9.6+ */
+  background-size: 100%; /* Современные браузеры */
+  font-family: arial, verdana, tahoma, helvetica, sans-serif;
+  font-size: 11px;
+  color: $primary-color;
+  margin: 0px 0px 0px 0px;
+  font-weight: normal;
 }
 
 .global{
-    background-color: #cec6c0;
-    width: 770px;
-    margin: 30px auto;
-    text-align:left;
+  background-color: #cec6c0;
+  width: 770px;
+  margin: 30px auto;
+  text-align:left;
 
-    /*padding:15px;*/
-    /*border:2px solid deepskyblue;*/
+  /*padding:15px;*/
+  /*border:2px solid deepskyblue;*/
 }
 
 td {
@@ -43,91 +47,85 @@ td {
 }
 
 .head_panel{
-    text-align: center;
-    margin:0px;
-    background-color: #dfc9c0;
-    width: 100%;
-    /*padding:15px;*/
+  text-align: center;
+  margin:0px;
+  background-color: #dfc9c0;
+  width: 100%;
+  /*padding:15px;*/
 }
 
 .head_panel a {
-    color: #736d69;
-    font-weight: bold;
+  color: #736d69;
+  font-weight: bold;
 }
 
 .head_panel a:hover {
-    background-color: bisque;
+  background-color: bisque;
 }
 
 .head_panel table {
-    width: 100%;
-    text-align: center;
-}
-
-.login {
-    text-align: center;
-    color: aliceblue;
-    font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 
 .left_side_bar{
-    color: aliceblue;
-    text-align: left;
-    float: left;
-    width: 180px;
+  color: aliceblue;
+  text-align: left;
+  float: left;
+  width: 180px;
 }
 
 .left_side_bar li {
-    padding: 8px;
-    border: 2px solid #2d0f1e;
-    font-weight: bold;
-    margin: 0 10 10 0;
+  padding: 8px;
+  border: 2px solid #2d0f1e;
+  font-weight: bold;
+  margin: 0 10 10 0;
 
 }
 
 ul {
-    width: 150px;
+  width: 150px;
 }
 
 .left_side_bar li {
-    border: none;
+  border: none;
 }
 
 .tdBox
 {
-    width: 100%;
-    height: 30px;
+  width: 100%;
+  height: 30px;
 }
 .tdBox a
 {
-    width: 100%;
-    height: 100%;
-    display: block;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .side_bar {
-    min-width: 190px;
+  min-width: 190px;
 }
 
 .side_bar a{
-    color: deepskyblue;
+  color: deepskyblue;
 }
 
 .global_table{
-    margin: 110px auto;
-    width: auto;
+  margin: 110px auto;
+  width: auto;
 }
 
 
 
 .td_sep {
-    width: 20px;
+  width: 20px;
 }
 
 .row_label {
-    text-align: right;
-    padding-top: 5px;
-    width: 25%;
+  text-align: right;
+  padding-top: 5px;
+  width: 25%;
 }
 
 .in_form, .form_description{
@@ -135,61 +133,63 @@ ul {
 }
 
 .in_form{
-    width: 100%;
-    margin-bottom: 15px;
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 table.in_form td.input input,
 table.in_form td.input select {
-    width: 75%;
+  width: 75%;
 }
 
 .form_description textarea,
 table.in_form input,
 table.in_form select {
-    border-width: 2px;
-    background-color: #eef;
-    padding: 5px;
-    border-radius: 8px;
-    border-style: ridge;
+  border-width: 2px;
+  background-color: #eef;
+  padding: 5px;
+  border-radius: 8px;
+  border-style: ridge;
 }
 
 button.input_buttons {
-    margin: 2px;
-    width: 23px;
+  margin: 2px;
+  width: 23px;
 }
 
 .form_description textarea:focus,
 table.in_form input:focus,
 table.in_form select:focus {
-    background-color: #efe;;
-    border-color: deepskyblue;
-    padding: 5px;
-    border-radius: 8px;
-    border-style: ridge;
-    outline: 0;
+  background-color: #efe;;
+  border-color: deepskyblue;
+  padding: 5px;
+  border-radius: 8px;
+  border-style: ridge;
+  outline: 0;
 }
 
 table.in_form tr {
-    height: 45px;
+  height: 45px;
 }
 
 .form_description, .form_description textarea {
-    width: 100%;
+  width: 100%;
 }
 
 .form_description textarea {
-    height: 150px;
-    width: 100%;
-    margin: 10px 0px;
-    resize: vertical;
+  height: 150px;
+  width: 100%;
+  margin: 10px 0px;
+  resize: vertical;
 }
 
 .button_section {
-    text-align: center;
+  text-align: center;
+  margin-top: 15px;
 }
 
 .head_button {
+  cursor: pointer;
   color: $buttonBorder;
   font-weight: bold;
   border: 1px solid $buttonColor;
@@ -223,7 +223,7 @@ table.in_form tr {
 }
 
 .button:focus{
-    outline: 0;
+  outline: 0;
 }
 
 .button:hover {
@@ -231,31 +231,31 @@ table.in_form tr {
 }
 
 .product_table {
-    width: 100%;
+  width: 100%;
 }
 
 .product_table p {
-    text-indent: 0px;
+  text-indent: 0px;
 }
 
 .center p {
-    text-indent: 20px;
+  text-indent: 20px;
 }
 
 .center h1 {
-    margin-left: 240px;
-    text-indent: 20px;
-    color: #843672;
+  margin-left: 240px;
+  text-indent: 20px;
+  color: #843672;
 }
 
 .center img {
-    margin: 0px 10px 10px 0px;
+  margin: 0px 10px 10px 0px;
 }
 
 .product_header {
-    width: 100%;
-    border-bottom: 1px solid deepskyblue;
-    margin-bottom: 10px;
+  width: 100%;
+  border-bottom: 1px solid deepskyblue;
+  margin-bottom: 10px;
 }
 
 .global a {
@@ -263,12 +263,18 @@ table.in_form tr {
 }
 
 .assortment {
-    width: 150px;
-    padding: 15px;
+  width: 150px;
+  padding: 15px;
+  border-right: 4px solid;
+  border-color: #dfc9c0;
+}
+
+.firm_block{
+  width: 150px;
 }
 
 .main {
-    padding: 10px;
+  padding: 10px;
 }
 
 .assortment a{
@@ -288,7 +294,7 @@ table.in_form tr {
 }
 
 .pr_list_block {
-  width: 120px;
+  width: 128px;
   height: 200px;
   margin: 5 5 5 5;
   padding: 0px;
@@ -325,3 +331,22 @@ table.in_form tr {
   text-align: right;
   font-weight: bold;
 }
+
+.login , .login td {
+  float: right;
+  font-size: 12;
+  vertical-align: middle;
+}
+
+.cart_button {
+  padding-right: 22px;
+}
+
+#cart_image {
+  width: 16px;
+  margin: 0;
+  float: none;
+  position: absolute;
+  margin-left: 3px;
+}
+
