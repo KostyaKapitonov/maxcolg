@@ -138,6 +138,7 @@
     <orderEntry type="library" scope="PROVIDED" name="binding_of_caller (v0.7.3.pre1, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.2, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bundler (v1.6.2, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ckeditor_rails (v4.4.3, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-rails (v4.0.1, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-script (v2.3.0, RVM: ruby-2.1.2 [global]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="coffee-script-source (v1.8.0, RVM: ruby-2.1.2 [global]) [gem]" level="application" />

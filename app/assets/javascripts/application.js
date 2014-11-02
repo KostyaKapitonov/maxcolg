@@ -8,9 +8,8 @@
 //= require angular-resource.min
 //= require angular-sanitize.min
 //= require angular/angular_setup
-//= require ck_editor/ckeditor
+//= require ckeditor-jquery
 //= require_tree .
-
 
 $(document).ready(function(){
 
