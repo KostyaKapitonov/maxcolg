@@ -315,3 +315,13 @@ table.in_form tr {
 .pr_list_block a:hover {
   color: #938d00;
 }
+
+.show img {
+  float: left;
+  margin: 0 10 10 0;
+}
+
+.show p.price {
+  text-align: right;
+  font-weight: bold;
+}

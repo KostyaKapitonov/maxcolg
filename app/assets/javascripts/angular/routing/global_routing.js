@@ -12,6 +12,10 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
             templateUrl: '/products/:id/edit.html',
             controller: 'ProductFormController'
         })
+        .when('/products/:id', {
+            templateUrl: '/products/:id.html',
+            controller: 'ProductViewController'
+        })
         .when('/', {
             templateUrl: '/main_content.html',
             controller: 'MainPageController'

@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_filter :only_admin, except: [:main, :main_content, :index]
+  before_filter :only_admin, except: [:main, :main_content, :index, :show]
   layout 'angular'
 
   def main
@@ -54,6 +54,15 @@ class ProductsController < ApplicationController
   end
 
   def new
+  end
+
+  def show
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Product.where(id: params[:id]).first
+      }
+    end
   end
 
   def create

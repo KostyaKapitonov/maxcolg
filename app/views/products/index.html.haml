@@ -28,7 +28,7 @@
     -#        Удалить
     %td
       .pr_list_block{'x-ng-repeat'=>'product in products | onlySelected:$parent.selectedFirm:$parent.selectedCategory'}
-        %a{'x-ng-href'=>'/products/{{product.id}}/edit{{$parent.paramsPart}}#{{$index}}', style:'margin-right: 5px;'}
+        %a{'x-ng-href'=>'/products/{{product.id}}{{$parent.paramsPart}}#glob', style:'margin-right: 5px;'}
           %h5
             {{product.name}}
           %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}

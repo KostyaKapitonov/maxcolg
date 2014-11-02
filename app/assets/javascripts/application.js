@@ -38,11 +38,11 @@ Array.prototype.each = function(callback){
     }
 };
 
-Array.prototype.whereId = function(id){
+Array.prototype.whereId = function(id, p){
     var target = null;
     for(var i=0; i < this.length; i++){
         if(this[i].id == id){
-            target = this[i];
+            target = p ? i : this[i];
             break;
         }
     }
