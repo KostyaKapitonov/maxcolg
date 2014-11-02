@@ -1,8 +1,7 @@
 
 //= require jquery
-//= require jquery_ujs
+//= require jquery.ui.all
 //= require turbolinks
-//= require jquery-ui
 //= require angular.js
 //= require angular-route.min
 //= require angular-resource.min
