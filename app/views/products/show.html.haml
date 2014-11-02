@@ -1,0 +1,18 @@
+.show
+  %p
+    %a.button{'x-ng-click'=>'back()'}
+      << Назад
+    -if admin?
+      %a.button{'x-ng-href'=>'/products/{{product.id}}/edit', style:'margin-right: 5px;'}
+        Править
+      %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete(product.id)'}
+        Удалить
+
+  %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}
+  %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
+  %h3
+    {{product.name}}
+  %div
+    {{product.description}}
+  %p.price
+    Цена: {{product.price}} руб.
