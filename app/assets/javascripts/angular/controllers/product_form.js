@@ -1,21 +1,51 @@
-INVEST.controller('ProductFormController', ['$scope', '$routeParams', 'Products', '$location', 'Global', function($scope, $routeParams, Products, $location, Global) {
-    $scope.params = $routeParams;
+ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products', '$location', 'Global', function($scope, $routeParams, Products, $location, Global) {
+    $scope.isNew = false;
 
-    if($routeParams.id){
-        Products.get({id:$routeParams.id, action:'edit', format:'json'}, function(data){
-            $scope.product = data;
-        })
-    } else $scope.isNew = true;
-
-    Global.get_category_and_firm_options(function(data){
-        $scope.categories = data.categories;
-        $scope.firms = data.firms || [];
-        if($scope.isNew){
-            $scope.product = {};
-            if( $scope.categories.length) $scope.product.category_id = $scope.categories[0].id;
-            if( $scope.firms.length) $scope.product.firm_id = $scope.firms[0].id;
-        }
+    $scope.$on('dataLoaded', function() {
+        $scope.$emit('delivered');
+        loadFormData();
     });
+
+    if($scope.$parent.loadFinished) loadFormData();
+    function loadFormData(){
+        if($scope.product != null) return;
+        if($routeParams.id && $scope.$parent.products && $scope.$parent.products.length && !isNaN($location.hash()) && -1 < $location.hash()-0) {
+            $scope.$parent.products.each(function(p, i){
+                if(p.id == $routeParams.id) {
+                    $scope.product = p;
+                    $location.hash(i);
+                }
+            });
+        } else if($routeParams.id){
+            Products.get({id:$routeParams.id, action:'edit', format:'json'}, function(data){
+                $scope.product = data;
+            })
+        } else $scope.isNew = true;
+
+        if(!$scope.$parent.categories || !$scope.$parent.firms){
+            Global.get_category_and_firm_options(function(data){
+                $scope.categories = data.categories;
+                $scope.firms = data.firms;
+                if($scope.isNew){
+                    $scope.product = {};
+                    if( $scope.categories.length) $scope.product.category_id = $scope.categories[0].id;
+                    if( $scope.firms.length) $scope.product.firm_id = $scope.firms[0].id;
+                }
+            });
+        } else {
+            $scope.categories = $scope.$parent.categories;
+            $scope.firms = $scope.$parent.firms;
+            if($scope.isNew){
+                $scope.product = {};
+                console.log($routeParams.firm);
+                if( $scope.categories.length) $scope.product.category_id = $routeParams.category ?
+                    $scope.categories.whereId($routeParams.category).id : $scope.categories[0].id;
+                if( $scope.firms.length) $scope.product.firm_id = $routeParams.firm ?
+                    $scope.firms.whereId($routeParams.firm).id : $scope.firms[0].id;
+            }
+        }
+    }
+
 
     $scope.save = function(){
         if($scope.product.id){
@@ -28,13 +58,16 @@ INVEST.controller('ProductFormController', ['$scope', '$routeParams', 'Products'
             Products.save({product: $scope.product}, function(data){
                 if(data.success){
                     $location.path('/products');
+                    $scope.product.id = data.id;
+                    console.log(data);
+                    $scope.$parent.products.push($scope.product);
                 }
             });
         }
     };
 
     $scope.cancel = function(){
-        $scope.product = {};
+        $scope.product = null;
         $location.path('/products');
     };
 

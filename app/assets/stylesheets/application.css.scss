@@ -1,17 +1,20 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
+$primary-color: #736d69;
+$buttonColor: coral;
+$buttonBorder: indianred;
 
- */
+@mixin gradient($startColor, $endColor) {
+  background: -moz-linear-gradient(top, $startColor, $endColor);
+  background: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
+  background: -webkit-linear-gradient(top, $startColor, $endColor);
+  background: -o-linear-gradient(top, $startColor, $endColor);
+  background: -ms-linear-gradient(top, $startColor, $endColor);
+}
+
+@mixin b-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
 
 body {
     background-color: #f7f5f6;
@@ -20,7 +23,7 @@ body {
     background-attachment: fixed;
     font-family: arial, verdana, tahoma, helvetica, sans-serif;
     font-size: 11px;
-    color: #736d69;
+    color: $primary-color;
     margin: 0px 0px 0px 0px;
     font-weight: normal;
 }
@@ -30,8 +33,13 @@ body {
     width: 770px;
     margin: 30px auto;
     text-align:left;
+
     /*padding:15px;*/
     /*border:2px solid deepskyblue;*/
+}
+
+td {
+  vertical-align: top;
 }
 
 .head_panel{
@@ -85,19 +93,10 @@ ul {
     border: none;
 }
 
-.left_side_bar li:hover {
-    background-color: #703060;
-    -webkit-box-shadow: 0px 0px 40px 10px #843672;
-    -moz-box-shadow: 0px 0px 40px 10px #843672;
-    box-shadow: 0px 0px 40px 10px #843672;
-}
-
-
-
 .tdBox
 {
     width: 100%;
-    height: 60px;
+    height: 30px;
 }
 .tdBox a
 {
@@ -191,49 +190,36 @@ table.in_form tr {
 }
 
 .head_button {
-    color: #6600ff;
-    font-weight: bold;
-    border: 1px solid deepskyblue;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    text-decoration: none;
+  color: $buttonBorder;
+  font-weight: bold;
+  border: 1px solid $buttonColor;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  width: 130px;
+  margin: 10 0;
 
-    background: #ccffee;
-    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
-    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
-    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
-    background: -o-linear-gradient(top, #cccccc, #aaaaff);
-    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+  @include b-radius(8);
+  @include gradient(#cccccc, #ffbb99);
 }
 .head_button:hover {
-    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
-    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
-    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
-    background: -o-linear-gradient(top, #bbbbff, #dddddd);
-    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+  @include gradient(#ffccaa, #dddddd);
+  color: $buttonBorder;
 }
 
 .button {
-    color: #4400aa;
-    border: 1px solid deepskyblue;
-    padding: 3px;
-    text-align: center;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    text-decoration: none;
-    margin: 5px;
-    cursor: pointer;
+  color: $buttonBorder;
+  border: 1px solid $buttonColor;
+  padding: 3px;
+  text-align: center;
+  @include b-radius(5);
+  text-decoration: none;
+  margin: 5px;
+  cursor: pointer;
 
-    background: #ccffee;
-    background: -moz-linear-gradient(top, #cccccc, #aaaaff);
-    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#aaaaff));
-    background: -webkit-linear-gradient(top, #cccccc, #aaaaff);
-    background: -o-linear-gradient(top, #cccccc, #aaaaff);
-    background: -ms-linear-gradient(top, #cccccc, #aaaaff);
+  background: #ccffee;
+  @include gradient(#cccccc, #ffbb99);
 }
 
 .button:focus{
@@ -241,11 +227,7 @@ table.in_form tr {
 }
 
 .button:hover {
-    background: -moz-linear-gradient(top, #bbbbff, #dddddd);
-    background: -webkit-gradient(linear, left top, left bottom, from(#bbbbff), to(#dddddd));
-    background: -webkit-linear-gradient(top, #bbbbff, #dddddd);
-    background: -o-linear-gradient(top, #bbbbff, #dddddd);
-    background: -ms-linear-gradient(top, #bbbbff, #dddddd);
+  @include gradient(#ffccaa, #dddddd);
 }
 
 .product_table {
@@ -276,15 +258,6 @@ table.in_form tr {
     margin-bottom: 10px;
 }
 
-tr.product_row {
-    border-bottom: 2px solid deepskyblue;
-    border-top: 2px solid deepskyblue;
-}
-
-tr.product_row td {
-    padding: 10px 0px;
-}
-
 .global a {
 
 }
@@ -296,4 +269,49 @@ tr.product_row td {
 
 .main {
     padding: 10px;
+}
+
+.assortment a{
+  color: #736d69;
+}
+
+.assortment a:hover {
+  color: #938d00;
+}
+
+.assortment h3{
+  margin-bottom: 0px;
+}
+
+.assortment ul{
+  margin-top: 0px;
+}
+
+.pr_list_block {
+  width: 120px;
+  height: 200px;
+  margin: 5 5 5 5;
+  padding: 0px;
+  float: left;
+
+}
+
+.pr_list_block h5 {
+  margin: 0px 0px 5px 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pr_list_block img {
+  background-color: grey;
+  width: 120px;
+  background-image: asset-data-url('no_photo.jpg');
+}
+
+.pr_list_block a {
+  color: #736d69;
+}
+
+.pr_list_block a:hover {
+  color: #938d00;
 }

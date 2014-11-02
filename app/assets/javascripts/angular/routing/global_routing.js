@@ -1,4 +1,4 @@
-INVEST.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/products', {
             templateUrl: 'products.html',
@@ -14,7 +14,7 @@ INVEST.config(['$routeProvider', '$locationProvider', function($routeProvider, $
         })
         .when('/', {
             templateUrl: '/main_content.html',
-            controller: 'MainController'
+            controller: 'MainPageController'
         });
 
     $locationProvider.html5Mode(true);

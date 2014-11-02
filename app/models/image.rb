@@ -1,3 +1,3 @@
 class Image < ActiveRecord::Base
-  has_one :product
+  belongs_to :product
 end

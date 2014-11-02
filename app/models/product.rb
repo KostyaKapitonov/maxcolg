@@ -1,6 +1,7 @@
 class Product < ActiveRecord::Base
   has_many :images, dependent: :destroy
-  has_one :category
+  belongs_to :category
+  belongs_to :firm
 
 
   def self.update_if_exist(id, params)

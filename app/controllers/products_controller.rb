@@ -20,7 +20,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render json: {products: Product.all, categories: Category.all, firms: Firm.all}
+        render json: {products: Product.all, categories: Category.all, firms: Firm.all, images: Image.all}
       }
     end
   end
@@ -59,7 +59,7 @@ class ProductsController < ApplicationController
   def create
     params.require(:product).require(:name)
     @product = Product.new(params.require(:product).permit(:name, :category_id, :firm_id, :price, :description))
-    render json: {success: @product.valid? && @product.save}
+    render json: {success: @product.valid? && @product.save, id: @product.id}
   end
 
   def edit

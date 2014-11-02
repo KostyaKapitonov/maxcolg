@@ -1,4 +1,4 @@
-INVEST.factory('Global', ['$resource', function($resource) {
+ANTALEX.factory('Global', ['$resource', function($resource) {
     return $resource('/:action', null,
         {
             'main': {params: {format:'json', action: 'main_content'}},

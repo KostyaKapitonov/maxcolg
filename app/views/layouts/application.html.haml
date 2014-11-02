@@ -1,4 +1,4 @@
-%html{'x-ng-app'=>'invest'}
+%html{'x-ng-app'=>'antalex'}
   %head
     %link{rel: 'shortcut icon', href: image_path('favicon.png')}
     %title
@@ -29,21 +29,30 @@
           %tr
             %td
               .tdBox
-                = link_to '<div style="padding: 20 0;">Главная</div>'.html_safe, root_path
+                = link_to '<div style="padding: 5 0;">Главная</div>'.html_safe, root_path
             %td
               .tdBox
-                = link_to '<div style="padding: 20 0;">Товары</div>'.html_safe, products_path
+                = link_to '<div style="padding: 5 0;">Товары</div>'.html_safe, products_path
             %td
               .tdBox
-                = link_to '<div style="padding: 20 0;">Контакты</div>'.html_safe, ''
+                = link_to '<div style="padding: 5 0;">Контакты</div>'.html_safe, ''
             %td
               .tdBox
-                = link_to '<div style="padding: 20 0;">Корзина</div>'.html_safe, ''
+                = link_to '<div style="padding: 5 0;">Корзина</div>'.html_safe, ''
       %div
         %table{style: 'width: 100%;'}
           %tbody
             %tr
               %td.assortment{'x-ng-hide'=>'form_displayed'}
+                .firm_block{'x-ng-repeat'=>'firm in assortmentList'}
+                  %h3
+                    %a{'x-ng-href'=>products_path+'?firm={{firm.id}}'}
+                      {{firm.name}}
+                  %ul
+                    %li{'x-ng-repeat'=>'cat in firm.catigories'}
+                      %a{'x-ng-href'=>products_path+'?firm={{firm.id}}&category={{cat.id}}'}
+                        {{cat.name}}
+
               %td
                 .main{'ng-view'=>''}
                   = yield

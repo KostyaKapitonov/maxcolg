@@ -1,30 +1,103 @@
-var INVEST = angular.module('invest', ['ngRoute', 'ngResource', 'ngSanitize'])
+var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize'])
     .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', function($scope, $route, $routeParams, $location, Global, Products) {
         $scope.$route = $route;
         $scope.$routeParams = $routeParams;
+        $scope.loadFinished = false;
         $scope.form_displayed = false;
+        $scope.reportUnDelived = true;
 
-        var real_path = getParameterByName('real_pathname');
-        if(real_path && real_path.length > 0){
-            delete $location.$$search.real_pathname;
-            $location.path(real_path);
-            return null;
-        } else {
-            if(!$scope.setting){
-                Global.main({},function(data){
-                    cl(data);
-                    $scope.setting = data;
-                })
-            }
+        function report(name, data){
+            $scope.reportUnDelived = true;
+            var counter = 0;
+            var resendReport = function(){
+                setTimeout(function(){
+                    $scope.$broadcast(name, data);
+                    if($scope.reportUnDelived && counter < 50){
+                        resendReport();
+                        counter++;
+                    }
+                },10);
+            };
+            resendReport();
         }
+
+        $scope.$on('delivered', function() {
+            $scope.reportUnDelived = false;
+        });
 
         $scope.$on('$routeChangeSuccess', function () {
             $scope.form_displayed =(/(^\/products\/new$|^\/products\/\d+\/edit$)/.test($location.path()));
+            $scope.selectedFirm = $location.search().firm;
+            $scope.selectedCategory = $location.search().category;
+            $scope.paramsPart = ($scope.selectedFirm ? '?firm='+$scope.selectedFirm : '')+
+                ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
         });
 
-        Products.getAll(function(data){
-            $scope.products = data.products;
-        });
+        var real_path = $location.$$search.real_pathname;
+        if(real_path && real_path.length > 0){
+            delete $location.$$search.real_pathname;
+            $location.path(real_path);
+        }
+
+        $scope.getProducts = function(){
+            Products.getAll(function(data){
+                $scope.products = data.products;
+                $scope.images = data.images;
+                $scope.categories = data.categories;
+                $scope.firms = data.firms;
+                bindAssortmentAndImages();
+                $scope.loadFinished = true;
+                report('dataLoaded');
+            });
+        };
+
+        function bindAssortmentAndImages(){
+            $scope.assortment = {};
+            $scope.assortmentList = [];
+            $scope.products.each(function(p){
+                $scope.images.each(function(i){
+                    if(p.id == i.product_id && i.is_main){
+                        p.image = i.url;
+                    }
+                });
+                $scope.categories.each(function(c){
+                    if(p.category_id == c.id){
+                        $scope.firms.each(function(f){
+                            if(p.firm_id == f.id){
+                                if(!$scope.assortment[f.name]){
+                                    $scope.assortment[f.name] = {id: f.id};
+                                }
+                                if(!$scope.assortment[f.name][c.name]){
+                                    $scope.assortment[f.name][c.name] = {id: c.id};
+                                }
+                            }
+                        })
+                    }
+                });
+            });
+
+            Object.keys($scope.assortment).each(function(key){
+                var cats = [];
+                Object.keys($scope.assortment[key]).each(function(subKey){
+                    if (subKey != 'id'){
+                        cats.push({
+                            name: subKey,
+                            id: $scope.assortment[key][subKey].id
+                        });
+                    }
+                });
+                $scope.assortmentList.push(
+                    {
+                        name: key,
+                        id: $scope.assortment[key].id,
+                        catigories: cats
+                    }
+                );
+
+            });
+        }
+
+        if($scope.products == null) $scope.getProducts();
     }])
     .config([
         "$httpProvider", function($httpProvider) {
