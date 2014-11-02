@@ -67,7 +67,7 @@ class ProductsController < ApplicationController
 
   def create
     params.require(:product).require(:name)
-    @product = Product.new(params.require(:product).permit(:name, :category_id, :firm_id, :price, :description))
+    @product = Product.new(params.require(:product).permit(:name, :category_id, :firm_id, :price, :description, :image))
     render json: {success: @product.valid? && @product.save, id: @product.id}
   end
 
@@ -83,7 +83,7 @@ class ProductsController < ApplicationController
   def update
     params.require(:product).require(:name)
     render json: {success: Product.update_if_exist(params[:id],
-      params.require(:product).permit(:name, :category_id, :firm_id, :price, :description))}
+      params.require(:product).permit(:name, :category_id, :firm_id, :price, :description, :image))}
   end
 
   def destroy
