@@ -18,12 +18,12 @@ ANTALEX.controller('ProductViewController', ['$scope', '$location','$routeParams
             if($scope.product == null && $routeParams.id) setTimeout(function(){loadViewData();},100);
             else $anchorScroll();
         }
-        /*else if($routeParams.id){
+        else if($routeParams.id){
             console.log('handle load');
             Products.get({id:$routeParams.id, format:'json'}, function(data){
                 $scope.product = data;
             })
-        }*/
+        }
     }
 
     $scope.htmlSafe = function(html_code) {

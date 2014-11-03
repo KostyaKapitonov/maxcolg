@@ -43,7 +43,7 @@ body {
 .global{
   background-color: #cec6c0;
   max-width: 770px;
-  margin: 0px auto;
+  margin: 30px auto;
   text-align:left;
   @include b-radius(20px);
 }
@@ -356,6 +356,7 @@ table.in_form tr {
 .descr_block {
   padding: 10px;
   margin-top: 10px;
+  @include b-radius(15px)
 }
 
 .descr_block h3{
