@@ -19,9 +19,9 @@ $buttonBorder: indianred;
 }
 
 @mixin b-radius($radius) {
-  border-radius: $radius;
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
+  border-radius: $radius;
 }
 
 body {
@@ -45,9 +45,11 @@ body {
   max-width: 770px;
   margin: 0px auto;
   text-align:left;
+  @include b-radius(20px);
+}
 
-  /*padding:15px;*/
-  /*border:2px solid deepskyblue;*/
+img {
+  @include b-radius(15px);
 }
 
 td {
@@ -69,6 +71,8 @@ td {
 
 .head_panel a:hover {
   background-color: bisque;
+
+  @include b-radius(10px);
 }
 
 .head_panel table {
@@ -360,4 +364,8 @@ table.in_form tr {
 
 .descr_block {
   background-color: #f7f7cb;
+}
+
+.head_spacer{
+  padding: 5 0;
 }
