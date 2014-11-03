@@ -1,25 +1,29 @@
 .show
   %p{style: 'text-align: center;'}
+    %a.button{'x-ng-click'=>'next(-1)', 'x-ng-show'=>'cntrls', style: 'float: left;'}
+      &nbsp;<&nbsp;
     %a.button{'x-ng-click'=>'back()'}
-      << Назад
+      К списку
     -if admin?
       %a.button{'x-ng-href'=>'/products/{{product.id}}/edit', style:'margin-right: 5px;'}
         Править
       %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete(product.id)'}
         Удалить
+    %a.button{'x-ng-click'=>'next(1)', 'x-ng-show'=>'cntrls', style: 'float: right;'}
+      &nbsp;>&nbsp;
 
   .img_block
     %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}
     %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
   .descr_block
+    %div{style: 'text-align: center; padding-top:10px;'}
+      %a.head_button{'x-ng-click'=>'addToCart()'}
+        Добавить в корзину
     %h3
       {{product.name}}
     %div{'x-ng-bind-html'=>'htmlSafe(product.description)'}
-
     %p.price
-      Цена: {{product.price}} руб.
-      %br
-      %br
-      %a.button{'x-ng-click'=>'addToCart()'}
-        Добавить в корзину
+      %span
+        Цена: {{product.price}} руб.
+
 

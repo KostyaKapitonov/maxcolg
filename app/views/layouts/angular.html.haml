@@ -1,3 +1,7 @@
 %script
-  if(typeof(angular) == 'undefined'){window.location.href='/?real_pathname='+window.location.pathname}
+  if(typeof(angular) == 'undefined')
+  {window.location.href='/';
+  localStorage.setItem('pathname',window.location.pathname);
+  localStorage.setItem('search',window.location.search.slice(1));
+  }
 = yield

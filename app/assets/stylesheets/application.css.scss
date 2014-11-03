@@ -330,6 +330,12 @@ table.in_form tr {
   font-weight: bold;
 }
 
+p.price span {
+  padding: 10px;
+  background-color: bisque;
+  @include b-radius(10px)
+}
+
 .login, .login td {
   float: right;
   padding: 5px;

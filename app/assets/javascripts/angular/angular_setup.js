@@ -1,5 +1,25 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module'])
     .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', function($scope, $route, $routeParams, $location, Global, Products) {
+
+        if(localStorage.getItem('pathname')){
+            var pathname = localStorage.getItem('pathname');
+            var search = localStorage.getItem('search');
+            localStorage.removeItem('pathname');
+            localStorage.removeItem('search');
+//            $location.path(pathname+search);
+//            return;
+            var refresh = function(){
+                setTimeout(function(){
+                    if(!$scope.reportUnDelived) refresh();
+                    else {
+                        $location.path(pathname).search(search);
+                    };
+                },50);
+            };
+            refresh();
+
+        }
+
         $scope.$route = $route;
         $scope.$routeParams = $routeParams;
         $scope.loadFinished = false;
@@ -24,6 +44,7 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
         $scope.$on('delivered', function() {
             setTimeout(function(){
                 $scope.reportUnDelived = false;
+
             },110);
         });
 
@@ -33,13 +54,8 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
             $scope.selectedCategory = $location.search().category;
             $scope.paramsPart = ($scope.selectedFirm ? '?firm='+$scope.selectedFirm : '')+
                 ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
-        });
 
-        var real_path = $location.$$search.real_pathname;
-        if(real_path && real_path.length > 0){
-            delete $location.$$search.real_pathname;
-            $location.path(real_path);
-        }
+        });
 
         $scope.getProducts = function(){
             Products.getAll(function(data){
@@ -91,7 +107,6 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
                 );
 
             });
-            console.log($scope.assortmentList);
         }
 
         if($scope.products == null) $scope.getProducts();
