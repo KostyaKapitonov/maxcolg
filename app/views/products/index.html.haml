@@ -2,30 +2,9 @@
   -if admin?
     %tr{style: 'height: 36px;'}
       %td
-        %a{href: new_product_path+'{{$parent.paramsPart}}', class: 'head_button'}
+        %a.button{href: new_product_path+'{{$parent.paramsPart}}'}
           Добавить товар
   %tr.product_row
-    -#%td{style: 'width: 160px;'}
-    -#  %div{'x-ng-hide'=>'product.image', style: 'float: left; width: 150px; height: 150px; background-color: grey;'}
-    -#  %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
-    -#%td
-    -#  %table.product_header
-    -#    %tr
-    -#      %td
-    -#        %h3{style: 'float: left; margin: 0px 0px 5px 0px;'}
-    -#          {{product.name}}
-    -#      %td
-    -#        %p{style: 'float: right; margin: 3px 0px 5px 0px;'}
-    -#          %b
-    -#            {{product.price | currency:''}} {{product.price != null ? 'руб.' : 'Цена не установлена.'}}
-    -#  %div{'x-ng-bind-html'=>'htmlSafe(product.description)'}
-    -#
-    -#  -if admin?
-    -#    %p
-    -#      %a.button{'x-ng-href'=>'/products/{{product.id}}/edit', style:'margin-right: 5px;'}
-    -#        Править
-    -#      %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete($index)'}
-    -#        Удалить
     %td
       .pr_list_block{'x-ng-repeat'=>'product in products | onlySelected:$parent.selectedFirm:$parent.selectedCategory'}
         %a{'x-ng-href'=>'/products/{{product.id}}{{$parent.paramsPart}}#glob', style:'margin-right: 5px;'}
@@ -33,9 +12,3 @@
             {{product.name}}
           %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}
           %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
-        -#-if admin?
-        -#  %p
-        -#    %a.button{'x-ng-href'=>'/products/{{product.id}}/edit', style:'margin-right: 5px;'}
-        -#      Править
-        -#    %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete($index)'}
-        -#      Удалить

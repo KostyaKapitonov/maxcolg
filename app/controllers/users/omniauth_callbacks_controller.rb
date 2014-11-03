@@ -10,7 +10,15 @@ class Users::OmniauthCallbacksController < ApplicationController
     end
   end
 
-  def
+  def facebook
+    auth_params = parse_oauth_params(request.env["omniauth.auth"])
+    @user = User.find_or_create(auth_params)
+    if @user.persisted?
+      sign_in_and_redirect @user, :event => :authentication
+    else
+      redirect_to root_path
+    end
+  end
 
   def failure
     if params[:error] == 'access_denied' && params[:error_reason] == 'user_denied'
@@ -30,7 +38,7 @@ class Users::OmniauthCallbacksController < ApplicationController
         :nickname => auth_params.extra.raw_info.nickname.blank? ?
             auth_params.extra.raw_info.screen_name :
             auth_params.extra.raw_info.nickname,
-        :email => "vk_user_#{auth_params.uid}@gmail.com",
+        :email => "#{auth_params.provider}_#{auth_params.uid}@gmail.com",
         :photo => auth_params.extra.raw_info.photo_50,
         :password => Devise.friendly_token[0,20]
     }

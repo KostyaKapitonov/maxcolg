@@ -22,7 +22,7 @@
             =table_row 'Название', (tag :input, 'x-ng-model' => 'new_firm_name'), [{title: '√', action: 'add_firm()'},{title: 'X', action: 'cancel_firm()'}]
 
   .form_description
-    Описание (возможно использование html тэгов):
+    Описание товара:
     %br
     =tag :textarea, 'x-ng-model' => 'product.description', class: 'ck-editor'
   .button_section

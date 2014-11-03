@@ -42,8 +42,8 @@ body {
 
 .global{
   background-color: #cec6c0;
-  width: 770px;
-  margin: 30px auto;
+  max-width: 770px;
+  margin: 0px auto;
   text-align:left;
 
   /*padding:15px;*/
@@ -80,7 +80,7 @@ td {
   color: aliceblue;
   text-align: left;
   float: left;
-  width: 180px;
+  max-width: 180px;
 }
 
 .left_side_bar li {
@@ -92,7 +92,7 @@ td {
 }
 
 ul {
-  width: 150px;
+  max-width: 150px;
 }
 
 .left_side_bar li {
@@ -110,21 +110,6 @@ ul {
   height: 100%;
   display: block;
 }
-
-.side_bar {
-  min-width: 190px;
-}
-
-.side_bar a{
-  color: deepskyblue;
-}
-
-.global_table{
-  margin: 110px auto;
-  width: auto;
-}
-
-
 
 .td_sep {
   width: 20px;
@@ -200,8 +185,7 @@ table.in_form tr {
   padding: 10px;
   text-align: center;
   text-decoration: none;
-  display: block;
-  width: 130px;
+
   margin: 10 0;
 
   @include b-radius(8);
@@ -242,18 +226,12 @@ table.in_form tr {
   text-indent: 0px;
 }
 
+.center {
+  max-width: 622px;
+}
+
 .center p {
   text-indent: 20px;
-}
-
-.center h1 {
-  margin-left: 240px;
-  text-indent: 20px;
-  color: #843672;
-}
-
-.center img {
-  margin: 0px 10px 10px 0px;
 }
 
 .product_header {
@@ -267,14 +245,18 @@ table.in_form tr {
 }
 
 .assortment {
-  width: 150px;
+  width: 5%;
   padding: 15px;
   border-right: 4px solid;
   border-color: #dfc9c0;
 }
 
+.assortment ul {
+  padding-left: 17px;
+}
+
 .firm_block{
-  width: 150px;
+  max-width: 150px;
 }
 
 .main {
@@ -289,7 +271,7 @@ table.in_form tr {
   color: #938d00;
 }
 
-.assortment h3{
+.assortment h4{
   margin-bottom: 0px;
 }
 
@@ -298,12 +280,11 @@ table.in_form tr {
 }
 
 .pr_list_block {
-  width: 128px;
-  height: 200px;
+  width: 114px;
+  height: 180px;
   margin: 5 5 5 5;
   padding: 0px;
   float: left;
-
 }
 
 .pr_list_block h5 {
@@ -314,7 +295,8 @@ table.in_form tr {
 }
 .pr_list_block img {
   background-color: grey;
-  width: 120px;
+  display: block;
+  width: 100%;
   background-image: asset-data-url('no_photo.jpg');
 }
 
@@ -344,10 +326,15 @@ table.in_form tr {
   font-weight: bold;
 }
 
-.login , .login td {
+.login, .login td {
   float: right;
-  font-size: 12;
+  padding: 5px;
+  font-size: 13px;
   vertical-align: middle;
+}
+
+.login a img {
+  width: 35px;
 }
 
 .cart_button {
@@ -369,4 +356,8 @@ table.in_form tr {
 
 .descr_block h3{
   padding-left: 20px;
+}
+
+.descr_block {
+  background-color: #f7f7cb;
 }

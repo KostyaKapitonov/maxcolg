@@ -5,7 +5,7 @@ Category.destroy_all
 end
 
 Firm.destroy_all
-%w(Andra\ Shape Enrico\ Coveri Marlin Rossoporpora Giulia V.O.V.A Torro Wol-Bar).each do |f|
+%w(Golden\ Lady Omsa Glamour Sisi Fillodoro Conte Ника).each do |f|
   Firm.create(name: f)
 end
 
@@ -23,7 +23,7 @@ product_count = 150
 Product.destroy_all
 cats = Category.all
 firms = Firm.all
-name2 = %w(зимние тонкие 20\ ден 40\ ден шерстянные дермантиновые)
+name2 = %w(зимние тонкие 20\ ден 40\ ден шерстянные сетчатые капроновые)
 descriptions = [
     'Отличная вещь, стоит носить, не пожалеете!',
     'Качество превосходное, носится удобно, кто брал - не жаловался.',
@@ -62,7 +62,7 @@ product_count.times do
       category: cat,
       firm: firms.sample,
       description: descriptions.sample,
-      price: rnd(30,290),
+      price: rnd(30,880),
       image: images.sample
   )
 end

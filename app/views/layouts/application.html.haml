@@ -14,14 +14,15 @@
     -#        = "$('<div><div style=\"padding: 10;\" class=\"ui-state-#{name}\">#{msg}</div></div>').dialog({width: 330});".html_safe
 
     .global{id: 'glob'}
-      %div{style: 'text-align: right; vertical-align: middle; margin: 7px;'}
+      %div{style: 'text-align: right; vertical-align: middle;'}
         %table.login
           %tr
             %td
               = current_user.blank? ? 'Войти через' : "Вы зашли как #{current_user.username}"
             %td
               -if current_user.blank?
-                = link_to(("#{image_tag 'vk.png', style: 'width: 20px;'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
+                = link_to(("#{image_tag 'fb.png'}").html_safe, user_omniauth_authorize_path(:facebook), target: '_self')
+                = link_to(("#{image_tag 'vk.png'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
               -else
                 = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
       %table.head_panel
@@ -44,12 +45,12 @@
           %tbody
             %tr
               %td.assortment{'x-ng-hide'=>'form_displayed'}
-                .firm_block{'x-ng-repeat'=>'firm in assortmentList'}
-                  %h3
+                .firm_block{'x-ng-repeat'=>'firm in assortmentList | orderBy:\'name\''}
+                  %h4
                     %a{'x-ng-href'=>products_path+'?firm={{firm.id}}'}
                       {{firm.name}}
                   %ul
-                    %li{'x-ng-repeat'=>'cat in firm.catigories'}
+                    %li{'x-ng-repeat'=>'cat in firm.catigories | orderBy:\'name\''}
                       %a{'x-ng-href'=>products_path+'?firm={{firm.id}}&category={{cat.id}}'}
                         {{cat.name}}
 

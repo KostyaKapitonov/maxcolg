@@ -91,6 +91,7 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
                 );
 
             });
+            console.log($scope.assortmentList);
         }
 
         if($scope.products == null) $scope.getProducts();

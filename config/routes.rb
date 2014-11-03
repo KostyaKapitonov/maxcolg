@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :users, :only => [:index, :destroy] do
     get 'omniauth_callbacks/vkontakte'
+    get 'omniauth_callbacks/facebook'
   end
 
   resources :products

@@ -23,6 +23,9 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
         .when('/contacts', {
             templateUrl: '/main_content.html',
             controller: 'MainPageController'
+        }).
+        otherwise({
+            redirectTo: '/'
         });
 
     $locationProvider.html5Mode(true);
