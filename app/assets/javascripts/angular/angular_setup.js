@@ -1,4 +1,4 @@
-var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize'])
+var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module'])
     .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', function($scope, $route, $routeParams, $location, Global, Products) {
         $scope.$route = $route;
         $scope.$routeParams = $routeParams;
