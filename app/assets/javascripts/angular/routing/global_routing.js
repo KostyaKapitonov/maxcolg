@@ -1,3 +1,6 @@
+
+// todo: Set available routes to prevent 404 or forcing redirect
+
 ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/products', {
@@ -23,8 +26,24 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
         .when('/contacts', {
             templateUrl: '/main_content.html',
             controller: 'MainPageController'
-        }).
-        otherwise({
+        })
+        .when('/users/login', {
+            templateUrl: '/users/login.html',
+            controller: 'UsersController'
+        })
+        .when('/users/create', {
+            templateUrl: '/users/create.html',
+            controller: 'UsersController'
+        })
+        .when('/users/password_reset', {
+            templateUrl: '/users/password_reset.html',
+            controller: 'UsersController'
+        })
+        .when('/users/email_to_reset_pass', {
+            templateUrl: '/users/email_to_reset_pass.html',
+            controller: 'UsersController'
+        })
+        .otherwise({
             redirectTo: '/'
         });
 

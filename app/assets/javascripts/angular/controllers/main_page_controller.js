@@ -5,8 +5,11 @@ ANTALEX.controller('MainPageController', ['$scope', '$routeParams', 'Global', '$
     $scope.isMainPage = $location.path() == '/';
     if($scope.$parent.setting == null){
         Global.main({},function(data){
-            $scope.$parent.setting = data;
-            $scope.setting = $scope.$parent.setting;
+            if($scope.$parent) {
+                $scope.$parent.setting = data;
+                $scope.setting = $scope.$parent.setting;
+            }
+            else $scope.setting = data;
         })
     }
 

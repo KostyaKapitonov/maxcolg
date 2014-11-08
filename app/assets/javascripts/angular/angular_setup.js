@@ -1,30 +1,64 @@
-var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module'])
-    .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', function($scope, $route, $routeParams, $location, Global, Products) {
+var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module', 'Devise'])
+    .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
+    function($scope, $route, $routeParams, $location, Global, Products, User, Auth) {
 
         if(localStorage.getItem('pathname')){
             var pathname = localStorage.getItem('pathname');
             var search = localStorage.getItem('search');
             localStorage.removeItem('pathname');
             localStorage.removeItem('search');
-//            $location.path(pathname+search);
-//            return;
-            var refresh = function(){
-                setTimeout(function(){
-                    if(!$scope.reportUnDelived) refresh();
-                    else {
-                        $location.path(pathname).search(search);
-                    };
-                },50);
+            var refresh = function(i){
+                i = i++ || 0;
+                setTimeout(
+                    function(){
+                        if(!$scope.loadFinished && i < 50) refresh(i);
+                        else {
+                            $location.path(pathname).search(search);
+                        }
+                    },50);
             };
             refresh();
-
         }
+
+        $scope.getUser = function(){
+            Auth.currentUser().then(function(user) {
+                // User was logged in, or Devise returned
+                // previously authenticated session.
+                $scope.currentUser = user;
+                console.log(user); // => {id: 1, ect: '...'}
+            }, function(error) {
+                console.log(error);
+            });
+        };
+
+        $scope.logout = function(){
+            Auth.logout().then(function(oldUser) {
+                $scope.currentUser = null;
+            }, function(error) {
+                cl(error);
+            });
+        };
 
         $scope.$route = $route;
         $scope.$routeParams = $routeParams;
         $scope.loadFinished = false;
         $scope.form_displayed = false;
         $scope.reportUnDelived = true;
+
+        $scope.uLogin = function(token){
+            User.uLogin({u_token: token},function(res){
+//                console.log(res);
+                if(res.authorized){
+
+                }
+                else if(res.data.error){
+                    cl(res.data.error);
+                } else {
+                    $scope.user = res.data;
+                    $location.path('/users/new');
+                }
+            });
+        };
 
         function report(name, data){
             $scope.reportUnDelived = true;
@@ -108,12 +142,36 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
 
             });
         }
+        console.log($location.search());
+        console.log($location.search().confirm_msg);
+        if($location.search().confirm_msg == 'invalid_token') {
+            $('<div><p class="dialog_msg">Скорее всего вы уже завершили регистрацию<br/>Если вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
+                { modal: true, position: 'top', buttons: [
+                    { text: "Восстановить пароль", click: function() {
+                        $( this ).dialog( "close" );
+                        $location.path('/users/email_to_reset_pass');
+                        $scope.$apply();
+                    }},
+                    { text: "Отмена", click: function() {
+                        $( this ).dialog( "close" );
+                    }}
+                ] });
+        }
+        if($location.search().confirm_msg == 'thx') {
+            $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
+//            $location();
+        }
 
-        if($scope.products == null) $scope.getProducts();
+        if(!$scope.products) $scope.getProducts();
+        if(!$scope.currentUser) $scope.getUser();
     }])
     .config([
         "$httpProvider", function($httpProvider) {
             $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
         }
-    ]);
+    ]).
+    config(function(AuthProvider) {
+        // Ignore 401 Unauthorized everywhere
+        AuthProvider.ignoreAuth(true);
+    });
 

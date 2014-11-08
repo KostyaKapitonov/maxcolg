@@ -1,14 +1,18 @@
 source 'https://rubygems.org'
 
+#!/bin/env ruby
+# encoding: utf-8
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0.beta1'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '0.17.1'
 #gem 'byebug', '>=3.4.0'
 # Use SCSS for stylesheets
 #gem 'bootstrap-sass'
-gem 'sass-rails'
+gem 'sass'
+gem 'sass-rails', '5.0.0.beta1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'ckeditor_rails'
 # Use CoffeeScript for .js.coffee assets and views
@@ -35,9 +39,11 @@ group :production do
 end
 
 gem 'oauth2'
-gem 'devise', git: 'https://github.com/plataformatec/devise.git', :branch => 'lm-rails-4-2'
+gem 'devise', :git => 'https://github.com/plataformatec/devise.git', :branch => 'lm-rails-4-2'
 gem 'omniauth-vkontakte'
 gem 'omniauth-facebook'
+
+gem 'gmail_sender'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -49,6 +55,12 @@ gem 'rails-html-sanitizer', '~> 1.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+group :development do
+  gem 'rake', '~> 10.3.2'
+  gem 'debase'
+  gem 'ruby-debug-ide'
+  gem 'figaro'
+end
 
 group :development, :test do
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console

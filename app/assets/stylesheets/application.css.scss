@@ -2,13 +2,15 @@
 *= require jquery.ui.core.css.scss
 *= require jquery.ui.dialog.css.scss
 *= require jquery.ui.theme.css.scss
-*= require themes/_jquery.ui.humanity
+*= require jquery-ui/humanity
 *= require libs/colorpicker
 */
 
 $primary-color: #736d69;
 $buttonColor: coral;
 $buttonBorder: indianred;
+$bordersColor: #dfc9c0;
+$backgroundColorHovered: bisque;
 
 @mixin gradient($startColor, $endColor) {
   background: -moz-linear-gradient(top, $startColor, $endColor);
@@ -27,7 +29,7 @@ $buttonBorder: indianred;
 body {
   background-color: #f7f5f6;
   background-image: asset-data-url('antalex_bg.jpeg');
-  background-position: center center;
+  background-position: center top;
   background-attachment: fixed;
   -moz-background-size: 100%; /* Firefox 3.6+ */
   -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
@@ -48,7 +50,7 @@ body {
   @include b-radius(20px);
 }
 
-img {
+img:not(.login_img) {
   @include b-radius(15px);
 }
 
@@ -59,7 +61,7 @@ td {
 .head_panel{
   text-align: center;
   margin:0px;
-  background-color: #dfc9c0;
+  background-color: $bordersColor;
   width: 100%;
   /*padding:15px;*/
 }
@@ -70,7 +72,7 @@ td {
 }
 
 .head_panel a:hover {
-  background-color: bisque;
+  background-color: $backgroundColorHovered;
 
   @include b-radius(10px);
 }
@@ -121,7 +123,7 @@ ul {
 
 .row_label {
   text-align: right;
-  padding-top: 5px;
+  padding-top: 7px;
   width: 25%;
 }
 
@@ -133,32 +135,23 @@ ul {
 table.in_form td.input input,
 table.in_form td.input select {
   width: 75%;
-}
-
-.form_description textarea,
-table.in_form input,
-table.in_form select {
+  border-style: solid;
   border-width: 2px;
-  background-color: #eef;
+  border-color: bisque;
   padding: 5px;
   border-radius: 8px;
-  border-style: ridge;
+  outline: 0;
+}
+
+table.in_form td.input input:focus,
+table.in_form td.input select:focus {
+  background-color: $backgroundColorHovered;
+  border-color: $buttonColor;
 }
 
 button.input_buttons {
   margin: 2px;
   width: 23px;
-}
-
-.form_description textarea:focus,
-table.in_form input:focus,
-table.in_form select:focus {
-  background-color: #efe;;
-  border-color: deepskyblue;
-  padding: 5px;
-  border-radius: 8px;
-  border-style: ridge;
-  outline: 0;
 }
 
 table.in_form tr {
@@ -252,7 +245,7 @@ table.in_form tr {
   width: 5%;
   padding: 15px;
   border-right: 4px solid;
-  border-color: #dfc9c0;
+  border-color: $bordersColor;
 }
 
 .assortment ul {
@@ -332,7 +325,7 @@ table.in_form tr {
 
 p.price span {
   padding: 10px;
-  background-color: bisque;
+  background-color: $backgroundColorHovered;
   @include b-radius(10px)
 }
 
@@ -341,6 +334,10 @@ p.price span {
   padding: 5px;
   font-size: 13px;
   vertical-align: middle;
+}
+
+.login {
+  width: 100%;
 }
 
 .login a img {
@@ -375,4 +372,62 @@ p.price span {
 
 .head_spacer{
   padding: 5 0;
+}
+
+.new_user_td {
+  width: 90%;
+  text-align: left;
+}
+
+.new_user_td a{
+  color: $primary-color;
+  padding: 7px;
+  @include b-radius(8px);
+  background-color: $bordersColor;
+}
+
+.new_user_td a:hover{
+  background-color: $backgroundColorHovered;
+}
+
+fieldset {
+  border-color: $bordersColor;
+  border-style: solid;
+  border-width: 3px;
+  @include  b-radius(10px);
+
+}
+
+.dialog_msg {
+  color: $primary-color;
+  font-size: 14;
+  text-align: center;
+}
+
+table.reg_info p,
+table.reg_info li,
+table.reg_info ul {
+  font-size: 12;
+  margin: 0;
+  padding: 2px;
+}
+
+table.reg_info ul {
+  float: right;
+}
+
+p.cntr {
+  text-align: center;
+}
+//span.cntr {
+//  margin: 0, auto;
+//}
+
+p.cntr_small{
+  font-size: 12px;
+  text-align: center;
+}
+
+p.cntr_small a.button{
+  display: inline;
 }

@@ -1,0 +1,23 @@
+%form{'novalidate'=>''}
+  %fieldset
+    %legend
+      %b
+        Восстановление пароля
+    %table{style:'width: 100%;'}
+      %tr
+        %td{style:'width: 65%; vertical-align: middle;'}
+          %table.in_form
+            %tr
+              =table_row 'Email', (tag :input, type: 'email', 'autofocus'=>'','x-ng-model' => 'email', 'required'=>'', 'x-ng-disabled'=>'reset_mode')
+            %tr
+              %td{'colspan'=>'3'}
+                .button_section
+                  %a.button{'x-ng-click'=>'send_email();'}
+                    Выслать письмо
+        %td
+          .descr_block
+            %table.in_form.reg_info
+              %tr
+                %td
+                  %p
+                    Вам будет выслано письмо с сылкой на восстановление пароля к аккаунту нашего интернет-магазина.

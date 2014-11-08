@@ -6,25 +6,35 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application.js', 'data-turbolinks-track' => true
     = csrf_meta_tags
-  %body{'x-ng-controller'=>'MainController'}
+  %body{'x-ng-controller'=>'MainController', id: 'glob'}
     -#- unless flash.blank?
     -#  - flash.each do |name, msg|
     -#    - if name == 'error' || name == 'highlight'
     -#      %script{type: 'text/javascript'}
     -#        = "$('<div><div style=\"padding: 10;\" class=\"ui-state-#{name}\">#{msg}</div></div>').dialog({width: 330});".html_safe
 
-    .global{id: 'glob'}
+    .global
       %div{style: 'text-align: right; vertical-align: middle;'}
         %table.login
           %tr
+            -if current_user.blank?
+              %td.new_user_td
+                = link_to 'Вход / Регистрация', login_users_path
             %td
               = current_user.blank? ? 'Войти через' : "Вы зашли как #{current_user.username}"
-            %td
+            %td{style: 'min-width: 252px;'}
               -if current_user.blank?
-                = link_to(("#{image_tag 'fb.png'}").html_safe, user_omniauth_authorize_path(:facebook), target: '_self')
-                = link_to(("#{image_tag 'vk.png'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
+                %script{src: '//ulogin.ru/js/ulogin.js'}
+                -#%div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte,facebook,odnoklassniki,mailru,google;hidden=other;redirect_uri=http%3A%2F%2F#{ulogin_back_url}"}
+                %div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte,facebook,odnoklassniki,mailru,google;hidden=other;redirect_uri=;callback=uLoginOauth"}
               -else
                 = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
+            -#%td
+            -#  -if current_user.blank?
+            -#    = link_to(("#{image_tag 'fb.png', class: 'login_img'}").html_safe, user_omniauth_authorize_path(:facebook), target: '_self')
+            -#    = link_to(("#{image_tag 'vk.png', class: 'login_img'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
+            -#  -else
+            -#    = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
       %table.head_panel
         %tbody
           %tr

@@ -1,4 +1,5 @@
 class Users::OmniauthCallbacksController < ApplicationController
+  skip_before_filter :verify_authenticity_token
 
   def vkontakte
     auth_params = parse_oauth_params(request.env["omniauth.auth"])
@@ -29,6 +30,8 @@ class Users::OmniauthCallbacksController < ApplicationController
     redirect_to root_path
   end
 
+  private
+
   def parse_oauth_params(auth_params)
     {
         :provider => auth_params.provider,
@@ -44,4 +47,14 @@ class Users::OmniauthCallbacksController < ApplicationController
     }
   end
 
+  def parse_ulogin_params(auth_params)
+    {
+        :provider => auth_params['network'],
+        :url => auth_params['identity'],
+        :username => auth_params['first_name']+' '+auth_params['last_name'],
+        :vk_id => auth_params['uid'],
+        :email => "#{auth_params['identity']}@gmail.com",
+        :password => Devise.friendly_token[0,20]
+    }
+  end
 end

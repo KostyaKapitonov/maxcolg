@@ -2,11 +2,21 @@ Rails.application.routes.draw do
 
   root :to => 'products#main'
 
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" } #, :defaults => { :provider => 'vkontakte' }
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
 
-  resources :users, :only => [:index, :destroy] do
+  resources :users, :only => [:destroy] do
     get 'omniauth_callbacks/vkontakte'
     get 'omniauth_callbacks/facebook'
+  end
+
+  resource :users, :only => [] do
+    get 'u_login'
+    get 'login'
+    get 'create'
+    get 'confirm_email'
+    match 'password_reset', via: [:get, :post]
+    get 'email_to_reset_pass'
+    get 'is_email_free'
   end
 
   resources :products

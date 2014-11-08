@@ -1,0 +1,8 @@
+export PATH="/home/refery/.rvm/gems/ruby-2.1.4/bin:/home/refery/.rvm/gems/ruby-2.1.4@global/bin:/home/refery/.rvm/rubies/ruby-2.1.4/bin:$PATH"
+export GEM_HOME='/home/refery/.rvm/gems/ruby-2.1.4'
+export GEM_PATH='/home/refery/.rvm/gems/ruby-2.1.4:/home/refery/.rvm/gems/ruby-2.1.4@global'
+export MY_RUBY_HOME='/home/refery/.rvm/rubies/ruby-2.1.4'
+export IRBRC='/home/refery/.rvm/rubies/ruby-2.1.4/.irbrc'
+unset MAGLEV_HOME
+unset RBXOPT
+export RUBY_VERSION='ruby-2.1.4'

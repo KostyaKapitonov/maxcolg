@@ -21,4 +21,16 @@ module ApplicationHelper
   def ng_href(name, path, &args)
     "<a ng-href='#{path}'>#{name}</a>".html_safe
   end
+
+  def ulogin_back_url
+    ENV['RAILS_ENV'] == 'development' ? 'antalex.herokuapp.com:3000' : 'antalex.herokuapp.com'
+  end
+
+  def confirm_url(token)
+    "Для завершения регистрации перейдите, пожалуйста, по этой ссылке: antalex.herokuapp.com#{ENV['LOCALHOST_PORT']}/users/confirm_email?token=#{token}".html_safe
+  end
+
+  def reset_url(token)
+    "Для смены пароля перейдите, пожалуйста, по этой ссылке: antalex.herokuapp.com#{ENV['LOCALHOST_PORT']}/users/password_reset?token=#{token}".html_safe
+  end
 end
