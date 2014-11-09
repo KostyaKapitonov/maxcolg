@@ -1,4 +1,5 @@
-ANTALEX.controller('MainPageController', ['$scope', '$routeParams', 'Global', '$sce', '$location', function($scope, $routeParams, Global, $sce, $location) {
+ANTALEX.controller('MainPageController', ['$scope', '$routeParams', 'Global', '$sce', '$location',
+                                      function($scope, $routeParams, Global, $sce, $location) {
 
     $scope.editMode = false;
 

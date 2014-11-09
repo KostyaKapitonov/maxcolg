@@ -1,4 +1,5 @@
-ANTALEX.controller('ProductsListController', ['$scope', '$location','$routeParams', 'Products', '$sce',function($scope, $location, $routeParams, Products, $sce) {
+ANTALEX.controller('ProductsListController', ['$scope', '$location','$routeParams', 'Products', '$sce',
+                                         function($scope, $location, $routeParams, Products, $sce) {
 
     $scope.$on('dataLoaded', function() {
         $scope.$emit('delivered', 'yeah');

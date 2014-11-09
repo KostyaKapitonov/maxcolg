@@ -1,4 +1,5 @@
-ANTALEX.controller('ProductViewController', ['$scope', '$location','$routeParams', 'Products', '$sce', '$anchorScroll', '$filter',function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter) {
+ANTALEX.controller('ProductViewController', ['$scope', '$location','$routeParams', 'Products', '$sce', '$anchorScroll', '$filter',
+                                            function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter) {
 
     $scope.searchProcessing = false;
     $scope.curentPos = 0;

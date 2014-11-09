@@ -1,4 +1,5 @@
-ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products', '$location', 'Global', function($scope, $routeParams, Products, $location, Global) {
+ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products', '$location', 'Global',
+                                         function($scope, $routeParams, Products, $location, Global) {
     $scope.isNew = false;
 
     $scope.$on('dataLoaded', function() {

@@ -1,4 +1,5 @@
-ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth', '$http',function($scope, $location, $routeParams, User, Auth, $http) {
+ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
+                                  function($scope, $location, $routeParams, User, Auth) {
 
     $scope.user = null;
     $scope.credentials = null;
