@@ -1,6 +1,11 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module', 'Devise'])
-    .controller('MainController',['$scope', '$route', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
-    function($scope, $route, $routeParams, $location, Global, Products, User, Auth) {
+    .controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
+    function($scope, $routeParams, $location, Global, Products, User, Auth) {
+
+        $scope.$routeParams = $routeParams;
+        $scope.loadFinished = false;
+        $scope.form_displayed = false;
+        $scope.reportUnDelived = true;
 
         if(localStorage.getItem('pathname')){
             var pathname = localStorage.getItem('pathname');
@@ -38,12 +43,6 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
                 cl(error);
             });
         };
-
-        $scope.$route = $route;
-        $scope.$routeParams = $routeParams;
-        $scope.loadFinished = false;
-        $scope.form_displayed = false;
-        $scope.reportUnDelived = true;
 
         $scope.uLogin = function(token){
             User.uLogin({u_token: token},function(res){

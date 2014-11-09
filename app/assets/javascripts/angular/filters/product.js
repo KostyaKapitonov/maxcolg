@@ -1,4 +1,4 @@
-window.deb = true;
+
 ANTALEX.filter("onlySelected", function() {
     return function(input, firm, category) {
         if(!firm && !category) return input;
