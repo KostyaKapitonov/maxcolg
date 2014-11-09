@@ -75,7 +75,7 @@ ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products
         $location.hash('glob');
     };
 
-    // TODO: category
+    // categories
     $scope.new_category = function(){
         $scope.new_category_name = '';
     };
@@ -107,7 +107,7 @@ ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products
         $scope.new_category_name = null;
     };
 
-    // TODO: firm
+    // firms
     $scope.new_firm = function(){
         $scope.new_firm_name = '';
     };

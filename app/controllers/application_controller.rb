@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
+  def user_logged_in?
+    !current_user.blank?
+  end
+
   def admin?
     return false unless current_user
     !current_user.blank? && current_user.vk_id == '8198870' || current_user.vk_id == '498144'

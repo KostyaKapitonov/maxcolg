@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     match 'password_reset', via: [:get, :post]
     get 'email_to_reset_pass'
     get 'is_email_free'
+    get 'add_provider'
   end
 
   resources :products

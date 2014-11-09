@@ -1,6 +1,4 @@
-
-// todo: Set available routes to prevent 404 or forcing redirect
-
+// Set available routes to prevent 404 or forcing redirect
 ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/products', {

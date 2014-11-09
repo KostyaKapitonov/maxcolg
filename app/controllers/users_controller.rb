@@ -1,18 +1,16 @@
 class UsersController < ApplicationController
+  before_filter :user_logged_in?, only: [:add_provider]
 
   def u_login
     params.require(:u_token)
     authorized = false
-    url = URI.parse("http://ulogin.ru/token.php?token=#{params[:u_token]}")
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
-    user_login_info = JSON.parse res.body
+    user_login_info = get_ulogin_data(params[:u_token])
     unless user_login_info['identity'].blank?
       provider = UserProvider.where(url: user_login_info['identity']).first
       unless provider.blank?
         user = provider.user
         unless user.blank?
-          authorized = sign_in user unless user.blank?
+          authorized = sign_in_and_redirect(:user, user, {confirm_msg: 'thx'}) unless user.blank?
         end
       end
     end
@@ -52,13 +50,18 @@ class UsersController < ApplicationController
     end
   end
 
-  def email_to_reset_pass
-    # if request.post?
-    #   user = User.find_to_reset_email(params[:token])
-    #   not_found if user.blank?
-    #   result = user.update_password(user, params.permit(:password, :password_confirmation))
-    #   render json: result
-    # end
+  def add_provider
+    params.require(:u_token)
+    UserProvider.create(get_ulogin_data(params[:u_token]))
+  end
+
+  private
+
+  def get_ulogin_data(token)
+    url = URI.parse("http://ulogin.ru/token.php?token=#{params[:u_token]}")
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
+    JSON.parse res.body
   end
 
 end

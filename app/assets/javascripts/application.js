@@ -97,7 +97,18 @@ $a.set = function(item, data){
     localStorage.setItem(item+$a.custom_localstorage_prefix, JSON.stringify(obj));
 };
 
-$a.wait = function(msg){
+$a.wait = function(msg, msBeforeException){
+    msBeforeException = msBeforeException || 15000;
+    if(!this.blocked){
+        this.blocked = true;
+    } else {
+        clearTimeout(this.exception);
+    }
+    this.exception = setTimeout(function(){
+        $a.done();
+        $a.alert('<b>Пожалуйста, попробуйте еще раз.</b><br/>В случае повтора ошибки обновите страницу, а так же проверьте подключение к интернету.','Неизвестная ошибка');
+    },msBeforeException);
+
     msg = msg || 'Подождите пожалуйста...';
     $.blockUI({
         message: msg,
@@ -111,9 +122,12 @@ $a.wait = function(msg){
             color: '#fff'
         }
     });
+
 };
 
 $a.done = function(){
+    this.blocked = false;
+    clearTimeout(this.exception);
     $.unblockUI();
 };
 

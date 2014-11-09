@@ -46,15 +46,30 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.uLogin = function(token){
             User.uLogin({u_token: token},function(res){
-//                console.log(res);
-                if(res.authorized){
-
+                if(res.authorized === true){
+                    console.log('res.authorized === true');
+                    // TODO: user logged in - re-render layout
                 }
-                else if(res.data.error){
-                    cl(res.data.error);
+                else if(res.authorized === false && res.data.identity){
+                    console.log('res.authorized === false');
+                    $('<div><p class="dialog_msg">'+
+                        'Для входа через социальную сеть, вам необходимо для начала зарегистрироватся на нашем сайте<br/>'+
+                        'Если вы уже зарегистрированы, то после входа вы сможете привязать аккаунт вашей соц сети к аккаунту нашего сайта'+
+                    '</p><div>').dialog(
+                        { modal: true, position: 'top', buttons: [
+                            { text: "Вход", click: function() {
+                                $( this ).dialog( "close" );
+                                $location.path('/users/login').search({than: 'add_snl'});
+                                $scope.$apply();
+                            }},
+                            { text: "Регистрация", click: function() {
+                                $( this ).dialog( "close" );
+                                $location.path('/users/create');
+                                $scope.$apply();
+                            }}
+                        ] });
                 } else {
-                    $scope.user = res.data;
-                    $location.path('/users/new');
+                    cl(res);
                 }
             });
         };
