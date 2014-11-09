@@ -1,21 +1,21 @@
-ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
-                                  function($scope, $location, $routeParams, User, Auth) {
+ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User',
+                                  function($scope, $location, $routeParams, User) {
 
     $scope.user = null;
     $scope.credentials = null;
 
     $scope.login = function(){
         $scope.credentials = {email: $scope.email, password: $scope.password};
-        Auth.login($scope.credentials).then(function(user) {
-            console.log('+++');
-            console.log(user); // => {id: 1, ect: '...'}
-        }, function(error) {
-            if(error.data.error == 'You have to confirm your email address before continuing.')
-                $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
-            else
-                $a.alert('Неверный email и/или пароль', 'Ошибка');
-            console.log(error);
-        });
+//        Auth.login($scope.credentials).then(function(user) {
+//            console.log('+++');
+//            console.log(user); // => {id: 1, ect: '...'}
+//        }, function(error) {
+//            if(error.data.error == 'You have to confirm your email address before continuing.')
+//                $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
+//            else
+//                $a.alert('Неверный email и/или пароль', 'Ошибка');
+//            console.log(error);
+//        });
     };
 
     $scope.reg_user = function(){
@@ -23,17 +23,17 @@ ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'Us
         $scope.credentials = {email: $scope.email,
                             password: $scope.password,
                             password_confirmation: $scope.password_confirmation};
-        Auth.register($scope.credentials).then(function(registeredUser) {
-            console.log('Registration COMPLETE!');
-            console.log(registeredUser); // => {id: 1, ect: '...'}
-            $location.path('/');
-            $a.alert('Проверьте пожалуйста свою почту.');
-            $a.done();
-        }, function(error) {
-            console.log('Registration failed...');
-            console.log(error);
-            $a.done();
-        });
+//        Auth.register($scope.credentials).then(function(registeredUser) {
+//            console.log('Registration COMPLETE!');
+//            console.log(registeredUser); // => {id: 1, ect: '...'}
+//            $location.path('/');
+//            $a.alert('Проверьте пожалуйста свою почту.');
+//            $a.done();
+//        }, function(error) {
+//            console.log('Registration failed...');
+//            console.log(error);
+//            $a.done();
+//        });
     };
 
     if('/users/password_reset' == $location.path()){
