@@ -1,17 +1,16 @@
-
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require turbolinks
-//= require angular
+//= require ang-devise/angular/angular.min.js
 //= require angular-route.min
 //= require angular-resource.min
 //= require angular-sanitize.min
 //= require angular/angular_setup
-//= require ang-devise/angular-devise/lib/devise-min
 //= require ckeditor-jquery
 //= require blockui
-//= require_tree .
+//= require ang-devise/angular-devise/lib/devise-min
+// = require_tree .
 
 window.$a = {}; //custom app helper
 
