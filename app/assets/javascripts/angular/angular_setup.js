@@ -1,5 +1,5 @@
-var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','colorpicker.module', 'Devise'])
-    .controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
+var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
+ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
     function($scope, $routeParams, $location, Global, Products, User, Auth) {
 
         $scope.$routeParams = $routeParams;
@@ -163,13 +163,14 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize','
 
         if(!$scope.products) $scope.getProducts();
         if(!$scope.currentUser) $scope.getUser();
-    }])
-    .config([
+    }]);
+
+ANTALEX.config([
         "$httpProvider", function($httpProvider) {
             $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
         }
-    ]).
-    config(function(AuthProvider) {
+    ]);
+ANTALEX.config(function(AuthProvider) {
         // Ignore 401 Unauthorized everywhere
         AuthProvider.ignoreAuth(true);
     });
