@@ -9,7 +9,7 @@
 //= require angular/angular_setup
 //= require ckeditor-jquery
 //= require blockui
-///= require ang-devise/angular-devise/lib/devise-min
+//= require ang-devise/angular-devise/lib/devise
 // = require_tree .
 
 window.$a = {}; //custom app helper

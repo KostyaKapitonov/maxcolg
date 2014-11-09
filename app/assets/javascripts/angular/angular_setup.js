@@ -1,6 +1,6 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
-ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User',
-    function($scope, $routeParams, $location, Global, Products, User) {
+ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
+    function($scope, $routeParams, $location, Global, Products, User, Auth) {
 
         $scope.$routeParams = $routeParams;
         $scope.loadFinished = false;
@@ -26,22 +26,22 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         }
 
         $scope.getUser = function(){
-//            Auth.currentUser().then(function(user) {
-//                // User was logged in, or Devise returned
-//                // previously authenticated session.
-//                $scope.currentUser = user;
-//                console.log(user); // => {id: 1, ect: '...'}
-//            }, function(error) {
-//                console.log(error);
-//            });
+            Auth.currentUser().then(function(user) {
+                // User was logged in, or Devise returned
+                // previously authenticated session.
+                $scope.currentUser = user;
+                console.log(user); // => {id: 1, ect: '...'}
+            }, function(error) {
+                console.log(error);
+            });
         };
 
         $scope.logout = function(){
-//            Auth.logout().then(function(oldUser) {
-//                $scope.currentUser = null;
-//            }, function(error) {
-//                cl(error);
-//            });
+            Auth.logout().then(function(oldUser) {
+                $scope.currentUser = null;
+            }, function(error) {
+                cl(error);
+            });
         };
 
         $scope.uLogin = function(token){
@@ -170,8 +170,8 @@ ANTALEX.config([
             $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
         }
     ]);
-//ANTALEX.config(function(AuthProvider) {
-//        // Ignore 401 Unauthorized everywhere
-//        AuthProvider.ignoreAuth(true);
-//    });
+ANTALEX.config(['AuthProvider', function(AuthProvider) {
+        // Ignore 401 Unauthorized everywhere
+        AuthProvider.ignoreAuth(true);
+    }]);
 
