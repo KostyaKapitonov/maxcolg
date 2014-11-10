@@ -1,11 +1,11 @@
 ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
-                                  function($scope, $location, $routeParams, User, Auth) {
+function($scope, $location, $routeParams, User, Auth) {
 
     $scope.user = null;
     $scope.credentials = null;
 
     $scope.login = function(){
-        $scope.credentials = {email: $scope.email, password: $scope.password};
+        $scope.credentials = {email: $scope.email.toLocaleLowerCase(), password: $scope.password};
         Auth.login($scope.credentials).then(function(user) {
             console.log('+++');
             console.log(user); // => {id: 1, ect: '...'}
@@ -18,9 +18,17 @@ ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'Us
         });
     };
 
+    function regDataInvalid(){
+        // TODO: validation!
+        console.log($scope.user.$valid);
+        console.log($scope.user.email.$valid);
+        return true;
+    }
+
     $scope.reg_user = function(){
+        if(regDataInvalid()) return;
         $a.wait();
-        $scope.credentials = {email: $scope.email,
+        $scope.credentials = {email: $scope.email.toLocaleLowerCase(),
                             password: $scope.password,
                             password_confirmation: $scope.password_confirmation};
         Auth.register($scope.credentials).then(function(registeredUser) {
@@ -29,9 +37,22 @@ ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'Us
             $location.path('/');
             $a.alert('Проверьте пожалуйста свою почту.');
             $a.done();
-        }, function(error) {
+        }, function(res) {
+            if(res.data && res.data.errors && res.data.errors.email && res.data.errors.email[0] == "has already been taken"){
+                $('<div><p class="dialog_msg">Такой Email уже используется.<br/>Если это ваш Email, но вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
+                    { modal: true, position: 'top', buttons: [
+                        { text: "Восстановить пароль", click: function() {
+                            $( this ).dialog( "close" );
+                            $location.path('/users/email_to_reset_pass');
+                            $scope.$apply();
+                        }},
+                        { text: "Отмена", click: function() {
+                            $( this ).dialog( "close" );
+                        }}
+                    ] });
+            }
             console.log('Registration failed...');
-            console.log(error);
+            console.log(res);
             $a.done();
         });
     };

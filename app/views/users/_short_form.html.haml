@@ -5,16 +5,19 @@
         Регистрация
       %b{'x-ng-show'=>'reset_mode'}
         Смена пароля
-    %table{style:'width: 100%;'}
+    %table{style:'width: 100%;', 'x-ng-form'=>'user'}
       %tr
         %td{style:'width: 65%; vertical-align: middle;'}
+
           %table.in_form
             %tr
-              =table_row 'Email', (tag :input, type: 'email', 'autofocus'=>'','x-ng-model' => 'email', 'required'=>'', 'x-ng-disabled'=>'reset_mode')
+              =table_row 'Email', (tag :input, name: 'email', type: 'email', 'autofocus'=>'','x-ng-model' => 'email', 'required'=>'', 'x-ng-disabled'=>'reset_mode')
+              %td{'x-ng-show'=>'user.email.$invalid'}
+                $invalid
             %tr
-              =table_row 'Пароль', (tag :input, type: 'password','x-ng-model' => 'password', 'required'=>'')
+              =table_row 'Пароль', (tag :input, name: 'password', type: 'password','x-ng-model' => 'password', 'required'=>'')
             %tr
-              =table_row 'Подвтерждение пароля', (tag :input, type: 'password','x-ng-model' => 'password_confirmation', 'required'=>'')
+              =table_row 'Подвтерждение пароля', (tag :input, name: 'password_confirmation', type: 'password','x-ng-model' => 'password_confirmation', 'required'=>'')
             %tr
               %td{'colspan'=>'3'}
                 .button_section

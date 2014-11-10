@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   has_many :user_providers
   # validates_uniqueness_of :email
 
+  before_save do
+    self.email.downcase! if self.email
+  end
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable

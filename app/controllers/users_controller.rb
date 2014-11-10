@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def is_email_free
-    render json: {free: User.where(email: params[:email]).first.blank?}
+    render json: {free: User.where(email: params[:email].to_s.downcase!).first.blank?}
   end
 
   def create
@@ -62,6 +62,7 @@ class UsersController < ApplicationController
     req = Net::HTTP::Get.new(url.to_s)
     res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
     JSON.parse res.body
+    # TODO: prepare to save
   end
 
 end

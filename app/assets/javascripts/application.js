@@ -131,4 +131,13 @@ $a.done = function(){
     $.unblockUI();
 };
 
+$a.show_errors = function(errs){
+    var list = '<ul>';
+    errs.each(function(e){
+        list+='<li>'+e+'</li>'
+    });
+    list+='</ul>';
+    $a.alert(list,'Ошибка');
+};
+
 $a.custom_localstorage_prefix = '__c';
