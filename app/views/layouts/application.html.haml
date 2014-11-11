@@ -16,18 +16,19 @@
     .global
       %div{style: 'text-align: right; vertical-align: middle;'}
         %table.login
-          %tr
-            -if current_user.blank?
-              %td.new_user_td
-                = link_to 'Вход / Регистрация', login_users_path
-            %td
-              = current_user.blank? ? 'Войти через' : "Вы зашли как #{current_user.username}"
-            %td{style: 'min-width: 84px;'}
-              -if current_user.blank?
-                %script{src: '//ulogin.ru/js/ulogin.js'}
-                %div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
-              -else
-                = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
+          %tr{'x-ng-show'=>'userRequestComplete'}
+            %td.new_user_td{'x-ng-hide'=>'currentUser'}
+              = link_to 'Вход / Регистрация', login_users_path
+            %td{'x-ng-hide'=>'currentUser'}
+              Войти через
+            %td{style: 'min-width: 84px; padding-right: 0;', 'x-ng-hide'=>'currentUser'}
+              %script{src: '//ulogin.ru/js/ulogin.js'}
+              %div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
+            %td.user_info{'x-ng-show'=>'currentUser'}
+              Вы зашли как {{currentUser.email}}
+            %td{'x-ng-show'=>'currentUser', style: 'padding-right: 14px;'}
+              %a{'x-ng-click'=>'logout()'}
+                Выйти
             -#%td
             -#  -if current_user.blank?
             -#    = link_to(("#{image_tag 'fb.png', class: 'login_img'}").html_safe, user_omniauth_authorize_path(:facebook), target: '_self')

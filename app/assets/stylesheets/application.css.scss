@@ -4,6 +4,7 @@
 *= require jquery.ui.theme.css.scss
 *= require jquery-ui/humanity
 *= require libs/colorpicker
+*= require libs/jquery_custom
 */
 
 $primary-color: #736d69;
@@ -334,14 +335,16 @@ p.price span {
   padding: 5px;
   font-size: 13px;
   vertical-align: middle;
+  height: 42px;
 }
 
 .login {
   width: 100%;
 }
 
-.login a img {
-  width: 35px;
+.login .user_info {
+  width: 99%;
+  text-align: right;
 }
 
 .cart_button {
@@ -357,6 +360,7 @@ p.price span {
 }
 
 .descr_block {
+  background-color: #f7f7cb;
   padding: 10px;
   margin-top: 10px;
   @include b-radius(15px)
@@ -364,10 +368,6 @@ p.price span {
 
 .descr_block h3{
   padding-left: 20px;
-}
-
-.descr_block {
-  background-color: #f7f7cb;
 }
 
 .head_spacer{
@@ -379,15 +379,16 @@ p.price span {
   text-align: left;
 }
 
-.new_user_td a{
+.login a{
   color: $primary-color;
   padding: 7px;
   @include b-radius(8px);
   background-color: $bordersColor;
 }
 
-.new_user_td a:hover{
+.login a:hover{
   background-color: $backgroundColorHovered;
+  cursor: pointer;
 }
 
 fieldset {

@@ -7,14 +7,15 @@ function($scope, $location, $routeParams, User, Auth) {
     $scope.login = function(){
         $scope.credentials = {email: $scope.email.toLocaleLowerCase(), password: $scope.password};
         Auth.login($scope.credentials).then(function(user) {
-            console.log('+++');
-            console.log(user); // => {id: 1, ect: '...'}
+            $a.info('Приветствуем вас в нашем интернет-магазине.');
+            $scope.$parent.currentUser = user;
+            $location.path('/');
         }, function(error) {
             if(error.data.error == 'You have to confirm your email address before continuing.')
                 $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
             else
                 $a.alert('Неверный email и/или пароль', 'Ошибка');
-            console.log(error);
+            cl(error);
         });
     };
 
@@ -97,14 +98,4 @@ function($scope, $location, $routeParams, User, Auth) {
                 $a.alert('Пароль успешно изменён.');
         });
     };
-
-    $scope.$on('devise:login', function(event, currentUser) {
-        console.log(event, currentUser);
-        console.log("$scope.$on('devise:login'");
-    });
-
-    $scope.$on('devise:new-session', function(event, currentUser) {
-        console.log("$scope.$on('devise:new-session'");
-        console.log(event, currentUser);
-    });
 }]);

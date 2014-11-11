@@ -81,6 +81,31 @@ $a.alert = function(text, title, onClose){
         beforeClose: onClose});
 };
 
+$a.infoDurationMs = 450;
+$a.infoDurationHideRelation = 1.5;
+$a.infoBeforeCloseMs = 1200;
+
+$a.info = function(text, isError){
+    var cls = isError ? 'dialogError' : '';
+    var durationMs = 300;
+    var beforeCloseMs = 1500;
+    var element = $('<div class="'+cls+'"><p class="dialog_msg">'+text+'</p><div>');
+    element.dialog({ dialogClass: 'autoClose', modal: false, position: 'left top', width: 275,
+        minHeight: 20, resizable: false,
+        show: { effect: "drop", easing: 'easeOutCubic',duration: $a.infoDurationMs},
+        hide: {effect: "drop", easing: 'easeInSine', duration: $a.infoDurationMs * $a.infoDurationHideRelation},
+        beforeClose: function(){
+            setTimeout(function(){  element.dialog("destroy");  },
+                    $a.infoBeforeCloseMs + $a.infoDurationMs * $a.infoDurationHideRelation);
+        }
+    });
+    setTimeout(function(){  element.dialog('close');  },beforeCloseMs+durationMs*2);
+};
+
+$a.err = function(text){
+    $a.info(text, true);
+};
+
 $a.cut = function(item){
     item = item+$a.custom_localstorage_prefix;
     var itemData = localStorage.getItem(item);

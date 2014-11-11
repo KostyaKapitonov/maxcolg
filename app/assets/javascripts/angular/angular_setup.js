@@ -27,20 +27,26 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.getUser = function(){
             Auth.currentUser().then(function(user) {
-                // User was logged in, or Devise returned
-                // previously authenticated session.
                 $scope.currentUser = user;
                 console.log(user); // => {id: 1, ect: '...'}
+                $scope.userRequestComplete = true;
             }, function(error) {
                 console.log(error);
+                $scope.userRequestComplete = true;
             });
         };
 
         $scope.logout = function(){
+            $a.wait();
             Auth.logout().then(function(oldUser) {
                 $scope.currentUser = null;
+                $a.done();
+                $a.info('Вы успешно покинули свой аккаунт');
+                $location.path('/');
             }, function(error) {
+                $a.err('Что-то пошло не так...');
                 cl(error);
+                $a.done();
             });
         };
 
