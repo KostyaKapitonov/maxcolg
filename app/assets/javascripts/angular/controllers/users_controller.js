@@ -1,28 +1,40 @@
-ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
-function($scope, $location, $routeParams, User, Auth) {
+ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth', '$timeout',
+function($scope, $location, $routeParams, User, Auth, $timeout) {
 
     $scope.user = null;
     $scope.credentials = null;
 
     $scope.login = function(){
-        $scope.credentials = {email: $scope.email.toLocaleLowerCase(), password: $scope.password};
+        console.log($a.blocked);
+        if($a.blocked) return;
+        $a.wait();
+        $scope.credentials = {email: $scope.email, password: $scope.password};
         Auth.login($scope.credentials).then(function(user) {
             $a.info('Приветствуем вас в нашем интернет-магазине.');
             $scope.$parent.currentUser = user;
             $location.path('/');
+            $a.done();
         }, function(error) {
             if(error.data.error == 'You have to confirm your email address before continuing.')
                 $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
             else
                 $a.alert('Неверный email и/или пароль', 'Ошибка');
             cl(error);
+            $a.done();
         });
+    };
+
+    $scope.loginOnEnter = function(event){
+        if(event.keyCode == 13){
+            $scope.login();
+            setTimeout(function() { $(event.currentTarget).blur();  }, 0);
+        }
     };
 
     function regDataInvalid(){
         // TODO: validation!
-        console.log($scope.user.$valid);
-        console.log($scope.user.email.$valid);
+        console.log($scope.userForm.$valid);
+        console.log($scope.userForm.email.$valid);
         return true;
     }
 
@@ -33,7 +45,6 @@ function($scope, $location, $routeParams, User, Auth) {
                             password: $scope.password,
                             password_confirmation: $scope.password_confirmation};
         Auth.register($scope.credentials).then(function(registeredUser) {
-            console.log('Registration COMPLETE!');
             console.log(registeredUser); // => {id: 1, ect: '...'}
             $location.path('/');
             $a.alert('Проверьте пожалуйста свою почту.');
@@ -52,8 +63,7 @@ function($scope, $location, $routeParams, User, Auth) {
                         }}
                     ] });
             }
-            console.log('Registration failed...');
-            console.log(res);
+            cl(res);
             $a.done();
         });
     };

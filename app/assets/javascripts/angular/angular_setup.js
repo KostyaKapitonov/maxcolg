@@ -57,6 +57,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     // TODO: user logged in - re-render layout
                 }
                 else if(res.authorized === false && res.data.identity){
+                    cl(res.data.identity);
                     console.log('res.authorized === false');
                     $('<div><p class="dialog_msg">'+
                         'Для входа через социальную сеть, вам необходимо для начала зарегистрироватся на нашем сайте<br/>'+

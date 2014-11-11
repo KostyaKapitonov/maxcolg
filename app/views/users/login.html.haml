@@ -9,7 +9,7 @@
             %tr
               =table_row 'Email', (tag :input, type: 'email', 'autofocus'=>'','x-ng-model' => 'email', 'required'=>'')
             %tr
-              =table_row 'Пароль', (tag :input, type: 'password','x-ng-model' => 'password', 'required'=>'')
+              =table_row 'Пароль', (tag :input, type: 'password','x-ng-model' => 'password', 'required'=>'', 'x-ng-keypress'=>'loginOnEnter($event)')
             %tr
               %td{'colspan'=>'3'}
                 .button_section

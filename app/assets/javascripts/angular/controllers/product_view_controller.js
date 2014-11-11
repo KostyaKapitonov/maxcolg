@@ -1,5 +1,5 @@
 ANTALEX.controller('ProductViewController', ['$scope', '$location','$routeParams', 'Products', '$sce', '$anchorScroll', '$filter',
-                                            function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter) {
+function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter) {
 
     $scope.searchProcessing = false;
     $scope.curentPos = 0;
@@ -73,4 +73,20 @@ ANTALEX.controller('ProductViewController', ['$scope', '$location','$routeParams
             }
         })
     };
+
+    $scope.addToCart = function(){
+        if(!$scope.$parent.currentUser){
+            $('<div><p class="dialog_msg">Оформление заказа доступно только зарегистрированным пользователям.' +
+                'Если вы уже зарегистрированы - зайдите пожалуйста в свой аккаунт.</p><div>').dialog({ modal: true, position: 'top',
+                buttons: [ { text: "Вход", click: function() {
+                    $location.path('/users/login');
+                    $scope.$apply();
+                    $( this ).dialog( "close" ); } },
+                { text: "Регистрация", click: function() {
+                    $location.path('/users/create');
+                    $scope.$apply();
+                    $( this ).dialog( "close" ); } }
+                ], title: 'Добавление в корзину невозможно'});
+        }
+    }
 }]);

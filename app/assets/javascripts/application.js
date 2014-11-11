@@ -1,3 +1,5 @@
+// ------------------------------------------------- Requirments ---------------------------------------------
+
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
@@ -12,6 +14,8 @@
 //= require ang-devise/angular-devise/lib/devise
 // = require_tree .
 
+// -------------------------------------------------- System -------------------------------------------------
+
 window.$a = {}; //custom app helper
 
 $(document).ready(function(){
@@ -22,6 +26,20 @@ function cl(text){
     console.log(text);
 }
 
+function rand(min,max)
+{
+    if(max == null){
+        max = min;
+        min = 0;
+    } else if (min == null && max == null) return 0;
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+function uLoginOauth(token){
+    angular.element('[x-ng-controller="MainController"]').scope().uLogin(token);
+}
+
+//------------------------------------------------Prototypes----------------------------------------------
 Array.prototype.sample = function(){
     rand = function(min,max)
     {
@@ -52,28 +70,7 @@ Array.prototype.whereId = function(id, p){
     return target;
 };
 
-function rand(min,max)
-{
-    if(max == null){
-        max = min;
-        min = 0;
-    } else if (min == null && max == null) return 0;
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
-
-function uLoginOauth(token){
-    angular.element('[x-ng-controller="MainController"]').scope().uLogin(token);
-//    console.log(token);
-//    $.getJSON("//ulogin.ru/token.php?host=" +
-//        encodeURIComponent(location.toString()) + "&token=" + token + "&callback=?", function(data){
-//        console.log(data);
-//        data=$.parseJSON(data.toString());
-//        if(!data.error){
-//            console.log(data);
-//        }
-//    });
-}
-
+//----------------------------------------------------Alerts------------------------------------------------
 $a.alert = function(text, title, onClose){
     if(typeof(onClose) != 'function') onClose =  new Function();
     $('<div><p class="dialog_msg">'+text+'</p><div>').dialog({ modal: true, position: 'top',
@@ -106,6 +103,28 @@ $a.err = function(text){
     $a.info(text, true);
 };
 
+$a.show_errors = function(errs){
+    var list = '<ul>';
+    errs.each(function(e){
+        list+='<li>'+e+'</li>'
+    });
+    list+='</ul>';
+    $a.alert(list,'Ошибка');
+};
+
+$a.confirm = function(text, callback){
+    $('<div><p class="dialog_msg">'+text+'</p><div>').dialog({ modal: true, position: 'top', title: 'Поддтвердите действие',
+        buttons: [
+            { text: "Да",  click: function() { $( this ).dialog( "close" );
+                if(typeof callback == 'function') callback();} },
+            { text: "Нет", click: function() { $( this ).dialog( "close" ); } }
+
+        ]});
+};
+
+// --------------------------------------------------localStorage-----------------------------------------
+$a.custom_localstorage_prefix = '__c';
+
 $a.cut = function(item){
     item = item+$a.custom_localstorage_prefix;
     var itemData = localStorage.getItem(item);
@@ -116,12 +135,14 @@ $a.cut = function(item){
     return null;
 };
 
+
 $a.set = function(item, data){
     if(!item || !data) {console.log('$a.set - not all params to set'); return null;}
     var obj = {obj: data};
     localStorage.setItem(item+$a.custom_localstorage_prefix, JSON.stringify(obj));
 };
 
+// --------------------------------------------------Spiner-----------------------------------------
 $a.wait = function(msg, msBeforeException){
     msBeforeException = msBeforeException || 15000;
     if(!this.blocked){
@@ -156,13 +177,5 @@ $a.done = function(){
     $.unblockUI();
 };
 
-$a.show_errors = function(errs){
-    var list = '<ul>';
-    errs.each(function(e){
-        list+='<li>'+e+'</li>'
-    });
-    list+='</ul>';
-    $a.alert(list,'Ошибка');
-};
+//-------------------------------------------------------------------------------------------------------
 
-$a.custom_localstorage_prefix = '__c';
