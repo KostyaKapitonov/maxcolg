@@ -3,6 +3,12 @@ function($scope, $location, $routeParams, User, Auth, $timeout) {
 
     $scope.user = null;
     $scope.credentials = null;
+    $scope.unconfirmed = true;
+
+    $scope.dbg = function(i){
+        cl(i);
+//        window.d=$scope.userForm.password;
+    };
 
     $scope.login = function(){
         console.log($a.blocked);
@@ -31,15 +37,23 @@ function($scope, $location, $routeParams, User, Auth, $timeout) {
         }
     };
 
-    function regDataInvalid(){
-        // TODO: validation!
-        console.log($scope.userForm.$valid);
-        console.log($scope.userForm.email.$valid);
-        return true;
+    angular.element('[name="password_confirmation"],[name="password"]').blur(function(){
+        $scope.$apply(function(){
+            $scope.unconfirmed = $scope.password_confirmation != angular.element('[name="password"]').val();
+        });
+    });
+
+    function isFormInvalid(){
+        $scope.showErrors = true;
+        if($scope.password != $scope.password_confirmation || $scope.userForm.$invalid) {
+            $a.err('введённые вами данные содержат <br/>ошибки, пожалуйста исправьте их');
+            return true;
+        }
+        return false;
     }
 
     $scope.reg_user = function(){
-        if(regDataInvalid()) return;
+        if(isFormInvalid()) return;
         $a.wait();
         $scope.credentials = {email: $scope.email.toLocaleLowerCase(),
                             password: $scope.password,

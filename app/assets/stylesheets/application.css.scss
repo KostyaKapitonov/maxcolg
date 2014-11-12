@@ -135,7 +135,7 @@ ul {
 
 table.in_form td.input input,
 table.in_form td.input select {
-  width: 75%;
+  width: 90%;
   border-style: solid;
   border-width: 2px;
   border-color: bisque;
@@ -431,4 +431,24 @@ p.cntr_small{
 
 p.cntr_small a.button{
   display: inline;
+}
+
+div.errblock {
+  position: absolute;
+}
+
+div.errblock span {
+  position: relative;
+  right: 200px;
+  top: 24px;
+  background-color: crimson;
+  color: white;
+  padding: 2px 7px;
+  font-size: 12;
+  border: 1px solid orange;
+  @include b-radius(10px);
+}
+
+div.errblock.editing span {
+  display: none;
 }
