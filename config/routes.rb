@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     get 'email_to_reset_pass'
     get 'is_email_free'
     get 'add_provider'
-    get 'account'
+    post 'account'
   end
 
   resources :products

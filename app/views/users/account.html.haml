@@ -4,12 +4,33 @@
       %b Настройки аккаунта
     %table{style:'width: 100%;'}
       %tr
-        %td{style:'width: 65%; vertical-align: middle;'}
+        %td{style:'width: 65%; padding-top: 10px;'}
           %table.in_form
             %tr
-              %td
-                %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
-
+              =table_row 'Email', (tag :input, type: 'email', 'x-ng-model' => 'currentUser.email', 'x-ng-disabled'=>'true')
             %tr
-              =table_row 'Email', (tag :input, type: 'email', 'autofocus'=>'','x-ng-model' => 'currentUser.email', 'x-ng-disabled'=>'true')
+              =table_row 'Имя', (tag :input, 'x-ng-model' => 'currentUser.first_name')
+            %tr
+              =table_row 'Фамилия', (tag :input, 'x-ng-model' => 'currentUser.last_name')
+            %tr
+              =table_row 'Отчество', (tag :input, 'x-ng-model' => 'currentUser.father_name')
+            %tr
+              =table_row 'Адрес', (tag :input, 'x-ng-model' => 'currentUser.address', 'maxlength'=>'255')
+            %tr
+              %td{'colspan'=>'3'}
+                .button_section
+                  %a.button{'x-ng-click'=>'applyData();'}
+                    Сохранить.
         %td
+          .descr_block
+            %table.in_form.reg_info
+              %tr
+                %td
+                  %p
+                    Теперь, после регистрации вас есть отличная возможность прикрепить аккаунт вашей социальной сети
+                    (если он у вас есть) к аккаунту нашего сайта. Это позволит вам избавиться от нудной процедуры ввода
+                    email-a и пароля для входа в ваш аккаунт интернет-магазина Antalex. Это возможно если вы уже вошли
+                    в аккаунт вашей соц сети в другом окне браузера, которым вы сейчас пользуетесь. У нас есть огромный
+                    выбор соц сетей, которые вы можете прикрепить. Просто выберите вашу соц сеть из списка ниже:
+                  %div{style: 'margin-left: 55px;'}
+                    %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}

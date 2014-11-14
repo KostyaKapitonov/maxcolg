@@ -4,4 +4,8 @@ function($scope, $location, $routeParams, User) {
     //User.account()
     $scope.currentUser = $scope.$parent.currentUser;
 
+    $scope.applyData = function(){
+
+    }
+
 }]);

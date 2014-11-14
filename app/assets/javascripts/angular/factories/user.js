@@ -1,7 +1,7 @@
 ANTALEX.factory('User', ['$resource', function($resource) {
     return $resource('/users/:action', null,
         {
-            account: {params: {format: 'json', action: 'account'}},
+            account: {method: 'POST', params: {format: 'json', action: 'account'}},
             uLogin: {params: {format: 'json', action: 'u_login'}},
             password_reset: {params: {format: 'json', action: 'password_reset'}},
             check_password_reset_token: {params: {format: 'json', action: 'password_reset'}},
