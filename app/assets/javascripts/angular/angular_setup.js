@@ -62,7 +62,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $('<div><p class="dialog_msg">'+
                         'Для входа через социальную сеть, вам необходимо для начала зарегистрироватся на нашем сайте<br/>'+
                         'Если вы уже зарегистрированы, то после входа вы сможете привязать аккаунт вашей соц сети к аккаунту нашего сайта'+
-                    '</p><div>').dialog(
+                        '</p><div>').dialog(
                         { modal: true, position: 'top', buttons: [
                             { text: "Вход", click: function() {
                                 $( this ).dialog( "close" );
@@ -188,12 +188,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
     }]);
 
 ANTALEX.config([
-        "$httpProvider", function($httpProvider) {
-            $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
-        }
-    ]);
+    "$httpProvider", function($httpProvider) {
+        $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content');
+    }
+]);
 ANTALEX.config(['AuthProvider', function(AuthProvider) {
-        // Ignore 401 Unauthorized everywhere
-        AuthProvider.ignoreAuth(true);
-    }]);
+    AuthProvider.ignoreAuth(true);
+}]);
 

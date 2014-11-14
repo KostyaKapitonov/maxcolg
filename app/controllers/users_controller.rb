@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :user_logged_in?, only: [:add_provider]
+  before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email, :password_reset]
 
   def u_login
     params.require(:u_token)
@@ -48,6 +48,10 @@ class UsersController < ApplicationController
       result = user.update_password(user, params.permit(:password, :password_confirmation))
       render json: result
     end
+  end
+
+  def account
+
   end
 
   def add_provider

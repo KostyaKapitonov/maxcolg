@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
-  def user_logged_in?
-    !current_user.blank?
+  def only_logged_in
+    raise ActionController::RoutingError.new('Not Found') unless current_user
   end
 
   def admin?

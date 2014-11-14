@@ -41,6 +41,10 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
             templateUrl: '/users/email_to_reset_pass.html',
             controller: 'UsersController'
         })
+        .when('/users/account', {
+            templateUrl: '/users/account.html',
+            controller: 'AccountController'
+        })
         .otherwise({
             redirectTo: '/'
         });

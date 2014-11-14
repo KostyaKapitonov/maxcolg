@@ -1,5 +1,5 @@
-ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth', '$timeout',
-function($scope, $location, $routeParams, User, Auth, $timeout) {
+ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
+function($scope, $location, $routeParams, User, Auth) {
 
     $scope.user = null;
     $scope.credentials = null;
@@ -122,4 +122,6 @@ function($scope, $location, $routeParams, User, Auth, $timeout) {
                 $a.alert('Пароль успешно изменён.');
         });
     };
+
+
 }]);

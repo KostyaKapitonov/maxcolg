@@ -1,0 +1,15 @@
+%form{'novalidate'=>''}
+  %fieldset
+    %legend
+      %b Настройки аккаунта
+    %table{style:'width: 100%;'}
+      %tr
+        %td{style:'width: 65%; vertical-align: middle;'}
+          %table.in_form
+            %tr
+              %td
+                %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
+
+            %tr
+              =table_row 'Email', (tag :input, type: 'email', 'autofocus'=>'','x-ng-model' => 'currentUser.email', 'x-ng-disabled'=>'true')
+        %td
