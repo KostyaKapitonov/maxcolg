@@ -4,6 +4,7 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require turbolinks
+//= require ulogin
 //= require ang-devise/angular/angular.min.js
 //= require angular-route.min
 //= require angular-resource.min

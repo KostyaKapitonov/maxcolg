@@ -1,3 +1,4 @@
+
 %form{'novalidate'=>''}
   %fieldset
     %legend
@@ -34,3 +35,6 @@
                     выбор соц сетей, которые вы можете прикрепить. Просто выберите вашу соц сеть из списка ниже:
                   %div{style: 'margin-left: 55px;'}
                     %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
+                    %script
+                      uLogin.initWidget('uLogin2')
+

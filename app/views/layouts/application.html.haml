@@ -24,7 +24,6 @@
             %td{'x-ng-hide'=>'currentUser'}
               Войти через
             %td{style: 'min-width: 84px; padding-right: 0;', 'x-ng-hide'=>'currentUser'}
-              %script{src: '//ulogin.ru/js/ulogin.js'}
               %div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
             %td.user_info{'x-ng-show'=>'currentUser'}
               Вы зашли как {{currentUser.email}}

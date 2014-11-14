@@ -52,9 +52,17 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.uLogin = function(token){
             User.uLogin({u_token: token},function(res){
+                cl(res);
                 if(res.authorized === true){
-                    console.log('res.authorized === true');
-                    // TODO: user logged in - re-render layout
+                    if(res.provider == 'welcome'){
+                        $scope.getUser();
+                        $a.info('Приветствуем вас в нашем интернет-магазине.');
+                        $location.path('/');
+                    } else if (res.provider == 'added'){
+                        $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля).');
+                    } else if (res.provider == 'already'){
+                        $a.err('Ваш аккаунт уже прикреплён.');
+                    }
                 }
                 else if(res.authorized === false && res.data.identity){
                     cl(res.data.identity);

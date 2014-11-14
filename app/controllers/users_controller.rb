@@ -10,14 +10,22 @@ class UsersController < ApplicationController
       if provider.blank?
         unless current_user.blank?
           # TODO: Check this !
-          success = UserProvider.create(url: user_login_info['identity'], user_id: current_user.id)
-          return render json: {success: success}
+          UserProvider.create(url: user_login_info['identity'], user_id: current_user.id)
+          return render json: {authorized: true, provider: 'added'}
         end
       else
-        user = provider.user
-        unless user.blank?
-          authorized = sign_in_and_redirect(:user, user, {confirm_msg: 'welcome'}) unless user.blank?
+        if !current_user.blank?
+          return render json: {authorized: true, provider: 'already'}
+        else
+          user = provider.user
+          unless user.blank?
+            # authorized = sign_in_and_redirect(:user, user)
+            # return render json: {authorized: authorized, provider: 'welcome'}
+            sign_in(:user, user)
+            return render json: {authorized: true, provider: 'welcome'}
+          end
         end
+
       end
     end
     render json: {authorized: authorized, data: user_login_info}
@@ -57,10 +65,12 @@ class UsersController < ApplicationController
   end
 
   def account
-    params.require(:user).require(:id)
-    user = User.where(id: params[:user][:id])
-    not_found if user.blank? || user.id != current_user.id
-    render json: {success: user.update_attributes(params.require(:user).permit(:first_name, :last_name, :father_name, :address))}
+    if request.post?
+      params.require(:user).require(:id)
+      user = User.where(id: params[:user][:id])
+      not_found if user.blank? || user.id != current_user.id
+      render json: {success: user.update_attributes(params.require(:user).permit(:first_name, :last_name, :father_name, :address))}
+    end
   end
 
   def add_provider
