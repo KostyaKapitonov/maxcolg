@@ -1,4 +1,3 @@
-require 'ExchangeRates'
 class UsersController < ApplicationController
   before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email, :password_reset]
 
