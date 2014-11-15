@@ -119,7 +119,6 @@ $a.confirm = function(text, callback){
             { text: "Да",  click: function() { $( this ).dialog( "close" );
                 if(typeof callback == 'function') callback();} },
             { text: "Нет", click: function() { $( this ).dialog( "close" ); } }
-
         ]});
 };
 

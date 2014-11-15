@@ -27,10 +27,12 @@ module ApplicationHelper
   end
 
   def confirm_url(token)
-    "Для завершения регистрации перейдите, пожалуйста, по этой ссылке: antalex.herokuapp.com#{ENV['LOCALHOST_PORT']}/users/confirm_email?token=#{token}".html_safe
+    @token = token
+    render 'mails/confirm', layout: 'mail'
   end
 
   def reset_url(token)
-    "Для смены пароля перейдите, пожалуйста, по этой ссылке: antalex.herokuapp.com#{ENV['LOCALHOST_PORT']}/users/password_reset?token=#{token}".html_safe
+    @token = token
+    render 'mails/reset', layout: 'mail'
   end
 end

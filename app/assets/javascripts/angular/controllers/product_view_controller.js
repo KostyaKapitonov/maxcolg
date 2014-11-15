@@ -3,6 +3,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
 
     $scope.searchProcessing = false;
     $scope.curentPos = 0;
+    $scope.currentUser = $scope.$parent.currentUser;
 
     $scope.$on('dataLoaded', function() {
         $scope.$emit('delivered', 'yeah');

@@ -1,9 +1,8 @@
 %table.product_table{'x-ng-controller'=>'ProductsListController', style:'border-collapse: collapse;'}
-  -if admin?
-    %tr{style: 'height: 36px;'}
-      %td
-        %a.button{href: new_product_path+'{{$parent.paramsPart}}'}
-          Добавить товар
+  %tr{style: 'height: 36px;', 'x-ng-show'=>'currentUser && currentUser.is_admin'}
+    %td
+      %a.button{href: new_product_path+'{{$parent.paramsPart}}'}
+        Добавить товар
   %tr.product_row
     %td
       .pr_list_block{'x-ng-repeat'=>'product in products | onlySelected:$parent.selectedFirm:$parent.selectedCategory'}

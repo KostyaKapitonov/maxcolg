@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   end
 
   def is_email_free
-    render json: {free: User.where(email: params[:email].to_s.downcase!).first.blank?}
+    render json: {free: User.where(email: params[:email].to_s.downcase).first.blank?}
   end
 
   def create
@@ -44,7 +44,8 @@ class UsersController < ApplicationController
   def confirm_email
     user = User.find_and_confirm_email(params[:token])
     return redirect_to root_path(confirm_msg: 'invalid_token') if user.blank?
-    sign_in_and_redirect(:user, user, {confirm_msg: 'thx'})
+    sign_in(:user, user)
+    redirect_to root_path(confirm_msg: 'thx')
   end
 
   def password_reset

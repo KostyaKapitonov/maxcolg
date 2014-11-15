@@ -25,14 +25,15 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             refresh();
         }
 
-        $scope.getUser = function(){
+        $scope.getUser = function(callback){
             Auth.currentUser().then(function(user) {
                 $scope.currentUser = user;
-                console.log(user); // => {id: 1, ect: '...'}
                 $scope.userRequestComplete = true;
+                if(typeof(callback) == 'function') callback(true);
             }, function(error) {
-                console.log(error);
+                cl(error);
                 $scope.userRequestComplete = true;
+                if(typeof(callback) == 'function') callback(false);
             });
         };
 
@@ -192,7 +193,12 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 ] });
         }
         if($location.search().confirm_msg == 'thx') {
-            $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
+            $scope.getUser(function(success){
+                if(success){
+                    $location.path('/users/account');
+                    $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
+                }
+            });
 //            $location();
         }
 

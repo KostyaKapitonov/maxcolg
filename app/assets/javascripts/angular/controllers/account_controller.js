@@ -19,6 +19,8 @@ function($scope, $location, User) {
             $a.done();
             if(res.success){
                 $a.info('Ваши данные сохранены');
+                $scope.$parent.currentUser = $scope.currentUser;
+                cl($scope.$parent.currentUser);
                 $location.path('/');
             } else {
                 cl(res);

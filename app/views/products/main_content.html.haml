@@ -1,14 +1,13 @@
 .center
-  -if admin?
-    %div{style: 'margin-bottom: 10px;'}
-      %a.button{'x-ng-click'=>'editPage()', 'x-ng-hide' => 'editMode'}
-        Редактировать страницу
-      %a.button{'x-ng-click'=>'savePage()', 'x-ng-show' => 'editMode'}
-        Сохранить
-      %a.button{'x-ng-click'=>'cancelEditMode()', 'x-ng-show' => 'editMode'}
-        Отмена
-      %div{'x-ng-show' => 'editMode', style: 'margin-top: 10px;'}
-        =tag :textarea, 'x-ng-model' => 'new_text', class: 'ck-editor'
+  %div{style: 'margin-bottom: 10px;', 'x-ng-show'=>'currentUser && currentUser.is_admin'}
+    %a.button{'x-ng-click'=>'editPage()', 'x-ng-hide' => 'editMode'}
+      Редактировать страницу
+    %a.button{'x-ng-click'=>'savePage()', 'x-ng-show' => 'editMode'}
+      Сохранить
+    %a.button{'x-ng-click'=>'cancelEditMode()', 'x-ng-show' => 'editMode'}
+      Отмена
+    %div{'x-ng-show' => 'editMode', style: 'margin-top: 10px;'}
+      =tag :textarea, 'x-ng-model' => 'new_text', class: 'ck-editor'
   %div{'x-ng-hide' => 'editMode'}
     %div{'x-ng-bind-html'=>'htmlSafe(setting.main_page_text)', 'x-ng-show' => 'isMainPage'}
     %div{'x-ng-bind-html'=>'htmlSafe(setting.contacts_text)', 'x-ng-hide' => 'isMainPage'}
