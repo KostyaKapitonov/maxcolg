@@ -51,6 +51,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.uLogin = function(token){
+            $a.wait();
             User.uLogin({u_token: token},function(res){
                 cl(res);
                 if(res.authorized === true){
@@ -59,10 +60,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $a.info('Приветствуем вас в нашем интернет-магазине.');
                         $location.path('/');
                     } else if (res.provider == 'added'){
-                        $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля).');
+                        $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля от аккаунта интернет-магазина Antalex).');
                     } else if (res.provider == 'already'){
                         $a.err('Ваш аккаунт уже прикреплён.');
                     }
+                    $a.done();
                 }
                 else if(res.authorized === false && res.data.identity){
                     cl(res.data.identity);
@@ -83,8 +85,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                                 $scope.$apply();
                             }}
                         ] });
+                    $a.done();
                 } else {
                     cl(res);
+                    $a.done();
+                    $a.err('неизвестная ошибка');
                 }
             });
         };

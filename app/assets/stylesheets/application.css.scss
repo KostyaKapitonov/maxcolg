@@ -150,6 +150,11 @@ table.in_form td.input select:focus {
   border-color: $buttonColor;
 }
 
+table.in_form td.input input:disabled,
+table.in_form td.input select:disabled {
+  border-color: darkgray;
+}
+
 button.input_buttons {
   margin: 2px;
   width: 23px;

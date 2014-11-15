@@ -1,3 +1,4 @@
+require 'ExchangeRates'
 class UsersController < ApplicationController
   before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email, :password_reset]
 
@@ -67,9 +68,9 @@ class UsersController < ApplicationController
   def account
     if request.post?
       params.require(:user).require(:id)
-      user = User.where(id: params[:user][:id])
+      user = User.where(id: params[:user][:id]).first
       not_found if user.blank? || user.id != current_user.id
-      render json: {success: user.update_attributes(params.require(:user).permit(:first_name, :last_name, :father_name, :address))}
+      render json: {success: user.update(params.require(:user).permit(:first_name, :last_name, :father_name, :address, :mobile))}
     end
   end
 
@@ -86,6 +87,26 @@ class UsersController < ApplicationController
     res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
     JSON.parse res.body
     # TODO: prepare to save
+  end
+
+  def get_request(url)
+    # encoding: UTF-8
+    url = URI.parse(url)
+    req = Net::HTTP::Get.new(url.to_s)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
+    # Hash.from_xml(get_request('http://www.cbr.ru/scripts/XML_daily.asp'))
+    # res.body
+    xml = Hash.from_xml(res.body)
+    valutes = xml['ValCurs']['Valute']
+    usd = nil
+    valutes.each do |v|
+      if v['CharCode'] == 'USD'
+        usd = v['Value']
+      end
+    end
+    usd
   end
 
 end

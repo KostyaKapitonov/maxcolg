@@ -1,11 +1,30 @@
-ANTALEX.controller('AccountController', ['$scope', '$location','$routeParams', 'User', 'Auth',
-function($scope, $location, $routeParams, User) {
+ANTALEX.controller('AccountController', ['$scope', '$location', 'User',
+function($scope, $location, User) {
 
-    //User.account()
+    $scope.showErrors = false; //User.account()
     $scope.currentUser = $scope.$parent.currentUser;
 
-    $scope.applyData = function(){
+    function isFormInvalid(){
+        $scope.showErrors = true;
+        if($scope.form.$invalid) {
+            $a.err('Пожалуйста проверьте правильность заполнения всех полей.');
+            return true;
+        }
+    }
 
+    $scope.applyData = function(){
+        if(isFormInvalid()) return;
+        $a.wait();
+        User.account({user: $scope.currentUser}, function(res){
+            $a.done();
+            if(res.success){
+                $a.info('Ваши данные сохранены');
+                $location.path('/');
+            } else {
+                cl(res);
+                $a.err('неизвестная ошибка');
+            }
+        });
     }
 
 }]);

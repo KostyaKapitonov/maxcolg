@@ -6,22 +6,44 @@
     %table{style:'width: 100%;'}
       %tr
         %td{style:'width: 65%; padding-top: 10px;'}
-          %table.in_form
+          %table.in_form{'x-ng-form'=>'form'}
             %tr
               =table_row 'Email', (tag :input, type: 'email', 'x-ng-model' => 'currentUser.email', 'x-ng-disabled'=>'true')
             %tr
-              =table_row 'Имя', (tag :input, 'x-ng-model' => 'currentUser.first_name')
+              =table_row 'Имя', (tag :input, name: 'first_name', 'x-ng-model' => 'currentUser.first_name', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'form.first_name.$error.required && (form.first_name.$touched || showErrors)'}
+                    необходимо заполнить
             %tr
-              =table_row 'Фамилия', (tag :input, 'x-ng-model' => 'currentUser.last_name')
+              =table_row 'Фамилия', (tag :input, name: 'last_name', 'x-ng-model' => 'currentUser.last_name', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'form.last_name.$error.required && (form.last_name.$touched || showErrors)'}
+                    необходимо заполнить
             %tr
-              =table_row 'Отчество', (tag :input, 'x-ng-model' => 'currentUser.father_name')
+              =table_row 'Отчество', (tag :input, name: 'father_name', 'x-ng-model' => 'currentUser.father_name', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'form.father_name.$error.required && (form.father_name.$touched || showErrors)'}
+                    необходимо заполнить
             %tr
-              =table_row 'Адрес', (tag :input, 'x-ng-model' => 'currentUser.address', 'maxlength'=>'255')
+              =table_row 'Моб. тел.', (tag :input, name: 'mobile', 'x-ng-model' => 'currentUser.mobile', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'form.mobile.$error.required && (form.mobile.$touched || showErrors)'}
+                    необходимо заполнить
+            %tr
+              =table_row 'Адрес', (tag :input, name: 'address', 'x-ng-model' => 'currentUser.address', 'maxlength'=>'255', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'form.address.$error.required && (form.address.$touched || showErrors)'}
+                    необходимо заполнить
             %tr
               %td{'colspan'=>'3'}
                 .button_section
                   %a.button{'x-ng-click'=>'applyData();'}
-                    Сохранить.
+                    Сохранить
         %td
           .descr_block
             %table.in_form.reg_info
