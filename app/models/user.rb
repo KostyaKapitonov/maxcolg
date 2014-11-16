@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :user_providers
+  has_many :carts, dependent: :destroy
   # validates_uniqueness_of :email
 
   before_save do

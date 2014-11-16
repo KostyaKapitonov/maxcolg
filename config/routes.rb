@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  resource :carts, only: [:index] do
+    get :view
+    post :add_position
+    delete :remove_position
+    post :confirm
+    post :proceed
+    delete :destroy
+  end
+  get '/carts' => 'carts#index'
+
   root :to => 'products#main'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}

@@ -86,7 +86,6 @@ class UsersController < ApplicationController
     req = Net::HTTP::Get.new(url.to_s)
     res = Net::HTTP.start(url.host, url.port) {|http| http.request(req)}
     JSON.parse res.body
-    # TODO: prepare to save
   end
 
   # def get_request(url)
