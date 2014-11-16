@@ -177,5 +177,18 @@ $a.done = function(){
     $.unblockUI();
 };
 
-//-------------------------------------------------------------------------------------------------------
+//---------------------------------------------- blank | any -----------------------------------------
 
+$a.blank = function(obj){
+    if(typeof(obj) == "undefined") return true;
+    if(typeof(obj) == "object" && obj === null) return true;
+    if(typeof(obj) == "string" && obj === '') return true;
+    if(Object.prototype.toString.call(obj) === '[object Array]' && obj.length == 0) return true;
+    return false; // not blank
+};
+
+$a.any = function(obj){
+    return !$a.blank(obj);
+};
+
+//----------------------------------------------------------------------------------------------------

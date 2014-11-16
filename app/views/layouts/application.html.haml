@@ -26,7 +26,7 @@
             %td{style: 'min-width: 84px; padding-right: 0;', 'x-ng-hide'=>'currentUser'}
               %div#uLogin{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
             %td.user_info{'x-ng-show'=>'currentUser'}
-              Вы зашли как {{currentUser.email}}
+              {{currentUser.email}}
             %td{'x-ng-show'=>'currentUser', style: 'padding-right: 14px;'}
               %a{'x-ng-click'=>'logout()'}
                 Выйти

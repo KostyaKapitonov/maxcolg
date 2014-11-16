@@ -177,8 +177,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
             });
         }
-        console.log($location.search());
-        console.log($location.search().confirm_msg);
         if($location.search().confirm_msg == 'invalid_token') {
             $('<div><p class="dialog_msg">Скорее всего вы уже завершили регистрацию<br/>Если вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
                 { modal: true, position: 'top', buttons: [

@@ -75,8 +75,16 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
         })
     };
 
+    function isAllRequiredInfoComplete(){
+        return $scope.currentUser.first_name && $scope.currentUser.last_name &&
+            $scope.currentUser.father_name && $scope.currentUser.mobile &&
+            $scope.currentUser.address;
+    }
+
+
+
     $scope.addToCart = function(){
-        if(!$scope.$parent.currentUser){
+        if(!$scope.currentUser){
             $('<div><p class="dialog_msg">Оформление заказа доступно только зарегистрированным пользователям.' +
                 'Если вы уже зарегистрированы - зайдите пожалуйста в свой аккаунт.</p><div>').dialog({ modal: true, position: 'top',
                 buttons: [ { text: "Вход", click: function() {
@@ -88,6 +96,8 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                     $scope.$apply();
                     $( this ).dialog( "close" ); } }
                 ], title: 'Добавление в корзину невозможно'});
+        } else if($scope.currentUser && isAllRequiredInfoComplete()){
+
         }
     }
 }]);
