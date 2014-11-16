@@ -5,11 +5,6 @@ function($scope, $location, $routeParams, User, Auth) {
     $scope.credentials = null;
     $scope.unconfirmed = true;
 
-    $scope.dbg = function(i){
-        cl(i);
-//        window.d=$scope.userForm.password;
-    };
-
     $scope.login = function(){
         console.log($a.blocked);
         if($a.blocked) return;
@@ -44,7 +39,11 @@ function($scope, $location, $routeParams, User, Auth) {
     });
 
     function isFormInvalid(){
+        console.log($scope.showErrors);
         $scope.showErrors = true;
+        console.log($scope.showErrors);
+        window.d = $scope.userForm;
+        window.dd = $scope.userForm.email;
         if($scope.password != $scope.password_confirmation || $scope.userForm.$invalid) {
             $a.err('введённые вами данные содержат <br/>ошибки, пожалуйста исправьте их');
             return true;
@@ -95,7 +94,9 @@ function($scope, $location, $routeParams, User, Auth) {
         });
     }
 
+
     $scope.send_email = function(){
+        if(isFormInvalid()) return;
         $a.wait();
         User.is_email_free({email: $scope.email},function(check_data){
             if(check_data.free == false){
@@ -112,6 +113,8 @@ function($scope, $location, $routeParams, User, Auth) {
     };
 
     $scope.reset_pass = function(){
+        if(isFormInvalid()) return;
+        $a.wait();
         User.apply_new_password({password: $scope.password,
                 password_confirmation: $scope.password_confirmation,
                 token: $scope.token
@@ -120,7 +123,8 @@ function($scope, $location, $routeParams, User, Auth) {
                 console.log(res);
                 $location.path('/');
                 $a.alert('Пароль успешно изменён.');
-        });
+                $a.done();
+            });
     };
 
 

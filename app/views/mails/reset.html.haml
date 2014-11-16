@@ -8,7 +8,7 @@
 - a_style = 'border: 1px solid coral; padding: 8px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; text-decoration: none; background-color: antiquewhite; color: firebrick;'
 
 %p{style: p_style}
-  Для смены пароля перейдите пожалуйста по этой
+  Для смены пароля перейдите пожалуйста по этой ссылке:
   %b
     %a{style: a_style,'href'=>"http://antalex.herokuapp.com#{ENV['LOCALHOST_PORT']}/users/password_reset?token=#{@token}"}
-      ссылке
+      сменить&nbsp;пароль

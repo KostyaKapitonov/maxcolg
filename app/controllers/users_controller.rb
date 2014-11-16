@@ -1,5 +1,15 @@
 class UsersController < ApplicationController
-  before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email, :password_reset]
+  before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email,
+    :password_reset, :email_to_reset_pass]
+
+  def login # only for template render
+  end
+
+  def email_to_reset_pass # only for template render
+  end
+
+  def create # only for template render
+  end
 
   def u_login
     params.require(:u_token)
@@ -9,7 +19,6 @@ class UsersController < ApplicationController
       provider = UserProvider.where(url: user_login_info['identity']).first
       if provider.blank?
         unless current_user.blank?
-          # TODO: Check this !
           UserProvider.create(url: user_login_info['identity'], user_id: current_user.id)
           return render json: {authorized: true, provider: 'added'}
         end
@@ -19,26 +28,17 @@ class UsersController < ApplicationController
         else
           user = provider.user
           unless user.blank?
-            # authorized = sign_in_and_redirect(:user, user)
-            # return render json: {authorized: authorized, provider: 'welcome'}
             sign_in(:user, user)
             return render json: {authorized: true, provider: 'welcome'}
           end
         end
-
       end
     end
     render json: {authorized: authorized, data: user_login_info}
   end
 
-  def login
-  end
-
   def is_email_free
     render json: {free: User.where(email: params[:email].to_s.downcase).first.blank?}
-  end
-
-  def create
   end
 
   def confirm_email
@@ -79,7 +79,7 @@ class UsersController < ApplicationController
     UserProvider.create(get_ulogin_data(params[:u_token]))
   end
 
-  private
+  private # --- private  --- private  --- private  --- private  --- private  --- private  ---
 
   def get_ulogin_data(token)
     url = URI.parse("http://ulogin.ru/token.php?token=#{params[:u_token]}")
@@ -89,24 +89,24 @@ class UsersController < ApplicationController
     # TODO: prepare to save
   end
 
-  def get_request(url)
-    # encoding: UTF-8
-    url = URI.parse(url)
-    req = Net::HTTP::Get.new(url.to_s)
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.request(req)
-    }
-    # Hash.from_xml(get_request('http://www.cbr.ru/scripts/XML_daily.asp'))
-    # res.body
-    xml = Hash.from_xml(res.body)
-    valutes = xml['ValCurs']['Valute']
-    usd = nil
-    valutes.each do |v|
-      if v['CharCode'] == 'USD'
-        usd = v['Value']
-      end
-    end
-    usd
-  end
+  # def get_request(url)
+  #   # encoding: UTF-8
+  #   url = URI.parse(url)
+  #   req = Net::HTTP::Get.new(url.to_s)
+  #   res = Net::HTTP.start(url.host, url.port) {|http|
+  #     http.request(req)
+  #   }
+  #   # Hash.from_xml(get_request('http://www.cbr.ru/scripts/XML_daily.asp'))
+  #   # res.body
+  #   xml = Hash.from_xml(res.body)
+  #   valutes = xml['ValCurs']['Valute']
+  #   usd = nil
+  #   valutes.each do |v|
+  #     if v['CharCode'] == 'USD'
+  #       usd = v['Value']
+  #     end
+  #   end
+  #   usd
+  # end
 
 end

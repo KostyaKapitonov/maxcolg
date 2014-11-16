@@ -3,7 +3,6 @@ ANTALEX.directive('errblock', ['$compile', function($compile){
         restrict: 'C',
         link: function(scope, element, attrs) {
             var elements = element.parents('tr:first').find('input, select');
-            window.d = scope;
             elements.on('focus', function(e){
                 if(!element.hasClass('editing')) element.addClass('editing');
             });
