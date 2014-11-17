@@ -5,7 +5,7 @@
         Добавить товар
   %tr.product_row
     %td
-      .pr_list_block{'x-ng-repeat'=>'product in products | onlySelected:$parent.selectedFirm:$parent.selectedCategory'}
+      .pr_list_block{'x-ng-repeat'=>'product in product_list | onlySelected:$parent.selectedFirm:$parent.selectedCategory'}
         %a{'x-ng-href'=>'/products/{{product.id}}{{$parent.paramsPart}}#glob', style:'margin-right: 5px;'}
           %h5
             {{product.name}}

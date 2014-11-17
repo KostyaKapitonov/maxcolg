@@ -3,19 +3,6 @@ function($scope, $location, $routeParams, Products, $sce) {
 
     $scope.currentUser = $scope.$parent.currentUser;
 
-    $scope.$on('dataLoaded', function() {
-        $scope.$emit('delivered', 'yeah');
-    });
+    $scope.product_list = $scope.$parent.products;
 
-    $scope.htmlSafe = function(html_code) {
-        return $sce.trustAsHtml(html_code);
-    };
-
-    $scope.delete = function(idx){
-        Products.delete({id: $scope.$parent.products[idx].id}, function(data){
-            if(data.success){
-                $scope.$parent.products.splice(idx,1)
-            }
-        })
-    };
 }]);

@@ -6,7 +6,7 @@
       К списку
     %a.button{'x-ng-href'=>'/products/{{product.id}}/edit', style:'margin-right: 5px;', 'x-ng-show'=>'currentUser.is_admin'}
       Править
-    %a.button{'x-ng-href'=>'#', 'x-ng-click'=>'delete(product.id)', 'x-ng-show'=>'currentUser.is_admin'}
+    %a.button{'x-ng-click'=>'delete_product(product.id)', 'x-ng-show'=>'currentUser.is_admin'}
       Удалить
     %a.button{'x-ng-click'=>'next(1)', 'x-ng-show'=>'cntrls', style: 'float: right;'}
       &nbsp;>&nbsp;

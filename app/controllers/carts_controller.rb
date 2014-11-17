@@ -1,13 +1,13 @@
 class CartsController < ApplicationController
-  before_filter :only_logged_in, only: [:edit, :add_position, :remove_position, :confirm]
-  before_filter :only_admin, only: [:index, :proceed, :destroy]
+  before_filter :only_logged_in, only: [:index, :view, :add_position, :remove_position, :confirm]
+  before_filter :only_admin, only: [:proceed, :destroy]
 
   def index
     respond_to do |format|
       format.html
       format.json {
         carts = admin? ? Cart.all : current_user.carts
-        render json: carts
+        render json: carts.to_json(include: :positions)
       }
     end
   end
@@ -20,7 +20,7 @@ class CartsController < ApplicationController
           params.require(:id)
           cart = Cart.where_id(params[:id])
         else
-          cart = Cart.aclual
+          cart = Cart.aclual(current_user.id)
         end
         render json: cart
       }

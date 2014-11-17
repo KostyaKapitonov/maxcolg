@@ -1,15 +1,16 @@
 ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products', '$location', 'Global',
-                                         function($scope, $routeParams, Products, $location, Global) {
+function($scope, $routeParams, Products, $location, Global) {
     $scope.isNew = false;
 
-    $scope.$on('dataLoaded', function() {
-        $scope.$emit('delivered');
-        loadFormData();
-    });
-
-    if($scope.$parent.loadFinished) loadFormData();
     function loadFormData(){
         if($scope.product != null) return;
+        if(!$scope.$parent.products) {
+            setTimeout(function(){
+                loadFormData();
+                cl('loading...')
+            },50);
+            return;
+        }
         if($routeParams.id && $scope.$parent.products && $scope.$parent.products.length && !isNaN($location.hash()) && -1 < $location.hash()-0) {
             $scope.$parent.products.each(function(p, i){
                 if(p.id == $routeParams.id) {
@@ -138,4 +139,6 @@ ANTALEX.controller('ProductFormController', ['$scope', '$routeParams', 'Products
     $scope.cancel_firm = function(){
         $scope.new_firm_name = null;
     };
+
+    loadFormData();
 }]);

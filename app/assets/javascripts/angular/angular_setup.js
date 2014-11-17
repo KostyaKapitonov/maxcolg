@@ -1,11 +1,12 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
-ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth',
-    function($scope, $routeParams, $location, Global, Products, User, Auth) {
+ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart',
+    function($scope, $routeParams, $location, Global, Products, User, Auth, Cart) {
 
         $scope.$routeParams = $routeParams;
         $scope.loadFinished = false;
         $scope.form_displayed = false;
         $scope.reportUnDelived = true;
+        $scope.cartNotEmpty = false;
 
         if(localStorage.getItem('pathname')){
             var pathname = localStorage.getItem('pathname');
@@ -25,11 +26,27 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             refresh();
         }
 
+        $scope.lookForActual = function(){
+            $scope.carts.each(function(cart){
+                if(!cart.confirmed){
+                    $scope.actual_cart = cart;
+                    if(cart.positions.length > 0){
+                        $scope.cartNotEmpty = true;
+                    }
+                }
+            });
+        };
+
         $scope.getUser = function(callback){
             Auth.currentUser().then(function(user) {
                 $scope.currentUser = user;
                 $scope.userRequestComplete = true;
                 if(typeof(callback) == 'function') callback(true);
+                Cart.all(function(res){
+                    console.log(res);
+                    $scope.carts = res;
+                    $scope.lookForActual();
+                });
             }, function(error) {
                 cl(error);
                 $scope.userRequestComplete = true;
@@ -95,27 +112,27 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-        function report(name, data){
-            $scope.reportUnDelived = true;
-            var counter = 0;
-            var resendReport = function(){
-                setTimeout(function(){
-                    $scope.$broadcast(name, data);
-                    if($scope.reportUnDelived && counter < 50){
-                        resendReport();
-                        counter++;
-                    }
-                },10);
-            };
-            resendReport();
-        }
+//        function report(name, data){
+//            $scope.reportUnDelived = true;
+//            var counter = 0;
+//            var resendReport = function(){
+//                setTimeout(function(){
+//                    $scope.$broadcast(name, data);
+//                    if($scope.reportUnDelived && counter < 50){
+//                        resendReport();
+//                        counter++;
+//                    }
+//                },10);
+//            };
+//            resendReport();
+//        }
 
-        $scope.$on('delivered', function() {
-            setTimeout(function(){
-                $scope.reportUnDelived = false;
-
-            },110);
-        });
+//        $scope.$on('delivered', function() {
+//            setTimeout(function(){
+//                $scope.reportUnDelived = false;
+//
+//            },110);
+//        });
 
         $scope.$on('$routeChangeSuccess', function () {
             $scope.form_displayed =(/(^\/products\/new$|^\/products\/\d+\/edit$)/.test($location.path()));
@@ -133,7 +150,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.firms = data.firms;
                 bindAssortment();
                 $scope.loadFinished = true;
-                report('dataLoaded');
+//                report('dataLoaded');
             });
         };
 

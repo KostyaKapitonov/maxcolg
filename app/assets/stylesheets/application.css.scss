@@ -83,6 +83,10 @@ td {
   text-align: center;
 }
 
+.head_panel td {
+  width: 25%;
+}
+
 .left_side_bar{
   color: aliceblue;
   text-align: left;
@@ -456,4 +460,27 @@ div.errblock span {
 
 div.errblock.editing span {
   display: none;
+}
+
+.full_cart_bg div.tdBox a div{
+  -webkit-animation: cart_bg 1s; /* Chrome, Safari, Opera */
+  animation: cart_bg 1s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes cart_bg {
+  0% {color: $primary-color;}
+  100% {color: #c69200;}
+}
+
+/* Standard syntax */
+@keyframes cart_bg {
+  0% {color: $primary-color;}
+  100% {color: #c69200;}
 }
