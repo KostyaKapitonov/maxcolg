@@ -2,10 +2,9 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 
 ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart',
     function($scope, $routeParams, $location, Global, Products, User, Auth, Cart) {
 
-        $scope.$routeParams = $routeParams;
+
         $scope.loadFinished = false;
         $scope.form_displayed = false;
-        $scope.reportUnDelived = true;
         $scope.cartNotEmpty = false;
 
         if(localStorage.getItem('pathname')){
@@ -37,16 +36,19 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
+        $scope.load_carts = function(){
+            Cart.all(function(res){
+                $scope.carts = res;
+                $scope.lookForActual();
+            });
+        };
+
         $scope.getUser = function(callback){
             Auth.currentUser().then(function(user) {
                 $scope.currentUser = user;
                 $scope.userRequestComplete = true;
                 if(typeof(callback) == 'function') callback(true);
-                Cart.all(function(res){
-                    console.log(res);
-                    $scope.carts = res;
-                    $scope.lookForActual();
-                });
+                $scope.load_carts();
             }, function(error) {
                 cl(error);
                 $scope.userRequestComplete = true;
@@ -58,9 +60,12 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $a.wait();
             Auth.logout().then(function(oldUser) {
                 $scope.currentUser = null;
-                $a.done();
-                $a.info('Вы успешно покинули свой аккаунт');
+                $scope.cartNotEmpty = false;
+                $scope.carts = null;
+                $scope.actual_cart = null;
                 $location.path('/');
+                $a.info('Вы успешно покинули свой аккаунт');
+                $a.done();
             }, function(error) {
                 $a.err('Что-то пошло не так...');
                 cl(error);
@@ -77,6 +82,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $scope.getUser();
                         $a.info('Приветствуем вас в нашем интернет-магазине.');
                         $location.path('/');
+                        $scope.load_carts();
                     } else if (res.provider == 'added'){
                         $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля от аккаунта интернет-магазина Antalex).');
                     } else if (res.provider == 'already'){
@@ -112,28 +118,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-//        function report(name, data){
-//            $scope.reportUnDelived = true;
-//            var counter = 0;
-//            var resendReport = function(){
-//                setTimeout(function(){
-//                    $scope.$broadcast(name, data);
-//                    if($scope.reportUnDelived && counter < 50){
-//                        resendReport();
-//                        counter++;
-//                    }
-//                },10);
-//            };
-//            resendReport();
-//        }
-
-//        $scope.$on('delivered', function() {
-//            setTimeout(function(){
-//                $scope.reportUnDelived = false;
-//
-//            },110);
-//        });
-
         $scope.$on('$routeChangeSuccess', function () {
             $scope.form_displayed =(/(^\/products\/new$|^\/products\/\d+\/edit$)/.test($location.path()));
             $scope.selectedFirm = $location.search().firm;
@@ -150,7 +134,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.firms = data.firms;
                 bindAssortment();
                 $scope.loadFinished = true;
-//                report('dataLoaded');
             });
         };
 

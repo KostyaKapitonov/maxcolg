@@ -484,3 +484,7 @@ div.errblock.editing span {
   0% {color: $primary-color;}
   100% {color: #c69200;}
 }
+
+table.in_form tr.positions td.input input {
+  width: 50px;
+}

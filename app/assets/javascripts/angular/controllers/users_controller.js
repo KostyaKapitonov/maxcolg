@@ -15,6 +15,7 @@ function($scope, $location, $routeParams, User, Auth) {
             $scope.$parent.currentUser = user;
             $location.path('/');
             $a.done();
+            $scope.$parent.load_carts();
         }, function(error) {
             if(error.data.error == 'You have to confirm your email address before continuing.')
                 $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');

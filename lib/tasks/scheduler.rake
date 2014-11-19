@@ -1,23 +1,39 @@
 require 'net/http'
 
+task :destroy_unconfirmed_users => :environment do
+  User.where(confirmed_at: nil, confirmation_sent_at:  (Date.today-10.days)..(Date.today-2.days)).destroy_all
+end
+
 task :recalculate_exchange_rates => :environment do
-  xml_url = 'http://www.cbr.ru/scripts/XML_daily.asp'
-  url = URI.parse(xml_url)
-  req = Net::HTTP::Get.new(url.to_s)
-  res = Net::HTTP.start(url.host, url.port) {|http|
-    http.request(req)
-  }
-  xml = Hash.from_xml(res.body)
-  valutes = xml['ValCurs']['Valute']
-  usd = nil
-  valutes.each do |v|
-    if v['CharCode'] == 'USD'
-      usd = (v['Value'].sub! ',', '.').to_f
+  s = Setting.first
+  begin
+    if s.recalculatable
+      xml_url = 'http://www.cbr.ru/scripts/XML_daily.asp'
+      url = URI.parse(xml_url)
+      req = Net::HTTP::Get.new(url.to_s)
+      res = Net::HTTP.start(url.host, url.port) {|http|
+        http.request(req)
+      }
+      xml = Hash.from_xml(res.body)
+      valutes = xml['ValCurs']['Valute']
+      usd = nil
+      valutes.each do |v|
+        if v['CharCode'] && v['CharCode'].downcase == 'usd'
+          usd = (v['Value'].sub! ',', '.').to_f
+        end
+      end
+      raise 'usd.blank' if usd.blank? || usd == 0.0
+      if s.usd_rate != usd
+        s.update(usd_rate: usd) unless s.blank?
+        carts = Cart.where(confirmed: false)
+        carts.update_all(usd_rate: usd)
+        Product.recalculate_by_usd_rate(usd, carts.positions)
+        Cart.recalculate_by_usd_rate(usd, carts)
+      end
     end
-  end
-  p usd
-  if usd != 0.0 && !usd.blank?
-    s = Setting.first
-    s.update(usd_rate: usd) unless s.blank?
+  rescue Exception => e
+    new_mail = GmailSender.new(ENV['ANTALEX_EMAIL_ADDRESS'], ENV['ANTALEX_EMAIL_PASSWORD'])
+    new_mail.send(:to => record.email, :subject => "Antalex schedule raise-error: #{e.message}",
+                  :content => e.backtrace.inspect, content_type: 'text/html; charset="utf-8"')
   end
 end

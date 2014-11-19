@@ -16,4 +16,8 @@ class Cart < ActiveRecord::Base
     {success: true, position: Position.where(product_id: product_id).first, cart: cart}
   end
 
+  def self.recalculate_by_usd_rate(usd, carts)
+
+  end
+
 end

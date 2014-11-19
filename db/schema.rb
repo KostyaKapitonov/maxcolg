@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141116191233) do
+ActiveRecord::Schema.define(version: 20141119110114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,11 +42,13 @@ ActiveRecord::Schema.define(version: 20141116191233) do
   create_table "positions", force: true do |t|
     t.integer  "cart_id"
     t.integer  "product_id"
-    t.integer  "count",      default: 1
-    t.float    "price",      default: 0.0
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.float    "sum",        default: 0.0
+    t.integer  "count",           default: 1
+    t.float    "price",           default: 0.0
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.float    "sum",             default: 0.0
+    t.float    "usd_price"
+    t.boolean  "fixed_rub_price", default: false
   end
 
   create_table "products", force: true do |t|
@@ -54,19 +56,23 @@ ActiveRecord::Schema.define(version: 20141116191233) do
     t.integer  "type"
     t.float    "price"
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.integer  "category_id"
     t.integer  "firm_id"
     t.string   "image"
+    t.float    "usd_price"
+    t.boolean  "fixed_rub_price", default: false
+    t.boolean  "available",       default: true
   end
 
   create_table "settings", force: true do |t|
     t.text     "main_page_text"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.text     "contacts_text"
     t.float    "usd_rate"
+    t.boolean  "recalculatable", default: true
   end
 
   create_table "user_providers", force: true do |t|
