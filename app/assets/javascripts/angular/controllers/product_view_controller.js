@@ -84,7 +84,6 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
         } else if($scope.currentUser && isAllRequiredInfoComplete()){
             Cart.add_position({product_id: $scope.product.id}, function(res){
                 if(res.success){
-                    console.log(res);
                     $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');
                 } else if(res.already){

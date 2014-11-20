@@ -56,8 +56,25 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.addCartToList = function(data){ // TODO: fill all fields of cart and pos
 //            if(data.cart.id )
+            $scope.products.each(function(p){
+                if(data.position.product_id == p.id) data.position.usd_price = p.usd_price;
+            });
             if($scope.carts.length == 0){
-                data.cart.positions = [data.position]
+                data.cart.positions = [data.position];
+                $scope.carts.push(data.cart);
+            } else {
+                var exist = false;
+                $scope.carts.each(function(c){
+                    if(data.cart.id == c.id) {
+                        exist = true;
+                        if(c.positions && c.positions.length > 0) c.positions.push(data.position);
+                        else c.positions = [data.position];
+                    }
+                });
+                if(!exist){
+                    data.cart.positions = [data.position];
+                    $scope.carts.push(data.cart);
+                }
             }
         };
 
