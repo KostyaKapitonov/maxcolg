@@ -4,7 +4,7 @@ function($scope, $location, Cart) {
     $scope.carts = $scope.$parent.carts;
     $scope.actual_cart = $scope.$parent.actual_cart;
 
-    console.log($scope.carts,$scope.actual_cart);
+//    console.log($scope.carts,$scope.actual_cart);
 
 }]);
 

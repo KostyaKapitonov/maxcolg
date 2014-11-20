@@ -2,28 +2,69 @@ var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 
 ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart',
     function($scope, $routeParams, $location, Global, Products, User, Auth, Cart) {
 
-
         $scope.loadFinished = false;
+        $scope.loadFinishedCompletly = false;
+        $scope.loadInfo = {};
         $scope.form_displayed = false;
         $scope.cartNotEmpty = false;
 
-        if(localStorage.getItem('pathname')){
+        function checkLS(){
             var pathname = localStorage.getItem('pathname');
             var search = localStorage.getItem('search');
             localStorage.removeItem('pathname');
             localStorage.removeItem('search');
+            waitForLoadingComplete(pathname || '/', search || '');
+        }
+        checkLS();
+
+        function someLoadFinished(name){
+            $scope.loadInfo[name] = true;
+            var allFinished = true;
+            Object.keys($scope.loadInfo).each(function(key){
+                if(!$scope.loadInfo[key]) allFinished = false;
+            });
+            $scope.loadFinished = allFinished;
+        }
+
+        function someLoadStarted(name){
+            $scope.loadInfo[name] = false;
+        }
+
+        function waitForLoadingComplete(pathname, search){
+            $a.wait();
             var refresh = function(i){
                 i = i++ || 0;
                 setTimeout(
                     function(){
-                        if(!$scope.loadFinished && i < 50) refresh(i);
+                        if(!$scope.loadFinished && i < 200) refresh(i);
                         else {
+                            setTimeout(function(){ $scope.$apply(function(){ $scope.loadFinishedCompletly = true; $a.done(); }); },1000);
                             $location.path(pathname).search(search);
                         }
-                    },50);
+                    },100);
             };
             refresh();
         }
+
+        $scope.$on('$routeChangeSuccess', function () {
+            $scope.form_displayed =(/(^\/products\/new$|^\/products\/\d+\/edit$)/.test($location.path()));
+            $scope.selectedFirm = $location.search().firm;
+            $scope.selectedCategory = $location.search().category;
+            $scope.paramsPart = ($scope.selectedFirm ? '?firm='+$scope.selectedFirm : '')+
+                ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
+        });
+
+        $scope.addCartToList = function(data){ // TODO: fill all fields of cart and pos
+//            if(data.cart.id )
+            if($scope.carts.length == 0){
+                data.cart.positions = [data.position]
+            }
+        };
+
+        $scope.goToViewCartPage = function(){
+            if($a.any($scope.currentUser)) $location.path('/carts/view');
+            else $a.alert('<b>Ваша корзина пуста.</b>','Корзина');
+        };
 
         $scope.lookForActual = function(){
             $scope.carts.each(function(cart){
@@ -37,26 +78,32 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.load_carts = function(){
+            someLoadStarted('load_carts');
             Cart.all(function(res){
                 $scope.carts = res;
                 $scope.lookForActual();
+                someLoadFinished('load_carts');
             });
         };
 
         $scope.getUser = function(callback){
+            someLoadStarted('getUser');
             Auth.currentUser().then(function(user) {
                 $scope.currentUser = user;
                 $scope.userRequestComplete = true;
                 if(typeof(callback) == 'function') callback(true);
                 $scope.load_carts();
+                someLoadFinished('getUser');
             }, function(error) {
                 cl(error);
                 $scope.userRequestComplete = true;
                 if(typeof(callback) == 'function') callback(false);
+                someLoadFinished('getUser');
             });
         };
 
         $scope.logout = function(){
+            someLoadStarted('logout');
             $a.wait();
             Auth.logout().then(function(oldUser) {
                 $scope.currentUser = null;
@@ -66,14 +113,17 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $location.path('/');
                 $a.info('Вы успешно покинули свой аккаунт');
                 $a.done();
+                someLoadFinished('logout');
             }, function(error) {
                 $a.err('Что-то пошло не так...');
                 cl(error);
                 $a.done();
+                someLoadFinished('logout');
             });
         };
 
         $scope.uLogin = function(token){
+            someLoadStarted('uLogin');
             $a.wait();
             User.uLogin({u_token: token},function(res){
                 cl(res);
@@ -115,25 +165,18 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $a.done();
                     $a.err('неизвестная ошибка');
                 }
+                someLoadFinished('uLogin');
             });
         };
 
-        $scope.$on('$routeChangeSuccess', function () {
-            $scope.form_displayed =(/(^\/products\/new$|^\/products\/\d+\/edit$)/.test($location.path()));
-            $scope.selectedFirm = $location.search().firm;
-            $scope.selectedCategory = $location.search().category;
-            $scope.paramsPart = ($scope.selectedFirm ? '?firm='+$scope.selectedFirm : '')+
-                ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
-
-        });
-
         $scope.getProducts = function(){
+            someLoadStarted('getProducts');
             Products.getAll(function(data){
                 $scope.products = data.products;
                 $scope.categories = data.categories;
                 $scope.firms = data.firms;
                 bindAssortment();
-                $scope.loadFinished = true;
+                someLoadFinished('getProducts');
             });
         };
 

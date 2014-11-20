@@ -36,8 +36,8 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
         $scope.curentPos+= i;
         if($scope.curentPos < 0) $scope.curentPos+= $scope.filredProducts.length;
         if($scope.curentPos == $scope.filredProducts.length) $scope.curentPos-= $scope.filredProducts.length;
-        $scope.product = $scope.filredProducts[$scope.curentPos];
-        $location.path('/products/'+$scope.product.id);
+        $location.path('/products/'+$scope.filredProducts[$scope.curentPos].id);
+//        $scope.product = $scope.filredProducts[$scope.curentPos];
     };
 
     $scope.htmlSafe = function(html_code) {
@@ -85,6 +85,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
             Cart.add_position({product_id: $scope.product.id}, function(res){
                 if(res.success){
                     console.log(res);
+                    $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');
                 } else if(res.already){
                     $('<div><p class="dialog_msg"><b>Данный товар уже добавлен в корзину.</b><br/>Если вы хотите заказать несколько одних и тех же ' +

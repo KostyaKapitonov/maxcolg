@@ -12,6 +12,7 @@ $buttonColor: coral;
 $buttonBorder: indianred;
 $bordersColor: #dfc9c0;
 $backgroundColorHovered: bisque;
+$bej: #f7f7cb;
 
 @mixin gradient($startColor, $endColor) {
   background: -moz-linear-gradient(top, $startColor, $endColor);
@@ -369,7 +370,7 @@ p.price span {
 }
 
 .descr_block {
-  background-color: #f7f7cb;
+  background-color: $bej;
   padding: 10px;
   margin-top: 10px;
   @include b-radius(15px)
@@ -388,24 +389,30 @@ p.price span {
   text-align: left;
 }
 
-.login a{
+.login a
+/*.main a*/ {
   color: $primary-color;
   padding: 7px;
   @include b-radius(8px);
   background-color: $bordersColor;
 }
 
-.login a:hover{
+.login a:hover
+/*.main a:hover*/ {
   background-color: $backgroundColorHovered;
   cursor: pointer;
 }
 
 fieldset {
-  border-color: $bordersColor;
-  border-style: solid;
-  border-width: 3px;
+  border: 3px solid $bordersColor;
   @include  b-radius(10px);
+}
 
+fieldset legend {
+  border: 2px solid $bordersColor;
+  @include  b-radius(7px);
+  padding: 5px 8px;
+  background-color: #ccbbbb;
 }
 
 .dialog_msg {

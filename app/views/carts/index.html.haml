@@ -1,2 +1,35 @@
-%h1 Carts#index
-%p Find me in app/views/carts/index.html.haml
+%p
+  Перейти к 
+  %a.button{'x-ng-href'=>'/carts/view'}
+    текущему заказу
+%form{'novalidate'=>''}
+  %fieldset
+    %legend
+      %b{'x-ng-hide'=>'reset_mode'}
+        Список заказов
+    %table{style:'width: 100%;', 'x-ng-form'=>'cartForm'}
+      %tr
+        %td{style:'width: 65%; vertical-align: middle;'}
+          %p{'x-ng-hide'=>'actual_cart.positions.length > 0'}
+            Корзина пуста.
+          %table.in_form{'x-ng-show'=>'actual_cart.positions.length > 0'}
+            %tr.positions{'x-ng-repeat'=>'pos in actual_cart.positions'}
+              =table_row 'Кол-во', (tag :input, name: 'count_{{$index}}', 'required'=>'', maxlength: '4')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'userForm.email.$error.required && (userForm.email.$touched || showErrors)'}
+                    необходимо заполнить
+                  %span{'x-ng-show'=>'userForm.email.$error.email && (userForm.email.$touched || showErrors)'}
+                    введён несуществующий Email
+
+            %trmi
+              %td{'colspan'=>'3'}
+                .button_section
+                  %a.button{'x-ng-click'=>'reg_user();','x-ng-hide'=>'reset_mode'}
+                    Подтверждаю
+
+    .descr_block
+      %p{'x-ng-hide'=>'reset_mode'}
+        После регистрации (при желании) вы сможете прикрепить ваш аккаунт любой из перечисленных сверху социальных сетей к
+        аккаунту на нашем сайте. После этого будет достаточно шёлкнуть по значку вашей социальной сети, и зайти в нашу систему
+        без необходимости вводить email и пароль, в случае если вы уже авторизированы в своей социальной сети.

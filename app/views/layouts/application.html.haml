@@ -13,7 +13,7 @@
     -#      %script{type: 'text/javascript'}
     -#        = "$('<div><div style=\"padding: 10;\" class=\"ui-state-#{name}\">#{msg}</div></div>').dialog({width: 330});".html_safe
     #glob{style: 'position: absolute; top: 0px;'}
-    .global
+    .global{'x-ng-show'=>'loadFinishedCompletly'}
       %div{style: 'text-align: right; vertical-align: middle;'}
         %table.login
           %tr{'x-ng-show'=>'userRequestComplete'}
@@ -50,7 +50,7 @@
                 = link_to '<div class="head_spacer">Контакты</div>'.html_safe, '/contacts'
             %td{'x-ng-class'=>'{full_cart_bg: cartNotEmpty}'}
               .tdBox
-                = link_to '<div class="head_spacer">Корзина</div>'.html_safe, view_carts_path
+                = link_to '<div class="head_spacer">Корзина</div>'.html_safe, '', 'x-ng-click'=>'goToViewCartPage()'
       %div
         %table{style: 'width: 100%;'}
           %tbody

@@ -28,7 +28,6 @@ task :recalculate_exchange_rates => :environment do
         carts = Cart.where(confirmed: false)
         carts.update_all(usd_rate: usd)
         Product.recalculate_by_usd_rate(usd, carts.positions)
-        Cart.recalculate_by_usd_rate(usd, carts)
       end
     end
   rescue Exception => e

@@ -13,18 +13,18 @@ class CartsController < ApplicationController
   end
 
   def view
-    respond_to do |format|
-      format.html
-      format.json {
-        if admin?
-          params.require(:id)
-          cart = Cart.where_id(params[:id])
-        else
-          cart = Cart.aclual(current_user.id)
-        end
-        render json: cart
-      }
-    end
+    # respond_to do |format|
+    #   format.html
+    #   format.json {
+    #     if admin?
+    #       params.require(:id)
+    #       cart = Cart.where_id(params[:id])
+    #     else
+    #       cart = Cart.actual(current_user.id)
+    #     end
+    #     render json: cart
+    #   }
+    # end
   end
 
   def add_position
