@@ -33,8 +33,7 @@ class Product < ActiveRecord::Base
   def calculate_rub_price
     setting = Setting.first
     if setting.recalculatable && !self.fixed_rub_price && !self.usd_price.blank?
-      self.price = ('%.2f' % (self.usd_price*setting.usd_rate)).to_f
-      p self.price
+      self.price = ('%.2f' % (self.usd_price.to_f*setting.usd_rate.to_f)).to_f
     end
   end
 

@@ -1,4 +1,7 @@
 p 'started...'
+
+Setting.create() if Setting.all.blank?
+
 Category.destroy_all
 %w(Гольфы Колготки Леггинсы Чулки Носки Лосины).each do |c|
   Category.create(name: c)

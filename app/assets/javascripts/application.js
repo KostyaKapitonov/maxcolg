@@ -40,7 +40,7 @@ function uLoginOauth(token){
     angular.element('[x-ng-controller="MainController"]').scope().uLogin(token);
 }
 
-//------------------------------------------------Prototypes----------------------------------------------
+//------------------------------------------------ Prototypes ----------------------------------------------
 Array.prototype.sample = function(){
     rand = function(min,max)
     {

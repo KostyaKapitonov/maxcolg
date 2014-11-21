@@ -15,7 +15,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             localStorage.removeItem('search');
             waitForLoadingComplete(pathname || '/', search || '');
         }
-        checkLS();
 
         function someLoadFinished(name){
             $scope.loadInfo[name] = true;
@@ -278,16 +277,12 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $( this ).dialog( "close" );
                     }}
                 ] });
+        } else if($location.search().confirm_msg == 'thx') {
+            localStorage.setItem('pathname','/users/account');
+            $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
         }
 
-        if($location.search().confirm_msg == 'thx') {
-            $scope.getUser(function(success){
-                if(success){
-                    $location.path('/users/account');
-                    $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
-                }
-            });
-        }
+        checkLS();
 
         if(!$scope.products) $scope.getProducts();
         if(!$scope.currentUser) $scope.getUser();
