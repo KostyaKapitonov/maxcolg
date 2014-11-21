@@ -147,6 +147,7 @@ table.in_form td.input select {
   padding: 5px;
   border-radius: 8px;
   outline: 0;
+  background-color: $bej;
 }
 
 table.in_form td.input input:focus,
@@ -158,6 +159,7 @@ table.in_form td.input select:focus {
 table.in_form td.input input:disabled,
 table.in_form td.input select:disabled {
   border-color: darkgray;
+  background-color: lightgrey;
 }
 
 button.input_buttons {
@@ -199,8 +201,14 @@ table.in_form tr {
   @include b-radius(8);
   @include gradient(#cccccc, #ffbb99);
 }
+
 .head_button:hover {
   @include gradient(#ffccaa, #dddddd);
+  color: $buttonBorder;
+}
+
+.head_button:active {
+  @include gradient(#ffddbb, #eeeeee);
   color: $buttonBorder;
 }
 
@@ -224,6 +232,10 @@ table.in_form tr {
 
 .button:hover {
   @include gradient(#ffccaa, #dddddd);
+}
+
+.button:active {
+  @include gradient(#ffddbb, #eeeeee);
 }
 
 .product_table {
@@ -495,3 +507,15 @@ div.errblock.editing span {
 table.in_form tr.positions td.input input {
   width: 50px;
 }
+
+.in_form input[type="checkbox"].f_cb {
+  height: 20px;
+  width: 20px;
+  float: left;
+}
+
+.in_form p.input_desc {
+  padding: 6px 0px 0px 35px;
+  font-size: 12px;
+}
+

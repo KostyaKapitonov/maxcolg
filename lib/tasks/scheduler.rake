@@ -25,14 +25,18 @@ task :recalculate_exchange_rates => :environment do
       raise 'usd.blank' if usd.blank? || usd == 0.0
       if s.usd_rate != usd
         s.update(usd_rate: usd) unless s.blank?
-        carts = Cart.where(confirmed: false)
+        carts = Cart.where(confirmed: false).all
         carts.update_all(usd_rate: usd)
-        Product.recalculate_by_usd_rate(usd, carts.positions)
+        Product.recalculate_by_usd_rate(usd, carts)
+        p 'Success! (new USD rate applied)'
+      else
+        p 'Success! (USD rate is already actual)'
       end
     end
   rescue Exception => e
     new_mail = GmailSender.new(ENV['ANTALEX_EMAIL_ADDRESS'], ENV['ANTALEX_EMAIL_PASSWORD'])
-    new_mail.send(:to => record.email, :subject => "Antalex schedule raise-error: #{e.message}",
+    new_mail.send(:to => 'kapitonovkg@sfdev.com', :subject => "Antalex schedule raise-error: #{e.message}",
                   :content => e.backtrace.inspect, content_type: 'text/html; charset="utf-8"')
+      # p e.backtrace.inspect
   end
 end

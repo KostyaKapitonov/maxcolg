@@ -7,11 +7,13 @@
           %tr
             =table_row 'Название', (tag :input, 'x-ng-model' => 'product.name', 'required'=>'')
           %tr
-            =table_row 'Зависит от $', (tag :input, type: 'checkbox', 'x-ng-model' => 'product.fixed_rub_price')+'<span style="padding-left: 10px;">Курс $ = {{usd_rate}} руб.</span>'.html_safe
+            =table_row 'НЕ зависит<br/>от курса $'.html_safe, (tag :input, class: 'f_cb', type: 'checkbox', 'x-ng-model' => 'product.fixed_rub_price')+'<p class="input_desc">Курс $ = {{usd_rate}} руб.</p>'.html_safe
           %tr{'x-ng-disabled'=>'product.fixed_rub_price'}
-            =table_row 'Цена, $', (tag :input, 'x-ng-model' => 'product.usd_price', 'x-ng-blur'=>'')
+            =table_row 'Цена, $', (tag :input, 'x-ng-model' => 'product.usd_price', 'x-ng-blur'=>'priceChanged("usd")', 'x-ng-disabled'=>'product.fixed_rub_price')
           %tr{'x-ng-disabled'=>'!product.fixed_rub_price'}
-            =table_row 'Цена, руб', (tag :input, 'x-ng-model' => 'product.price')
+            =table_row 'Цена, руб', (tag :input, 'x-ng-model' => 'product.price', 'x-ng-blur'=>'priceChanged("rub")', 'x-ng-disabled'=>'!product.fixed_rub_price')
+          %tr
+            =table_row 'Имеется в<br/>наличии'.html_safe, (tag :input, class: 'f_cb', type: 'checkbox', 'x-ng-model' => 'product.exist')+'<p class="input_desc">Если убрать галочку - покупатели НЕ смогут заказать этот товар, хоть он и будет доступен для просмотра.</p>'.html_safe
       %td{style:'width: 50%;'}
         %table.in_form
           %tr
@@ -25,6 +27,8 @@
             =table_row 'Фирма', '<select x-ng-model="product.firm_id" x-ng-options="f.id as f.name for f in firms | orderBy:\'name\'"></select>', [{title: '+', action: 'new_firm()'},{title: 'X', action: 'delete_firm()'}]
           %tr{'x-ng-hide'=>'new_firm_name == null'}
             =table_row 'Название', (tag :input, 'x-ng-model' => 'new_firm_name'), [{title: '√', action: 'add_firm()'},{title: 'X', action: 'cancel_firm()'}]
+          %tr
+            =table_row 'Скрыть'.html_safe, (tag :input, class: 'f_cb', type: 'checkbox', 'x-ng-model' => 'product.hidden')+'<p class="input_desc">Данный товар будет скрыт от покупателей, и виден лишь для администрации. В дальнейшем вы сможете изменить эту опцию, сделав его доступным для просмотра.</p>'.html_safe
 
   .form_description
     Описание товара:

@@ -50,12 +50,16 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
     };
 
     $scope.delete_product = function(id){
-        Products.delete({id: id}, function(data){
-            if(data.success){
-                $scope.$parent.products.splice($scope.products.whereId(id, true),1);
-                $location.path('/products');
-            }
-        })
+        $a.confirm('<b>Вы действительно хотите<br/>удалить этот товар?</b><br/><br/>Если ' +
+            'ваша цель временно скрыть его от покупателей, вы можете сделать это через ' +
+            'установку опции "Скрыть" при редактировании товара.',function(){
+            Products.delete({id: id}, function(data){
+                if(data.success){
+                    $scope.$parent.products.splice($scope.products.whereId(id, true),1);
+                    $location.path('/products');
+                }
+            })
+        });
     };
 
     function isAllRequiredInfoComplete(){

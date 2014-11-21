@@ -30,6 +30,10 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $scope.loadInfo[name] = false;
         }
 
+        function isThisLoadFinished(name){
+            return $scope.loadInfo[name];
+        }
+
         function waitForLoadingComplete(pathname, search){
             $a.wait();
             var refresh = function(i){
@@ -54,14 +58,29 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
         });
 
+        function bindPositionDataFromProduct(carts){
+            $scope.products.each(function(prod){
+                carts.each(function(cart){
+                    cart.positions.each(function(pos){
+                        if(pos.product_id == prod.id){
+                            pos.prod = prod;
+                        }
+                    });
+                });
+            });
+            return carts;
+        }
+
         $scope.addCartToList = function(data){ // TODO: fill all fields of cart and pos
-//            if(data.cart.id )
             $scope.products.each(function(p){
-                if(data.position.product_id == p.id) data.position.usd_price = p.usd_price;
+                if(data.position.product_id == p.id) {
+                    data.position.prod = p;
+                }
             });
             if($scope.carts.length == 0){
                 data.cart.positions = [data.position];
                 $scope.carts.push(data.cart);
+                $scope.lookForActual();
             } else {
                 var exist = false;
                 $scope.carts.each(function(c){
@@ -97,9 +116,16 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.load_carts = function(){
             someLoadStarted('load_carts');
             Cart.all(function(res){
-                $scope.carts = res;
-                $scope.lookForActual();
-                someLoadFinished('load_carts');
+                var carts = res;
+                var waitForProductLoadComplete = function(){
+                    if(isThisLoadFinished('getProducts')){
+                        $scope.carts = bindPositionDataFromProduct(carts);
+                        $scope.lookForActual();
+                        console.log($scope.carts);
+                        someLoadFinished('load_carts');
+                    } else setTimeout(function(){waitForProductLoadComplete();},100);
+                };
+                waitForProductLoadComplete();
             });
         };
 
@@ -192,19 +218,21 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.products = data.products;
                 $scope.categories = data.categories;
                 $scope.firms = data.firms;
-                bindAssortment();
+                $scope.bindAssortment();
                 someLoadFinished('getProducts');
             });
         };
 
-        function bindAssortment(){
+        $scope.bindAssortment = function(){
             $scope.assortment = {};
             $scope.assortmentList = [];
             $scope.products.each(function(p){
                 $scope.categories.each(function(c){
                     if(p.category_id == c.id){
+                        p.category_name = c.name;
                         $scope.firms.each(function(f){
                             if(p.firm_id == f.id){
+                                p.firm_name = f.name;
                                 if(!$scope.assortment[f.name]){
                                     $scope.assortment[f.name] = {id: f.id};
                                 }
@@ -236,7 +264,8 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 );
 
             });
-        }
+        };
+
         if($location.search().confirm_msg == 'invalid_token') {
             $('<div><p class="dialog_msg">Скорее всего вы уже завершили регистрацию<br/>Если вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
                 { modal: true, position: 'top', buttons: [
@@ -250,6 +279,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     }}
                 ] });
         }
+
         if($location.search().confirm_msg == 'thx') {
             $scope.getUser(function(success){
                 if(success){
@@ -257,7 +287,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
                 }
             });
-//            $location();
         }
 
         if(!$scope.products) $scope.getProducts();
