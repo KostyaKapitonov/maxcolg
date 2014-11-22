@@ -1,6 +1,6 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
-ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart',
-    function($scope, $routeParams, $location, Global, Products, User, Auth, Cart) {
+ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart', '$sce',
+    function($scope, $routeParams, $location, Global, Products, User, Auth, Cart, $sce) {
 
         $scope.loadFinished = false;
         $scope.loadFinishedCompletly = false;
@@ -11,9 +11,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         function checkLS(){
             var pathname = localStorage.getItem('pathname');
             var search = localStorage.getItem('search');
+            var hash = localStorage.getItem('hash');
             localStorage.removeItem('pathname');
             localStorage.removeItem('search');
-            waitForLoadingComplete(pathname || '/', search || '');
+            localStorage.removeItem('hash');
+            waitForLoadingComplete(pathname || '/', search || '', hash || '');
         }
 
         function someLoadFinished(name){
@@ -33,7 +35,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             return $scope.loadInfo[name];
         }
 
-        function waitForLoadingComplete(pathname, search){
+        function waitForLoadingComplete(pathname, search, hash){
             $a.wait();
             var refresh = function(i){
                 i = i++ || 0;
@@ -42,7 +44,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         if(!$scope.loadFinished && i < 200) refresh(i);
                         else {
                             setTimeout(function(){ $scope.$apply(function(){ $scope.loadFinishedCompletly = true; $a.done(); }); },1000);
-                            $location.path(pathname).search(search);
+                            $location.path(pathname).search(search).hash(hash);
                         }
                     },100);
             };
@@ -168,7 +170,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             someLoadStarted('uLogin');
             $a.wait();
             User.uLogin({u_token: token},function(res){
-                cl(res);
                 if(res.authorized === true){
                     if(res.provider == 'welcome'){
                         $scope.getUser();
@@ -183,7 +184,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $a.done();
                 }
                 else if(res.authorized === false && res.data.identity){
-                    cl(res.data.identity);
                     console.log('res.authorized === false');
                     $('<div><p class="dialog_msg">'+
                         'Для входа через социальную сеть, вам необходимо для начала зарегистрироватся на нашем сайте<br/>'+
@@ -265,6 +265,15 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
+        $scope.getSettings = function(){
+            someLoadStarted('getSettings');
+            Global.main(function(res){
+                console.log(res);
+                $scope.setting = res;
+                someLoadFinished('getSettings');
+            });
+        };
+
         if($location.search().confirm_msg == 'invalid_token') {
             $('<div><p class="dialog_msg">Скорее всего вы уже завершили регистрацию<br/>Если вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
                 { modal: true, position: 'top', buttons: [
@@ -282,10 +291,15 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
         }
 
+        $scope.htmlSafe = function(html_code) {
+            return $sce.trustAsHtml(html_code);
+        };
+
         checkLS();
 
         if(!$scope.products) $scope.getProducts();
         if(!$scope.currentUser) $scope.getUser();
+        if(!$scope.setting)  $scope.getSettings();
     }]);
 
 ANTALEX.config([

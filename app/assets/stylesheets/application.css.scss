@@ -418,6 +418,7 @@ p.price span {
 fieldset {
   border: 3px solid $bordersColor;
   @include  b-radius(10px);
+  margin-bottom: 10px;
 }
 
 fieldset legend {
@@ -508,14 +509,20 @@ table.in_form tr.positions td.input input {
   width: 50px;
 }
 
-.in_form input[type="checkbox"].f_cb {
+.in_form input[type="checkbox"].f_cb,
+input[type="checkbox"] {
   height: 20px;
   width: 20px;
   float: left;
 }
 
-.in_form p.input_desc {
+.in_form p.input_desc,
+p.input_desc {
   padding: 6px 0px 0px 35px;
   font-size: 12px;
+  background-color: #ddccbb;
+  margin-left: 35px;
+  padding: 5px 8px;
+  @include b-radius(10px);
 }
 

@@ -48,6 +48,7 @@ function($scope, $routeParams, Products, $location, Global) {
                     $scope.firms.whereId($routeParams.firm).id : $scope.firms[0].id;
             }
         }
+        window.d = $scope.product.name;
     }
 
     $scope.priceChanged = function(valute){
@@ -58,10 +59,13 @@ function($scope, $routeParams, Products, $location, Global) {
             $scope.product.price = $a.toFloat($scope.product.price);
             $scope.product.usd_price = $a.toFloat(($scope.product.price-0)/($scope.usd_rate-0));
         }
+        $scope.blank = $a.toFloat($scope.product.usd_price) == 0;
     };
 
     function isFormInvalid(){
-
+        $scope.showErrors = true;
+        if($scope.productForm.$invalid) return true;
+        return $scope.blank = $a.toFloat($scope.product.usd_price) == 0;
     }
 
     $scope.save = function(){

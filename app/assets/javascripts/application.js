@@ -387,7 +387,7 @@ $a.toFloat = function(val){
     var formatedPrice = val.replace(/,/g,'.').replace(/[^0-9,.]/g, '');
     var matches = formatedPrice.match(/\d+/g);
     matches = matches || [];
-    return String(matches[0] || '0') + '.' + String(matches[1] || '00').substring(0, 2);
+    return Number(String(matches[0] || '0') + '.' + String(matches[1] || '00').substring(0, 2));
 };
 
 //------------------------------------------------ Numbers | String ---------------------------------------------

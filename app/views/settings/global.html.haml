@@ -1,0 +1,40 @@
+%form{'novalidate'=>''}
+  %fieldset
+    %legend
+      %b Аккаунт
+    %table{style:'width: 100%;'}
+      %tr
+        %td{style:'width: 65%; padding-top: 10px;'}
+          %table.in_form{'x-ng-form'=>'form'}
+            %tr
+              %td{colspan: 3}
+                %p
+                  У вас есть права администратора.
+            %tr
+              =table_row 'Email', (tag :input, type: 'email', 'x-ng-model' => 'currentUser.email', 'x-ng-disabled'=>'true')
+        %td
+          .descr_block
+            %table.in_form.reg_info
+              %tr
+                %td
+                  %p
+                    Вы можете прикрепить социальную сеть к вашему аккаунту:
+                  %div{style: 'margin-left: 55px;'}
+                    %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
+                    %script
+                      uLogin.initWidget('uLogin2')
+  %fieldset
+    %legend
+      %b Управление сайтом
+    %table{style:'width: 100%;'}
+      %tr
+        =table_row 'Обновлять<br/>курс $'.html_safe, (tag :input, type: 'checkbox', 'x-ng-change' => 'toggle_ra()', 'x-ng-model' => 'setting.recalculatable')+'<p class="input_desc">Включить автоматическое обновление курса $ и пересчёт на его основе стоимости товаров в рублях (зависящий от курса $)</p>'.html_safe
+      %tr
+        %td{colspan: 3, style: 'padding: 10px 0px'}
+          Редактировать содержимое:
+          %a.button{'x-ng-href'=>page_editor_settings_path(page: 'main_page_text')}
+            Главной страницы
+          %a.button{'x-ng-href'=>page_editor_settings_path(page: 'contacts_text')}
+            Контактов
+
+

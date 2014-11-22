@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   helper_method :admin?
   protect_from_forgery with: :exception
-  layout 'angular'
   respond_to :json, :html
+  layout 'angular'
 
   def not_found
     raise ActionController::RoutingError.new('Not Found')

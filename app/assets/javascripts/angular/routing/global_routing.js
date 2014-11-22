@@ -45,6 +45,14 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
             templateUrl: '/users/account.html',
             controller: 'AccountController'
         })
+        .when('/settings/global', {
+            templateUrl: '/settings/global.html',
+            controller: 'SettingController'
+        })
+        .when('/settings/page_editor', {
+            templateUrl: '/settings/page_editor.html',
+            controller: 'SettingController'
+        })
         .when('/carts/view', {
             templateUrl: '/carts/view.html',
             controller: 'CartsController'

@@ -19,8 +19,10 @@
           %tr{'x-ng-show'=>'userRequestComplete'}
             %td.new_user_td{'x-ng-hide'=>'currentUser'}
               = link_to 'Вход / Регистрация', login_users_path
-            %td{'x-ng-show'=>'currentUser'}
+            %td{'x-ng-show'=>'currentUser && !currentUser.is_admin'}
               = link_to 'Настройки', account_users_path
+            %td{'x-ng-show'=>'currentUser && currentUser.is_admin'}
+              = link_to 'Настройки', global_settings_path
             %td{'x-ng-hide'=>'currentUser'}
               Войти через
             %td{style: 'min-width: 84px; padding-right: 0;', 'x-ng-hide'=>'currentUser'}
