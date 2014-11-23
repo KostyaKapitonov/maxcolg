@@ -268,7 +268,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.getSettings = function(){
             someLoadStarted('getSettings');
             Global.main(function(res){
-                console.log(res);
                 $scope.setting = res;
                 someLoadFinished('getSettings');
             });

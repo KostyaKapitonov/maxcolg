@@ -12,43 +12,25 @@ function($scope, $routeParams, Products, $location, Global) {
             },50);
             return;
         }
-        if($routeParams.id && $scope.$parent.products && $scope.$parent.products.length && !isNaN($location.hash()) && -1 < $location.hash()-0) {
+        if($routeParams.id) {
             $scope.$parent.products.each(function(p, i){
                 if(p.id == $routeParams.id) {
                     $scope.product = p;
-                    $location.hash(i);
                 }
             });
-        } else if($routeParams.id){
-            Products.get({id:$routeParams.id, action:'edit', format:'json'}, function(data){
-                $scope.product = data;
-            })
-        } else $scope.isNew = true;
+        }  else $scope.isNew = true;
 
-
-        if(!$scope.$parent.categories || !$scope.$parent.firms){
-            Global.get_category_and_firm_options(function(data){
-                $scope.categories = data.categories;
-                $scope.firms = data.firms;
-                if($scope.isNew){
-                    $scope.product = {exist: true};
-                    if( $scope.categories.length) $scope.product.category_id = $scope.categories[0].id;
-                    if( $scope.firms.length) $scope.product.firm_id = $scope.firms[0].id;
-                }
-            });
-        } else {
-            $scope.categories = $scope.$parent.categories;
-            $scope.firms = $scope.$parent.firms;
-            if($scope.isNew){
-                $scope.product = {exist: true};
-                console.log($routeParams.firm);
-                if( $scope.categories.length) $scope.product.category_id = $routeParams.category ?
-                    $scope.categories.whereId($routeParams.category).id : $scope.categories[0].id;
-                if( $scope.firms.length) $scope.product.firm_id = $routeParams.firm ?
-                    $scope.firms.whereId($routeParams.firm).id : $scope.firms[0].id;
-            }
+        $scope.categories = $scope.$parent.categories;
+        $scope.firms = $scope.$parent.firms;
+        if($scope.isNew){
+            $scope.product = {exist: true};
+            console.log($routeParams.firm);
+            if( $scope.categories.length) $scope.product.category_id = $routeParams.category ?
+                $scope.categories.whereId($routeParams.category).id : $scope.categories[0].id;
+            if( $scope.firms.length) $scope.product.firm_id = $routeParams.firm ?
+                $scope.firms.whereId($routeParams.firm).id : $scope.firms[0].id;
         }
-        window.d = $scope.product.name;
+
     }
 
     $scope.priceChanged = function(valute){
@@ -68,11 +50,16 @@ function($scope, $routeParams, Products, $location, Global) {
         return $scope.blank = $a.toFloat($scope.product.usd_price) == 0;
     }
 
+    function rebuildAssortiment(prod){
+
+    }
+
     $scope.save = function(){
-        if(isFormInvalid()) return;
+        if(isFormInvalid()) { $a.err('Пожалуйста проверьте правильность заполнения всех полей'); return;}
         if($scope.product.id){
             Products.update({product: $scope.product, id: $scope.product.id, action:'update'}, function(data){
                 if(data.success){
+                    rebuildAssortiment($scope.product);
                     $location.path('/products/'+$scope.product.id);
                     $location.hash('glob');
                     $a.info('Изменения сохранены');
@@ -104,7 +91,8 @@ function($scope, $routeParams, Products, $location, Global) {
 
     $scope.delete_category = function(){
         if($scope.product.category_id == null) return;
-        $a.confirm('<b>Вы действительно хотите удалить<br/>эту категорию?</b><br/>Пожалуйста убедитесь ' +
+        var cat_name = $scope.categories.whereId($scope.product.category_id).name;
+        $a.confirm('<b>Вы действительно хотите удалить<br/>эту категорию?</b><br/><b style="font-size: 20px;">"'+cat_name+'"</b><br/>Пожалуйста убедитесь ' +
             'что в этой категории отсутствуют какие-либо товары (не зависимо от фирмы), для избежания негативных ' +
             'последствий!',function(){
             Global.delete_category_or_firm_option({category: $scope.product.category_id},function(data){
@@ -123,7 +111,9 @@ function($scope, $routeParams, Products, $location, Global) {
         if(!$scope.new_category_name || $scope.new_category_name == '') return;
         Global.create_category_or_firm_option({category: {name: $scope.new_category_name}},function(data){
             if(data.success){
-                $scope.categories = data.categories;
+                console.log(data);
+                $scope.$parent.categories = data.categories;
+                $scope.categories = $scope.$parent.categories;
                 $scope.product.category_id = data.category.id;
                 $scope.new_category_name = null;
                 $a.info('Добавлена новая категория');
@@ -142,7 +132,8 @@ function($scope, $routeParams, Products, $location, Global) {
 
     $scope.delete_firm = function(){
         if($scope.product.firm_id == null) return;
-        $a.confirm('<b>Вы действительно хотите удалить<br/>эту фирму?</b><br/>Пожалуйста убедитесь ' +
+        var firm_name = $scope.firms.whereId($scope.product.firm_id).name;
+        $a.confirm('<b>Вы действительно хотите удалить<br/>эту фирму?</b><br/><b style="font-size: 20px;">"'+firm_name+'"</b><br/>Пожалуйста убедитесь ' +
             'что в этой фирме отсутствуют какие-либо товары (не зависимо от категории), для избежания негативных ' +
             'последствий!',function(){
             Global.delete_category_or_firm_option({firm: $scope.product.firm_id},function(data){
@@ -161,7 +152,8 @@ function($scope, $routeParams, Products, $location, Global) {
         if(!$scope.new_firm_name || $scope.new_firm_name == '') return;
         Global.create_category_or_firm_option({firm: {name: $scope.new_firm_name}},function(data){
             if(data.success){
-                $scope.firms = data.firms;
+                $scope.$parent.firms = data.firms;
+                $scope.firms = $scope.$parent.firms;
                 $scope.product.firm_id = data.firm.id;
                 $scope.new_firm_name = null;
                 $a.info('Добавлена новая фирма');
