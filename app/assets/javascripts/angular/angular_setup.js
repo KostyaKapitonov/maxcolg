@@ -1,12 +1,14 @@
 var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
-ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart', '$sce',
-    function($scope, $routeParams, $location, Global, Products, User, Auth, Cart, $sce) {
+ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart', '$sce', '$anchorScroll',
+    function($scope, $routeParams, $location, Global, Products, User, Auth, Cart, $sce, $anchorScroll) {
 
         $scope.loadFinished = false;
         $scope.loadFinishedCompletly = false;
         $scope.loadInfo = {};
         $scope.form_displayed = false;
         $scope.cartNotEmpty = false;
+        $scope.asc = true;
+        $scope.sortTypes = [{name: 'фирма', val: 'firm'},{name: 'категория', val: 'cat'}];
 
         function checkLS(){
             var pathname = localStorage.getItem('pathname');
@@ -57,6 +59,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $scope.selectedCategory = $location.search().category;
             $scope.paramsPart = ($scope.selectedFirm ? '?firm='+$scope.selectedFirm : '')+
                 ($scope.selectedCategory ? '&category='+$scope.selectedCategory : '');
+            $anchorScroll();
         });
 
         function bindPositionDataFromProduct(carts){
@@ -138,11 +141,13 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 if(typeof(callback) == 'function') callback(true);
                 $scope.load_carts();
                 someLoadFinished('getUser');
+                $scope.getSettings();
             }, function(error) {
                 cl(error);
                 $scope.userRequestComplete = true;
                 if(typeof(callback) == 'function') callback(false);
                 someLoadFinished('getUser');
+                $scope.getSettings();
             });
         };
 
@@ -157,6 +162,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $location.path('/');
                 $a.info('Вы успешно покинули свой аккаунт');
                 $a.done();
+                $scope.bindAssortment();
                 someLoadFinished('logout');
             }, function(error) {
                 $a.err('Что-то пошло не так...');
@@ -175,6 +181,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $scope.getUser();
                         $a.info('Приветствуем вас в нашем интернет-магазине.');
                         $location.path('/');
+                        $scope.bindAssortment();
                         $scope.load_carts();
                     } else if (res.provider == 'added'){
                         $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля от аккаунта интернет-магазина Antalex).');
@@ -217,58 +224,112 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.products = data.products;
                 $scope.categories = data.categories;
                 $scope.firms = data.firms;
-                $scope.bindAssortment();
+                $scope.bindAssortment(true);
                 someLoadFinished('getProducts');
             });
         };
 
-        $scope.bindAssortment = function(){
+        $scope.handleRebuild = function(){
+            $scope.bindAssortment();
+        };
+
+        $scope.bindAssortment = function(first_build){
+            $scope.admin = $a.any($scope.currentUser) && $scope.currentUser.is_admin;
+            if($scope.admin) $scope.product_list = $scope.products;
+            else {
+                $scope.product_list = [];
+                $scope.products.each(function(p){
+                    if(!p.hidden) $scope.product_list.push(p);
+                });
+            }
+
             $scope.assortment = {};
             $scope.assortmentList = [];
-            $scope.products.each(function(p){
-                $scope.categories.each(function(c){
-                    if(p.category_id == c.id){
-                        p.category_name = c.name;
-                        $scope.firms.each(function(f){
-                            if(p.firm_id == f.id){
-                                p.firm_name = f.name;
-                                if(!$scope.assortment[f.name]){
-                                    $scope.assortment[f.name] = {id: f.id};
+            if($scope.setting.default_sort_type == 'firm'){
+                $scope.product_list.each(function(p){
+                    $scope.categories.each(function(c){
+                        if(p.category_id == c.id){
+                            p.category_name = c.name;
+                            $scope.firms.each(function(f){
+                                if(p.firm_id == f.id){
+                                    p.firm_name = f.name;
+                                    if(!$scope.assortment[f.name]){
+                                        $scope.assortment[f.name] = {id: f.id};
+                                    }
+                                    if(!$scope.assortment[f.name][c.name]){
+                                        $scope.assortment[f.name][c.name] = {id: c.id};
+                                    }
                                 }
-                                if(!$scope.assortment[f.name][c.name]){
-                                    $scope.assortment[f.name][c.name] = {id: c.id};
+                            })
+                        }
+                    });
+                });
+            } else {
+                $scope.product_list.each(function(p){
+                    $scope.firms.each(function(f){
+                        if(p.firm_id == f.id){
+                            p.firm_name = f.name;
+                            $scope.categories.each(function(c){
+                                if(p.category_id == c.id){
+                                    p.category_name = c.name;
+                                    if(!$scope.assortment[c.name]){
+                                        $scope.assortment[c.name] = {id: c.id};
+                                    }
+                                    if(!$scope.assortment[c.name][f.name]){
+                                        $scope.assortment[c.name][f.name] = {id: f.id};
+                                    }
                                 }
-                            }
-                        })
-                    }
+                            })
+                        }
+                    });
                 });
-            });
-
-            Object.keys($scope.assortment).each(function(key){
-                var cats = [];
-                Object.keys($scope.assortment[key]).each(function(subKey){
-                    if (subKey != 'id'){
-                        cats.push({
-                            name: subKey,
-                            id: $scope.assortment[key][subKey].id
-                        });
-                    }
+            }
+            if($scope.setting.default_sort_type == 'firm') {
+                Object.keys($scope.assortment).each(function (key) {
+                    var cats = [];
+                    Object.keys($scope.assortment[key]).each(function (subKey) {
+                        if (subKey != 'id') {
+                            cats.push({
+                                name: subKey,
+                                id: $scope.assortment[key][subKey].id
+                            });
+                        }
+                    });
+                    $scope.assortmentList.push(
+                        {
+                            name: key,
+                            id: $scope.assortment[key].id,
+                            catigories: cats
+                        }
+                    );
                 });
-                $scope.assortmentList.push(
-                    {
-                        name: key,
-                        id: $scope.assortment[key].id,
-                        catigories: cats
-                    }
-                );
-
-            });
+            } else {
+                Object.keys($scope.assortment).each(function (key) {
+                    var firms = [];
+                    Object.keys($scope.assortment[key]).each(function (subKey) {
+                        if (subKey != 'id') {
+                            firms.push({
+                                name: subKey,
+                                id: $scope.assortment[key][subKey].id
+                            });
+                        }
+                    });
+                    $scope.assortmentList.push(
+                        {
+                            name: key,
+                            id: $scope.assortment[key].id,
+                            firms: firms
+                        }
+                    );
+                });
+            }
         };
 
         $scope.getSettings = function(){
             someLoadStarted('getSettings');
             Global.main(function(res){
                 $scope.setting = res;
+                $scope.getProducts();
                 someLoadFinished('getSettings');
             });
         };
@@ -296,9 +357,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         checkLS();
 
-        if(!$scope.products) $scope.getProducts();
         if(!$scope.currentUser) $scope.getUser();
-        if(!$scope.setting)  $scope.getSettings();
     }]);
 
 ANTALEX.config([

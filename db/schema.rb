@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141121131814) do
+ActiveRecord::Schema.define(version: 20141124094556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,11 +70,12 @@ ActiveRecord::Schema.define(version: 20141121131814) do
 
   create_table "settings", force: true do |t|
     t.text     "main_page_text"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.text     "contacts_text"
     t.float    "usd_rate"
-    t.boolean  "recalculatable", default: true
+    t.boolean  "recalculatable",    default: true
+    t.string   "default_sort_type", default: "firm"
   end
 
   create_table "user_providers", force: true do |t|

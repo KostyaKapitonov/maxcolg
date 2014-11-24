@@ -19,9 +19,23 @@
 
 window.$a = {}; //custom app helper
 
-$(document).ready(function(){
 
+$(document).ready(function(){
+    tooltipInit();
 });
+
+function tooltipInit(){
+    $(function () {
+        $(document).tooltip({
+            content: function () {
+                return '<div class="jq_tooltip">'+$(this).prop('title')+'</div>';
+            },
+            position: { my: "center top-65", at: "center top" },
+            show: { effect: "fade", duration: 0 },
+            hide: { effect: "fade", duration: 0 }
+        });
+    });
+}
 
 function cl(text){
     console.log(text);

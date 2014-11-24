@@ -3,7 +3,6 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
 
     $scope.searchProcessing = false;
     $scope.curentPos = 0;
-    $scope.currentUser = $scope.$parent.currentUser;
 
     function loadViewData(){
         if($scope.product != null) return;
@@ -11,9 +10,12 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
             $scope.$parent.products.each(function(p){
                 if(p.id == $routeParams.id) {
                     $scope.product = p;
+                    window.d = $scope.product;
                     prepareFilteredList();
                 }
             });
+            $scope.currentUser = $scope.$parent.currentUser;
+            $scope.admin = $a.any($scope.currentUser) && $scope.currentUser.is_admin;
             $anchorScroll();
         }
         else {
@@ -24,12 +26,12 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
     }
 
     function prepareFilteredList(){
-        $scope.filredProducts = $filter('onlySelected')($scope.$parent.products,
+        $scope.filredProducts = $filter('onlySelected')($scope.$parent.product_list,
             $scope.$parent.selectedFirm,$scope.$parent.selectedCategory);
         $scope.cntrls = $scope.filredProducts.length > 1;
         $scope.filredProducts.each(function(p,i){
             if(p.id == $scope.product.id) $scope.curentPos = i;
-        })
+        });
     }
 
     $scope.next = function(i){
@@ -37,7 +39,6 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
         if($scope.curentPos < 0) $scope.curentPos+= $scope.filredProducts.length;
         if($scope.curentPos == $scope.filredProducts.length) $scope.curentPos-= $scope.filredProducts.length;
         $location.path('/products/'+$scope.filredProducts[$scope.curentPos].id);
-//        $scope.product = $scope.filredProducts[$scope.curentPos];
     };
 
     $scope.htmlSafe = function(html_code) {
@@ -56,6 +57,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
             Products.delete({id: id}, function(data){
                 if(data.success){
                     $scope.$parent.products.splice($scope.products.whereId(id, true),1);
+                    $scope.$parent.bindAssortment();
                     $location.path('/products');
                 }
             })

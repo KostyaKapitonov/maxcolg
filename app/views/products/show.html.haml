@@ -15,14 +15,30 @@
     %img{'x-ng-src'=>image_path('no_photo.jpg'), 'x-ng-hide'=>'product.image'}
     %img{'x-ng-show'=>'product.image', 'x-ng-src'=>'{{product.image}}'}
   .descr_block
-    %div{style: 'text-align: center; padding-top:10px;'}
+    %div{style: 'text-align: center; padding-top:10px;', 'x-ng-hide'=>'admin || !product.exist'}
       %a.head_button{'x-ng-click'=>'addToCart()'}
         Добавить в корзину
+    %div{style: 'text-align: center; padding-top:10px;','x-ng-hide'=>'product.exist || admin'}
+      %span{title:'{{product.exist ? \'\' : \'<b class="name red">Нет в наличии</b>\'}}'}
+        %a.disabled_head_button{'x-ng-click'=>'', 'x-ng-disabled'=>'true'}
+          Добавить в корзину
+    .only_admin_info{style: 'text-align: center; padding-top:10px;','x-ng-show'=>'admin'}
+      %span
+        Есть в наличии:
+        %b.green{'x-ng-show'=>'product.exist'}
+          Да
+        %b.red{'x-ng-hide'=>'product.exist'}
+          Нет
+      %span
+        Скрыт:
+        %b.red{'x-ng-show'=>'product.hidden'}
+          Да
+        %b.green{'x-ng-hide'=>'product.hidden'}
+          Нет
     %h3
       {{product.name}}
     %div{'x-ng-bind-html'=>'htmlSafe(product.description)'}
     %p.price
       %span
-        Цена: {{product.price}} руб.
-
+        Цена: {{product.price | currency:"":2}} руб.
 

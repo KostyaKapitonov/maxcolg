@@ -139,7 +139,8 @@ ul {
 }
 
 table.in_form td.input input,
-table.in_form td.input select {
+table.in_form td.input select,
+fieldset select {
   width: 90%;
   border-style: solid;
   border-width: 2px;
@@ -151,13 +152,17 @@ table.in_form td.input select {
 }
 
 table.in_form td.input input:focus,
-table.in_form td.input select:focus {
+table.in_form td.input select:focus,
+fieldset select:focus,
+.sortTypeBlock select:focus{
   background-color: $backgroundColorHovered;
   border-color: $buttonColor;
 }
 
 table.in_form td.input input:disabled,
-table.in_form td.input select:disabled {
+table.in_form td.input select:disabled,
+fieldset select:disabled,
+.sortTypeBlock select:disabled{
   border-color: darkgray;
   background-color: lightgrey;
 }
@@ -196,7 +201,7 @@ table.in_form tr {
   text-align: center;
   text-decoration: none;
 
-  margin: 10 0;
+  margin: 10px 0px;
 
   @include b-radius(8);
   @include gradient(#cccccc, #ffbb99);
@@ -210,6 +215,21 @@ table.in_form tr {
 .head_button:active {
   @include gradient(#ffddbb, #eeeeee);
   color: $buttonBorder;
+}
+
+.head_button:disabled,
+a.head_button:disabled,
+.disabled_head_button{
+  @include b-radius(8);
+  font-weight: bold;
+  padding: 10px;
+  margin: 10px 0px;
+  text-align: center;
+  text-decoration: none;
+  background-color: lightgrey;
+  border: 1px solid darkgray;
+  color: gray;
+  cursor: default;
 }
 
 .button {
@@ -526,3 +546,45 @@ p.input_desc {
   @include b-radius(10px);
 }
 
+.sortTypeBlock{
+  font-size: 12px;
+}
+
+.sortTypeBlock select{
+  font-size: 12px;
+  border: 1px solid bisque;
+  border-radius: 6px;
+  outline: 0;
+  background-color: $bej;
+}
+
+.jq_tooltip {
+  font-size: 12px;
+}
+
+.jq_tooltip b.name,
+b.name{
+  font-size: 14px;
+}
+
+.jq_tooltip b.green,
+b.green{
+  color: #007000;
+}
+
+.jq_tooltip b.red,
+b.red {
+  color: #f00000;
+}
+
+.only_admin_info {
+  @include b-radius(10px);
+  margin: auto;
+  background-color: #ddccbb;
+  padding: 10px;
+  width:  310px;
+}
+
+.only_admin_info span{
+  padding: 0px 10px;
+}

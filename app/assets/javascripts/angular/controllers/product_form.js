@@ -50,28 +50,26 @@ function($scope, $routeParams, Products, $location, Global) {
         return $scope.blank = $a.toFloat($scope.product.usd_price) == 0;
     }
 
-    function rebuildAssortiment(prod){
-
-    }
-
     $scope.save = function(){
         if(isFormInvalid()) { $a.err('Пожалуйста проверьте правильность заполнения всех полей'); return;}
         if($scope.product.id){
             Products.update({product: $scope.product, id: $scope.product.id, action:'update'}, function(data){
                 if(data.success){
-                    rebuildAssortiment($scope.product);
                     $location.path('/products/'+$scope.product.id);
                     $location.hash('glob');
+                    $scope.$parent.bindAssortment();
                     $a.info('Изменения сохранены');
                 }
             });
         } else {
             Products.save({product: $scope.product}, function(data){
                 if(data.success){
+                    console.log(data.product);
                     $scope.product = data.product;
                     $location.path('/products/'+$scope.product.id);
                     $location.hash('glob');
                     $scope.$parent.products.push($scope.product);
+                    $scope.$parent.bindAssortment();
                     $a.info('Добавлен новый товар');
                 }
             });
@@ -93,15 +91,19 @@ function($scope, $routeParams, Products, $location, Global) {
         if($scope.product.category_id == null) return;
         var cat_name = $scope.categories.whereId($scope.product.category_id).name;
         $a.confirm('<b>Вы действительно хотите удалить<br/>эту категорию?</b><br/><b style="font-size: 20px;">"'+cat_name+'"</b><br/>Пожалуйста убедитесь ' +
-            'что в этой категории отсутствуют какие-либо товары (не зависимо от фирмы), для избежания негативных ' +
-            'последствий!',function(){
+            'что в этой категории отсутствуют какие-либо товары',function(){
             Global.delete_category_or_firm_option({category: $scope.product.category_id},function(data){
                 if(data.success){
-                    $scope.categories = data.categories;
+                    $scope.$parent.categories = data.categories;
+                    $scope.categories = $scope.$parent.categories;
                     if($scope.categories.length) {
                         $scope.product.category_id = $scope.categories[0].id;
                     } else $scope.product.category_id = null;
+                    $scope.$parent.bindAssortment();
                     $a.info('Категория успешно удалена');
+                } else {
+                    $a.alert('Невозможно удалить эту категорию, т.к. она указана для некоторых товаров.<br/>' +
+                        'Для начала необходимо либо удалить эти товары, либо указать для них другую категорию.');
                 }
             });
         });
@@ -116,6 +118,7 @@ function($scope, $routeParams, Products, $location, Global) {
                 $scope.categories = $scope.$parent.categories;
                 $scope.product.category_id = data.category.id;
                 $scope.new_category_name = null;
+                $scope.needToRebuild = true;
                 $a.info('Добавлена новая категория');
             }
         });
@@ -134,15 +137,19 @@ function($scope, $routeParams, Products, $location, Global) {
         if($scope.product.firm_id == null) return;
         var firm_name = $scope.firms.whereId($scope.product.firm_id).name;
         $a.confirm('<b>Вы действительно хотите удалить<br/>эту фирму?</b><br/><b style="font-size: 20px;">"'+firm_name+'"</b><br/>Пожалуйста убедитесь ' +
-            'что в этой фирме отсутствуют какие-либо товары (не зависимо от категории), для избежания негативных ' +
-            'последствий!',function(){
+            'что в этой фирме отсутствуют какие-либо товары',function(){
             Global.delete_category_or_firm_option({firm: $scope.product.firm_id},function(data){
                 if(data.success){
-                    $scope.firms = data.firms;
+                    $scope.$parent.firms = data.firms;
+                    $scope.firms = $scope.$parent.firms;
                     if($scope.firms.length) {
                         $scope.product.firm_id = $scope.firms[0].id;
                     } else $scope.product.firm_id = null;
+                    $scope.$parent.bindAssortment();
                     $a.info('Фирма успешно удалена');
+                } else {
+                    $a.alert('Невозможно удалить эту фирму, т.к. она указана для некоторых товаров.<br/>' +
+                        'Для начала необходимо либо удалить эти товары, либо указать для них другую фирму.');
                 }
             });
         });
@@ -156,6 +163,7 @@ function($scope, $routeParams, Products, $location, Global) {
                 $scope.firms = $scope.$parent.firms;
                 $scope.product.firm_id = data.firm.id;
                 $scope.new_firm_name = null;
+                $scope.needToRebuild = true;
                 $a.info('Добавлена новая фирма');
             }
         });

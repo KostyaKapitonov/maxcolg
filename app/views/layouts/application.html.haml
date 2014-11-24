@@ -7,11 +7,6 @@
     = javascript_include_tag 'application.js', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body{'x-ng-controller'=>'MainController'}
-    -#- unless flash.blank?
-    -#  - flash.each do |name, msg|
-    -#    - if name == 'error' || name == 'highlight'
-    -#      %script{type: 'text/javascript'}
-    -#        = "$('<div><div style=\"padding: 10;\" class=\"ui-state-#{name}\">#{msg}</div></div>').dialog({width: 330});".html_safe
     #glob{style: 'position: absolute; top: 0px;'}
     .global{'x-ng-show'=>'loadFinishedCompletly'}
       %div{style: 'text-align: right; vertical-align: middle;'}
@@ -32,12 +27,6 @@
             %td{'x-ng-show'=>'currentUser', style: 'padding-right: 14px;'}
               %a{'x-ng-click'=>'logout()'}
                 Выйти
-            -#%td
-            -#  -if current_user.blank?
-            -#    = link_to(("#{image_tag 'fb.png', class: 'login_img'}").html_safe, user_omniauth_authorize_path(:facebook), target: '_self')
-            -#    = link_to(("#{image_tag 'vk.png', class: 'login_img'}").html_safe, user_omniauth_authorize_path(:vkontakte), target: '_self')
-            -#  -else
-            -#    = link_to 'Выйти', destroy_user_session_path, target: '_self', method: :delete
       %table.head_panel
         %tbody
           %tr
@@ -58,14 +47,26 @@
           %tbody
             %tr
               %td.assortment{'x-ng-hide'=>'form_displayed'}
-                .firm_block{'x-ng-repeat'=>'firm in assortmentList | orderBy:\'name\''}
+                .sortTypeBlock
+                  Сортировка:
+                  %br
+                  %select{'x-ng-model'=>'setting.default_sort_type', 'x-ng-options'=>'st.val as st.name for st in sortTypes', 'x-ng-change'=>'handleRebuild()'}
+                .firm_block{'x-ng-repeat'=>'firm in assortmentList | orderBy:\'name\'', 'x-ng-show'=>'setting.default_sort_type == "firm"'}
                   %h4
-                    %a{'x-ng-href'=>products_path+'?firm={{firm.id}}'}
+                    %a{'x-ng-href'=>products_path+'?firm={{firm.id}}#glob'}
                       {{firm.name}}
                   %ul
                     %li{'x-ng-repeat'=>'cat in firm.catigories | orderBy:\'name\''}
-                      %a{'x-ng-href'=>products_path+'?firm={{firm.id}}&category={{cat.id}}'}
+                      %a{'x-ng-href'=>products_path+'?firm={{firm.id}}&category={{cat.id}}#glob'}
                         {{cat.name}}
+                .firm_block{'x-ng-repeat'=>'cat in assortmentList | orderBy:\'name\'', 'x-ng-show'=>'setting.default_sort_type == "cat"'}
+                  %h4
+                    %a{'x-ng-href'=>products_path+'?category={{cat.id}}#glob'}
+                      {{cat.name}}
+                  %ul
+                    %li{'x-ng-repeat'=>'firm in cat.firms | orderBy:\'name\''}
+                      %a{'x-ng-href'=>products_path+'?category={{cat.id}}&firm={{firm.id}}#glob'}
+                        {{firm.name}}
 
               %td
                 .main{'ng-view'=>''}

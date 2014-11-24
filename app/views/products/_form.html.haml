@@ -1,4 +1,9 @@
 %form{'x-ng-controller' => 'ProductFormController', 'novalidate'=>''}
+  .button_section{style: 'margin: 10px;'}
+    %a.button{'x-ng-click'=>'save();'}
+      Сохранить
+    %a.button{'x-ng-click'=>'cancel();'}
+      Отмена
   %table{style:'width: 100%;'}
     %tr{'x-ng-form'=>'productForm'}
       %td{style:'width: 50%;'}
@@ -16,13 +21,13 @@
             =table_row 'Цена, $', (tag :input, name: 'usd_price', 'x-ng-model' => 'product.usd_price', 'x-ng-blur'=>'priceChanged("usd")', 'x-ng-disabled'=>'product.fixed_rub_price', 'required'=>'')
             %td
               .errblock
-                %span{'x-ng-show'=>'(productForm.usd_price.$error.required || blank) && !product.fixed_rub_price && (productForm.name.$touched || showErrors)'}
+                %span{'x-ng-show'=>'(productForm.usd_price.$error.required || blank) && !product.fixed_rub_price && (productForm.usd_price.$touched || showErrors)'}
                   необходимо заполнить
           %tr
             =table_row 'Цена, руб', (tag :input, name: 'price', 'x-ng-model' => 'product.price', 'x-ng-blur'=>'priceChanged("rub")', 'x-ng-disabled'=>'!product.fixed_rub_price', 'required'=>'')
             %td
               .errblock
-                %span{'x-ng-show'=>'(productForm.price.$error.required || blank) && product.fixed_rub_price && (productForm.name.$touched || showErrors)'}
+                %span{'x-ng-show'=>'(productForm.price.$error.required || blank) && product.fixed_rub_price && (productForm.price.$touched || showErrors)'}
                   необходимо заполнить
           %tr
             =table_row 'Имеется в<br/>наличии'.html_safe, (tag :input, class: 'f_cb', type: 'checkbox', 'x-ng-model' => 'product.exist')+'<p class="input_desc">Если убрать галочку - покупатели НЕ смогут заказать этот товар, хоть он и будет доступен для просмотра.</p>'.html_safe
