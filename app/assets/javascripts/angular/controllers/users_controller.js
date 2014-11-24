@@ -40,7 +40,6 @@ function($scope, $location, $routeParams, User, Auth) {
     });
 
     function isFormInvalid(){
-        console.log($scope.showErrors);
         $scope.showErrors = true;
         if($scope.password != $scope.password_confirmation || $scope.userForm.$invalid) {
             $a.err('введённые вами данные содержат <br/>ошибки, пожалуйста исправьте их');
@@ -57,7 +56,6 @@ function($scope, $location, $routeParams, User, Auth) {
                             password_confirmation: $scope.password_confirmation};
         Auth.register($scope.credentials).then(function(registeredUser) {
             $location.path('/');
-            $scope.setting.current_page_html = $scope.setting.main_page_text;
             $a.alert('Проверьте пожалуйста свою почту.');
             $a.done();
         }, function(res) {

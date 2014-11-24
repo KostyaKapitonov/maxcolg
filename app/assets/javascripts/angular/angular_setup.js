@@ -159,7 +159,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.actual_cart = null;
                 $scope.bindAssortment();
                 $location.path('/');
-                $scope.setting.current_page_html = $scope.setting.main_page_text;
                 $a.info('Вы успешно покинули свой аккаунт');
                 $a.done();
                 someLoadFinished('logout');
