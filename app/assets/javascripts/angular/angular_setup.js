@@ -125,7 +125,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     if(isThisLoadFinished('getProducts')){
                         $scope.carts = bindPositionDataFromProduct(carts);
                         $scope.lookForActual();
-                        console.log($scope.carts);
                         someLoadFinished('load_carts');
                     } else setTimeout(function(){waitForProductLoadComplete();},100);
                 };
@@ -133,21 +132,20 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-        $scope.getUser = function(callback){
+        $scope.getUser = function(from){
             someLoadStarted('getUser');
             Auth.currentUser().then(function(user) {
                 $scope.currentUser = user;
-                $scope.userRequestComplete = true;
-                if(typeof(callback) == 'function') callback(true);
+                if($a.blank($scope.setting)) $scope.getSettings();
                 $scope.load_carts();
                 someLoadFinished('getUser');
-                $scope.getSettings();
+                $scope.userRequestComplete = true; // used in template
+                if(from == 'uLogin') $scope.bindAssortment();
             }, function(error) {
                 cl(error);
-                $scope.userRequestComplete = true;
-                if(typeof(callback) == 'function') callback(false);
                 someLoadFinished('getUser');
-                $scope.getSettings();
+                if($a.blank($scope.setting)) $scope.getSettings();
+                $scope.userRequestComplete = true; // used in template
             });
         };
 
@@ -159,10 +157,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.cartNotEmpty = false;
                 $scope.carts = null;
                 $scope.actual_cart = null;
+                $scope.bindAssortment();
                 $location.path('/');
+                $scope.setting.current_page_html = $scope.setting.main_page_text;
                 $a.info('Вы успешно покинули свой аккаунт');
                 $a.done();
-                $scope.bindAssortment();
                 someLoadFinished('logout');
             }, function(error) {
                 $a.err('Что-то пошло не так...');
@@ -178,11 +177,9 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             User.uLogin({u_token: token},function(res){
                 if(res.authorized === true){
                     if(res.provider == 'welcome'){
-                        $scope.getUser();
+                        $scope.getUser('uLogin');
                         $a.info('Приветствуем вас в нашем интернет-магазине.');
                         $location.path('/');
-                        $scope.bindAssortment();
-                        $scope.load_carts();
                     } else if (res.provider == 'added'){
                         $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля от аккаунта интернет-магазина Antalex).');
                     } else if (res.provider == 'already'){
@@ -191,7 +188,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $a.done();
                 }
                 else if(res.authorized === false && res.data.identity){
-                    console.log('res.authorized === false');
                     $('<div><p class="dialog_msg">'+
                         'Для входа через социальную сеть, вам необходимо для начала зарегистрироватся на нашем сайте<br/>'+
                         'Если вы уже зарегистрированы, то после входа вы сможете привязать аккаунт вашей соц сети к аккаунту нашего сайта'+
@@ -235,8 +231,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.bindAssortment = function(first_build){
             $scope.admin = $a.any($scope.currentUser) && $scope.currentUser.is_admin;
-            console.log('$scope.bindAssortment >>> $scope.products');
-            console.log($scope.products);
             if($scope.admin) $scope.product_list = $scope.products;
             else {
                 $scope.product_list = [];
@@ -331,7 +325,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             someLoadStarted('getSettings');
             Global.main(function(res){
                 $scope.setting = res;
-                $scope.getProducts();
+                if($a.blank($scope.products)) $scope.getProducts();
                 someLoadFinished('getSettings');
             });
         };

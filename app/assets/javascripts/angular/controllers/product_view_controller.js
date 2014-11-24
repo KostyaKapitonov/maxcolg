@@ -108,7 +108,6 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                     cl(res);
                 }
             });
-            console.log('completed!');
         } else {
             $a.confirm('К сожалению вы ещё не заполнили все необходимые данные о себе.<br/>' +
                 'А без этого невозможно оформить заказ.<br/>Хотите заполнить недостающую информацию прямо сейчас?',

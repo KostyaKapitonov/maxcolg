@@ -24,7 +24,6 @@ function($scope, $routeParams, Products, $location, Global) {
         $scope.firms = $scope.$parent.firms;
         if($scope.isNew){
             $scope.product = {exist: true};
-            console.log($routeParams.firm);
             if( $scope.categories.length) $scope.product.category_id = $routeParams.category ?
                 $scope.categories.whereId($routeParams.category).id : $scope.categories[0].id;
             if( $scope.firms.length) $scope.product.firm_id = $routeParams.firm ?
@@ -64,7 +63,6 @@ function($scope, $routeParams, Products, $location, Global) {
         } else {
             Products.save({product: $scope.product}, function(data){
                 if(data.success){
-                    console.log(data.product);
                     $scope.product = data.product;
                     $location.path('/products/'+$scope.product.id);
                     $location.hash('glob');
@@ -113,7 +111,6 @@ function($scope, $routeParams, Products, $location, Global) {
         if(!$scope.new_category_name || $scope.new_category_name == '') return;
         Global.create_category_or_firm_option({category: {name: $scope.new_category_name}},function(data){
             if(data.success){
-                console.log(data);
                 $scope.$parent.categories = data.categories;
                 $scope.categories = $scope.$parent.categories;
                 $scope.product.category_id = data.category.id;

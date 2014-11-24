@@ -6,17 +6,16 @@ function($scope, $location, $routeParams, User, Auth) {
     $scope.unconfirmed = true;
 
     $scope.login = function(){
-        console.log($a.blocked);
         if($a.blocked) return;
         $a.wait();
         $scope.credentials = {email: $scope.email, password: $scope.password};
         Auth.login($scope.credentials).then(function(user) {
             $a.info('Приветствуем вас в нашем интернет-магазине.');
             $scope.$parent.currentUser = user;
+            $scope.$parent.bindAssortment();
+            $scope.$parent.load_carts();
             $location.path('/');
             $a.done();
-            $scope.bindAssortment();
-            $scope.$parent.load_carts();
         }, function(error) {
             if(error.data.error == 'You have to confirm your email address before continuing.')
                 $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
@@ -43,9 +42,6 @@ function($scope, $location, $routeParams, User, Auth) {
     function isFormInvalid(){
         console.log($scope.showErrors);
         $scope.showErrors = true;
-        console.log($scope.showErrors);
-        window.d = $scope.userForm;
-        window.dd = $scope.userForm.email;
         if($scope.password != $scope.password_confirmation || $scope.userForm.$invalid) {
             $a.err('введённые вами данные содержат <br/>ошибки, пожалуйста исправьте их');
             return true;
@@ -60,8 +56,8 @@ function($scope, $location, $routeParams, User, Auth) {
                             password: $scope.password,
                             password_confirmation: $scope.password_confirmation};
         Auth.register($scope.credentials).then(function(registeredUser) {
-            console.log(registeredUser); // => {id: 1, ect: '...'}
             $location.path('/');
+            $scope.setting.current_page_html = $scope.setting.main_page_text;
             $a.alert('Проверьте пожалуйста свою почту.');
             $a.done();
         }, function(res) {
@@ -78,7 +74,6 @@ function($scope, $location, $routeParams, User, Auth) {
                         }}
                     ] });
             }
-            cl(res);
             $a.done();
         });
     };
@@ -122,7 +117,6 @@ function($scope, $location, $routeParams, User, Auth) {
                 token: $scope.token
             },
             function(res){
-                console.log(res);
                 $location.path('/');
                 $a.alert('Пароль успешно изменён.');
                 $a.done();
