@@ -1,7 +1,7 @@
 require 'net/http'
 
 task :destroy_unconfirmed_users => :environment do
-  User.where(confirmed_at: nil, confirmation_sent_at:  (Date.today-10.days)..(Date.today-2.days)).destroy_all
+  User.where(confirmed_at: nil, confirmation_sent_at:  (Date.today-100.days)..(Date.today-2.days)).destroy_all
 end
 
 task :recalculate_exchange_rates => :environment do

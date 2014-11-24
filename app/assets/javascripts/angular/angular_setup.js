@@ -235,6 +235,8 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.bindAssortment = function(first_build){
             $scope.admin = $a.any($scope.currentUser) && $scope.currentUser.is_admin;
+            console.log('$scope.bindAssortment >>> $scope.products');
+            console.log($scope.products);
             if($scope.admin) $scope.product_list = $scope.products;
             else {
                 $scope.product_list = [];
