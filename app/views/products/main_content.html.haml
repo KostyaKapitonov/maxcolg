@@ -1,14 +1,6 @@
 .center
   %div{'x-ng-bind-html'=>'htmlSafe(setting.current_page_html)'}
-
-  -#%div{style: 'margin-bottom: 10px;', 'x-ng-show'=>'currentUser && currentUser.is_admin'}
-  -#  %a.button{'x-ng-click'=>'editPage()', 'x-ng-hide' => 'editMode'}
-  -#    Редактировать страницу
-  -#  %a.button{'x-ng-click'=>'savePage()', 'x-ng-show' => 'editMode'}
-  -#    Сохранить
-  -#  %a.button{'x-ng-click'=>'cancelEditMode()', 'x-ng-show' => 'editMode'}
-  -#    Отмена
-  -#  %div{'x-ng-show' => 'editMode', style: 'margin-top: 10px;'}
-  -#    =tag :textarea, 'x-ng-model' => 'new_text', class: 'ck-editor'
-  -#%div{'x-ng-hide' => 'editMode'}
-  -#  %div{'x-ng-bind-html'=>'htmlSafe(setting.contacts_text)', 'x-ng-hide' => 'isMainPage'}
+  .my_map
+    -#%script
+    -#  setTimeout(function(){$('.my_map').append('<script type="text/javascript" charset="utf-8">var a= function(){console.log("a called!");}; a();</script><p>done.</p>');},2500);
+    -#<script type="text/javascript" charset="utf-8" src="//api-maps.yandex.ru/services/constructor/1.0/js/?sid=pT3I4fqAPOhpI7AoHflvn2fyP7uzYvzh&width=600&height=450"></script>

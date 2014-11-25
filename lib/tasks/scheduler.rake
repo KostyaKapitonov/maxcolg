@@ -34,9 +34,13 @@ task :recalculate_exchange_rates => :environment do
       end
     end
   rescue Exception => e
+    backtrace = ''
+    e.backtrace.inspect.each do |l|
+      backtrace += "#{l}<br/>"
+    end
     new_mail = GmailSender.new(ENV['ANTALEX_EMAIL_ADDRESS'], ENV['ANTALEX_EMAIL_PASSWORD'])
     new_mail.send(:to => 'kapitonovkg@sfdev.com', :subject => "Antalex schedule raise-error: #{e.message}",
-                  :content => e.backtrace.inspect, content_type: 'text/html; charset="utf-8"')
+                  :content => backtrace, content_type: 'text/html; charset="utf-8"')
       # p e.backtrace.inspect
   end
 end

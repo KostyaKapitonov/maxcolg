@@ -4,6 +4,7 @@ ANTALEX.directive('ckEditor', [function () {
         restrict: 'C',
         link: function (scope, elm, attr, model) {
             CKEDITOR.config.uiColor = '#dfc9c0'; // COLOR
+            CKEDITOR.config.allowedContent = true; // to allow JS
             var isReady = false;
             var data = [];
             var ck = CKEDITOR.replace(elm[0]);

@@ -1,7 +1,7 @@
 tmp/**
 .idea/**
 log/**
-
+app/assets/javascripts/test.js
 
 # Ignore application configuration
 /config/application.yml
