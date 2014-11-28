@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   root :to => 'products#main'
-  get '/contacts' => 'products#main'
+  get '/contacts' => 'products#contacts'
 
   resource :carts, only: [:index] do
     get :view

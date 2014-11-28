@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_filter :only_admin, except: [:main, :main_content, :index, :show]
+  before_filter :only_admin, except: [:main, :main_content, :index, :show, :contacts]
   # layout 'angular'
 
   def main
@@ -14,6 +14,9 @@ class ProductsController < ApplicationController
         render json: @setting
       }
     end
+  end
+
+  def contacts
   end
 
   def index

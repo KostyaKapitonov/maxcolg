@@ -405,3 +405,12 @@ $a.toFloat = function(val){
 };
 
 //------------------------------------------------ Numbers | String ---------------------------------------------
+
+$a.getMapData = function(sid, callback){
+    $.get('http://api-maps.yandex.ru/services/constructor/1.0/js/?sid='+(sid||'r7iJfgIosKiHK6_cCFl3MaHw3CtuPew2')
+        ,function(res){
+            var r = JSON.parse(res.match(/\{\"response.+\}\}\}/)).response.map;
+            if(typeof callback == 'function') callback(r);
+            else cl(['Callback is undefined... parsed response is: ',r]);
+        });
+};
