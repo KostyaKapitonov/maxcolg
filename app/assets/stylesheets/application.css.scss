@@ -140,7 +140,8 @@ ul {
 
 table.in_form td.input input,
 table.in_form td.input select,
-fieldset select {
+fieldset select, fieldset input,
+.ant_input {
   width: 90%;
   border-style: solid;
   border-width: 2px;
@@ -153,16 +154,18 @@ fieldset select {
 
 table.in_form td.input input:focus,
 table.in_form td.input select:focus,
-fieldset select:focus,
-.sortTypeBlock select:focus{
+fieldset select:focus, fieldset input:focus,
+.sortTypeBlock select:focus,
+.ant_input:focus {
   background-color: $backgroundColorHovered;
   border-color: $buttonColor;
 }
 
 table.in_form td.input input:disabled,
 table.in_form td.input select:disabled,
-fieldset select:disabled,
-.sortTypeBlock select:disabled{
+fieldset select:disabled, fieldset input:disabled,
+.sortTypeBlock select:disabled,
+.ant_input:disabled {
   border-color: darkgray;
   background-color: lightgrey;
 }
@@ -488,8 +491,8 @@ div.errblock {
 
 div.errblock span {
   position: relative;
-  right: 200px;
-  top: 24px;
+  left: 20px;
+  bottom: 8px;
   background-color: crimson;
   color: white;
   padding: 2px 7px;
@@ -587,4 +590,21 @@ b.red {
 
 .only_admin_info span{
   padding: 0px 10px;
+}
+
+td.action_col {
+  width: 5%;
+}
+
+td.mid {
+  width: 23%;
+}
+
+table.zones tr td {
+  vertical-align: middle;
+  text-align: center  ;
+}
+
+fieldset table tr td{
+  height: 30px;
 }

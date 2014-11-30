@@ -346,6 +346,18 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
         }
 
+        $scope.loadZones = function(callback){
+            if($a.blank($scope.zones) && typeof callback == 'function'){
+                Cart.zones(function(res){
+                    $scope.zones = res;
+                    callback($scope.zones);
+                });
+            } else if(typeof callback == 'function'){
+                callback($scope.zones);
+            }
+
+        };
+
         $scope.htmlSafe = function(html_code) {
             return $sce.trustAsHtml(html_code);
         };

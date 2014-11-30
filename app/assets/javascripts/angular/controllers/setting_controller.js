@@ -1,13 +1,20 @@
-ANTALEX.controller('SettingController', ['$scope', '$location', 'Setting',
-function($scope, $location, Setting) {
+ANTALEX.controller('SettingController', ['$scope', '$location', 'Setting', 'Cart',
+function($scope, $location, Setting, Cart) {
 
     $scope.page_name = $location.search().page;
     $scope.new_default_sort_type = $scope.$parent.setting.default_sort_type;
-    var refresh = function(){
-        if($scope.page_name && $scope.$parent.setting) $scope.page = $scope.$parent.setting[$scope.page_name];
-        else setTimeout(function(){refresh();},100);
+    $scope.zones = [];
+
+    if($scope.page_name && $scope.$parent.setting) $scope.page = $scope.$parent.setting[$scope.page_name];
+    $scope.$parent.loadZones(function(res){
+        $scope.zones = res;
+    });
+
+    $scope.genUnicId = function(){
+        if(!$scope.idCounter)$scope.idCounter=0;
+        $scope.idCounter++;
+        return $scope.idCounter;
     };
-    refresh();
 
     $scope.save_page = function(){
         var params = {setting: {}};
@@ -44,5 +51,85 @@ function($scope, $location, Setting) {
             }
         });
     };
+
+    $scope.newZone = function(){
+        $scope.showErrors = false;
+        $scope.zones.push({});
+    };
+
+    $scope.saveZones = function(){
+        $scope.showErrors = true;
+        if($scope.zonesForm.$invalid){
+            $a.err('Пожалуйста проверьте правильность<br/>заполнения всех полей');
+        } else {
+            $a.wait();
+            Cart.add_zone(prepareToSave(),function(res){
+                if(res.success){
+                    $a.info('Зоны доставки сохранены.');
+                } else {
+                    $a.err('Ошибка сохранения.');
+                    cl(res);
+                }
+                $a.done();
+            })
+        }
+    };
+    function prepareToSave(){
+        var newZones = [],
+            existZones = [];
+        $scope.zones.each(function(z){
+            if($a.any(z.id)) existZones.push(z);
+            else newZones.push(z);
+        });
+        return {new_zones: newZones, existed_zones: existZones};
+    }
+
+    $scope.deleteZone = function(idx){
+        $scope.showErrors = false;
+        if($scope.zones[idx].id){
+            $a.confirm('Вы действительно хотите удалить<br/>эту зону доставки?<br/><br/><b>'+$scope.zones[idx].name+'</b>',
+                function(){
+                    $a.wait();
+                    Cart.del_zone({id: $scope.zones[idx].id},function(res){
+                        if(res.success){
+                            $a.info('Зона удалена.');
+                            rebindZonesTable(idx);
+                        } else {
+                            $a.err('Ошибка удаления.');
+                            cl(res);
+                        }
+                        $a.done();
+                    });
+                });
+        } else rebindZonesTable(idx);
+    };
+
+    $scope.applyNewMap = function(){
+        $a.wait();
+        $scope.setting.map_code = $scope.setting.map_code.replace(/(\&width\=\d+|\&height\=\d+)/g,'');
+        Setting.update({setting: {map_code: $scope.$parent.setting.map_code}},function(data){
+            if(data.success){
+                $a.confirm('Код карты успешно сохранён.<br/>Хотите проверить работоспособность ' +
+                    'кода, открыв сейчас карту?',function(){
+                    window.open().document.write('<div>'+$scope.$parent.setting.map_code+'</div>');
+                })
+            } else {
+                cl(data);
+                $a.err('Ошибка сохранения кода карты');
+            }
+            $a.done();
+        });
+    };
+
+    function rebindZonesTable(idx){
+        $scope.zones.splice(idx,1);
+        var tmp_z = $scope.zones;
+        $scope.zones = null;
+        setTimeout(function(){$scope.$apply(function(){
+            $scope.zones = tmp_z;
+        })},0);
+    }
+
+
 
 }]);

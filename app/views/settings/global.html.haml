@@ -38,6 +38,66 @@
         =table_row 'Обновлять<br/>курс $'.html_safe, (tag :input, type: 'checkbox', 'x-ng-change' => 'toggle_ra()', 'x-ng-model' => 'setting.recalculatable')+'<p class="input_desc">Включить автоматическое обновление курса $ и пересчёт на его основе стоимости товаров в рублях (зависящий от курса $)</p>'.html_safe
       %tr
         =table_row 'Сортировка<br/>по умолчанию'.html_safe, (tag :select, 'x-ng-change' => 'toggle_dst()', 'x-ng-model' => 'new_default_sort_type', 'x-ng-options'=>'st.val as st.name for st in sortTypes')
+      %tr
+        %td{colspan: 3}
+          %hr
+      %tr
+        %td{colspan: 3}
+          Создание/изменение карты <b>зон доставки</b> доступно в
+          %a.button{href: 'https://tech.yandex.ru/maps/tools/constructor/', target: '_blank'}
+            конструкторе карт
+      %tr
+        = table_row 'Вставьте код карты', (tag :input, 'x-ng-model'=>'setting.map_code', 'x-ng-blur'=>'applyNewMap()')
+      %tr
+        %td{colspan: 3}
+          %p{style:'text-align: center;'}
+            %b
+              Зоны доставки
+            %a.button{'x-ng-click'=>'newZone()'}
+              добавить
+            %span{'x-ng-hide' => 'zones.length > 0'}
+              %br
+              %br
+              Отсутствуют.
+          %table.zones{style:'width: 100%;', 'x-ng-show'=>'zones.length > 0', 'x-ng-form'=>'zonesForm'}
+            %tr
+              %td
+                Название
+              %td
+                Цвет
+              %td
+                Цена доставки
+            %tr{'x-ng-repeat'=>'zone in zones'}
+              %td
+                %input.ant_input{'x-ng-model'=>'zone.name', name: 'name_{{$index}}','required'=>''}
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'zonesForm.name_{{$index}}.$error.required && (zonesForm.name_{{$index}}.$touched || showErrors)'}
+                    необходимо заполнить
+              %td
+                %input.ant_input{'x-ng-model'=>'zone.color', name: 'color_{{$index}}', 'required'=>''}
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'zonesForm.color_{{$index}}.$error.required && (zonesForm.color_{{$index}}.$touched || showErrors)'}
+                    необходимо заполнить
+              %td.mid
+                %input.ant_input.zoneprice{'x-ng-model'=>'zone.price', name: 'price_{{$index}}', 'data-index'=>'{{$index}}', 'required'=>''}
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'zonesForm.price_{{$index}}.$error.required && (zonesForm.price_{{$index}}.$touched || showErrors)'}
+                    необходимо заполнить
+              %td.action_col
+                %a.button{'x-ng-click'=>'deleteZone($index)', title: 'удалить зону доставки'}
+                  &nbsp;X&nbsp;
+            %tr
+              %td{colspan:7}
+                .button_section
+                  %a.button{'x-ng-click'=>'saveZones()'}
+                    Сохранить зоны доставки
+
+
+
+
 
 
 

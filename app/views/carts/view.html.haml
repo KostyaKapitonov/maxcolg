@@ -12,7 +12,14 @@
         %td{style:'width: 65%; vertical-align: middle;'}
           %p{'x-ng-hide'=>'actual_cart.positions.length > 0'}
             Корзина пуста.
+
           %table.in_form{'x-ng-show'=>'actual_cart.positions.length > 0'}
+            %tr
+              =table_row 'Зона доставки', (tag :select, style:'width: auto', 'x-ng-model'=>'zone')+'<button class="button" x-ng-click="show_delivery_zones()">Возможные зоны доставки</button>'.html_safe
+            %tr
+              %td{'colspan'=>'3'}
+                Если вам необходима доставка не по Симферополю (или его пригороду), это потребует
+                индивидуального согласования с администрацией
             %tr.positions{'x-ng-repeat'=>'pos in actual_cart.positions'}
               =table_row 'Кол-во', (tag :input, name: 'count_{{$index}}', 'required'=>'', maxlength: '4')
               %td
@@ -22,7 +29,7 @@
                   %span{'x-ng-show'=>'userForm.email.$error.email && (userForm.email.$touched || showErrors)'}
                     введён несуществующий Email
 
-            %trmi
+            %tr
               %td{'colspan'=>'3'}
                 .button_section
                   %a.button{'x-ng-click'=>'reg_user();','x-ng-hide'=>'reset_mode'}

@@ -1,6 +1,6 @@
 class CartsController < ApplicationController
-  before_filter :only_logged_in, only: [:index, :view, :add_position, :remove_position, :confirm]
-  before_filter :only_admin, only: [:proceed, :destroy]
+  before_filter :only_logged_in, only: [:index, :view, :add_position, :remove_position, :confirm, :zones]
+  before_filter :only_admin, only: [:proceed, :destroy, :add_zone]
 
   def index
     respond_to do |format|
@@ -47,6 +47,19 @@ class CartsController < ApplicationController
 
   def destroy
     render json: {}
+  end
+
+  def zones
+    render json: Zone.all
+  end
+
+  def add_zone
+    res = Zone.create_or_update(params)
+    render json: {success: res}
+  end
+
+  def del_zone
+    render json: {success:  !Zone.where(id:params[:id]).destroy_all.blank?}
   end
 
 end

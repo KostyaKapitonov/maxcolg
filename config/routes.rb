@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     post :confirm
     post :proceed
     delete :destroy
+    get :zones
+    post :add_zone
+    delete :del_zone
   end
   get '/carts' => 'carts#index'
 
