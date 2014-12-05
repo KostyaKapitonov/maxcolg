@@ -34,11 +34,15 @@ class CartsController < ApplicationController
   end
 
   def remove_position
-    render json: {}
+    pos = Position.where(id: params[:id]).first
+    success = false
+    success = pos.destroy if !pos.blank? && pos.cart.user.id == current_user.id
+    render json: {success: success}
   end
 
   def confirm
-    render json: {}
+    params.require(:cart).require(:positions)
+    render json: Cart.validate_and_create(params, current_user)
   end
 
   def proceed

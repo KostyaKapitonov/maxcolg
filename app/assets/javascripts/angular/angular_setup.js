@@ -9,6 +9,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.cartNotEmpty = false;
         $scope.asc = true;
         $scope.sortTypes = [{name: 'фирма', val: 'firm'},{name: 'категория', val: 'cat'}];
+        $scope.calbacks_q = [];
 
         function checkLS(){
             var pathname = localStorage.getItem('pathname');
@@ -346,11 +347,30 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $a.alert('Cпасибо за регистрацию. Заполните пожалуйста недостающие данные.');
         }
 
+        function addToCalbacksQ(name,callback){
+            //todo: q
+            $scope.queune = [];
+            if($scope.queune[name] == null){
+                $scope.queune[name] = [];
+            }
+            $scope.queune[name].push(callback);
+        }
+
+        function respondToAllCalbacks(name, response){
+            if($scope.queune[name] != null && $scope.queune[name].length > 0){
+                $scope.queune[name].each(function(cb){
+                    if(typeof cb == 'function') cb(response);
+                });
+            }
+        }
+
         $scope.loadZones = function(callback){
             if($a.blank($scope.zones) && typeof callback == 'function'){
+                addToCalbacksQ('loadZones',callback);
                 Cart.zones(function(res){
                     $scope.zones = res;
-                    callback($scope.zones);
+                    respondToAllCalbacks('loadZones',$scope.zones);
+//                    callback($scope.zones);
                 });
             } else if(typeof callback == 'function'){
                 callback($scope.zones);

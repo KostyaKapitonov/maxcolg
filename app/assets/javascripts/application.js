@@ -85,6 +85,20 @@ Array.prototype.whereId = function(id, p){
     return target;
 };
 
+//Object.prototype.each = function(callback){
+//    if(typeof Array.prototype.each != 'function'){
+//        console.log('please define Array.prototype.each');
+//    } else {
+//        var self = this;
+//        if(typeof callback == 'function'){
+//            var keys = Object.keys(self);
+//            keys.each(function(key){
+//                callback(self[key]);
+//            });
+//        }
+//    }
+//};
+
 Number.prototype.toPhrase=function(c)
 // сумма прописью для чисел от 0 до 999 триллионов
 // можно передать параметр "валюта": RUB,USD,EUR (по умолчанию RUB)
@@ -273,9 +287,10 @@ Number.prototype.toPhrase=function(c)
 };
 
 //----------------------------------------------------Alerts------------------------------------------------
-$a.alert = function(text, title, onClose){
-    if(typeof(onClose) != 'function') onClose =  new Function();
-    $('<div><p class="dialog_msg">'+text+'</p><div>').dialog({ modal: true, position: 'top',
+$a.alert = function(text, title){
+    var alertElement = $('<div><p class="dialog_msg">'+text+'</p><div>');
+    var onClose = function(){alertElement.dialog('destroy').remove();};
+    alertElement.dialog({ modal: true, position: 'top',
         buttons: [ { text: "Ok", click: function() { $( this ).dialog( "close" ); } } ], title: title,
         beforeClose: onClose});
 };
@@ -304,6 +319,7 @@ $a.info = function(text, isError){
 };
 
 $a.err = function(text){
+    if(!text) text = 'Неизвестная ошибка';
     $a.info(text, true);
 };
 
@@ -316,13 +332,23 @@ $a.show_errors = function(errs){
     $a.alert(list,'Ошибка');
 };
 
-$a.confirm = function(text, callback){
-    $('<div><p class="dialog_msg">'+text+'</p><div>').dialog({ modal: true, position: 'top', title: 'Поддтвердите действие',
+$a.confirm = function(text, callback, opt){
+    callback = callback || function(){};
+    var dialogElement = $('<div><p class="dialog_msg">'+text+'</p><div>');
+    var destrFunc = function(){dialogElement.dialog('destroy').remove()};
+    var destroyAfterClose = function(){
+        callback();
+        setTimeout(destrFunc,500);
+    };
+    var defOpt = { modal: true, position: 'top', title: 'Поддтвердите действие',
         buttons: [
             { text: "Да",  click: function() { $( this ).dialog( "close" );
-                if(typeof callback == 'function') callback();} },
-            { text: "Нет", click: function() { $( this ).dialog( "close" ); } }
-        ]});
+                destroyAfterClose();} },
+            { text: "Нет", click: function() { $( this ).dialog( "close" ); destrFunc(); } }
+        ]};
+    var finalOpt = $a.merge(defOpt,opt);
+    dialogElement.dialog(finalOpt);
+
 };
 
 // --------------------------------------------------localStorage-----------------------------------------
@@ -404,13 +430,39 @@ $a.toFloat = function(val){
     return Number(String(matches[0] || '0') + '.' + String(matches[1] || '00').substring(0, 2));
 };
 
-//------------------------------------------------ Numbers | String ---------------------------------------------
+$a.toInt = function(val){
+    val = String(val)|| '';
+    return Number(val.replace(/\D/g, ''));
+};
 
-$a.getMapData = function(sid, callback){
-    $.get('http://api-maps.yandex.ru/services/constructor/1.0/js/?sid='+(sid||'r7iJfgIosKiHK6_cCFl3MaHw3CtuPew2')
-        ,function(res){
-            var r = JSON.parse(res.match(/\{\"response.+\}\}\}/)).response.map;
-            if(typeof callback == 'function') callback(r);
-            else cl(['Callback is undefined... parsed response is: ',r]);
+//------------------------------------------------ Objects ---------------------------------------------
+
+//$a.getMapData = function(sid, callback){
+//    $.get('http://api-maps.yandex.ru/services/constructor/1.0/js/?sid='+(sid||'r7iJfgIosKiHK6_cCFl3MaHw3CtuPew2')
+//        ,function(res){
+//            var r = JSON.parse(res.match(/\{\"response.+\}\}\}/)).response.map;
+//            if(typeof callback == 'function') callback(r);
+//            else cl(['Callback is undefined... parsed response is: ',r]);
+//        });
+//};
+
+$a.merge = function(a,b){
+    var aKeys = Object.keys(a||{});
+    var bKeys = Object.keys(b||{});
+    var resObj = {};
+    aKeys.each(function(ak){
+        var exist = false;
+        bKeys.each(function(bk){
+            if(ak == bk) exist = true;
         });
+        resObj[ak] = exist ? b[ak] : a[ak];
+    });
+    bKeys.each(function(bk){
+        var exist = false;
+        aKeys.each(function(ak){
+            if(bk == ak) exist = true;
+        });
+        if(!exist) resObj[bk] = b[bk];
+    });
+    return resObj;
 };

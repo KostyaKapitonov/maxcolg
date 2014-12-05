@@ -1,4 +1,5 @@
 class Zone < ActiveRecord::Base
+  has_many :carts
 
   def self.create_or_update(params)
     new_zones =[]

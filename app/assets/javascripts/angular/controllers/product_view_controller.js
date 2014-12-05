@@ -7,11 +7,12 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
     function loadViewData(){
         if($scope.product != null) return;
         if($routeParams.id && $scope.$parent && $scope.$parent.products && $scope.$parent.products.length) {
+            $scope.actual_cart = $scope.$parent.actual_cart;
             $scope.$parent.products.each(function(p){
                 if(p.id == $routeParams.id) {
                     $scope.product = p;
-                    window.d = $scope.product;
                     prepareFilteredList();
+                    checkCartToAddablity();
                 }
             });
             $scope.currentUser = $scope.$parent.currentUser;
@@ -22,6 +23,16 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
             setTimeout(function(){
                 loadViewData();
             },50);
+        }
+    }
+
+    function checkCartToAddablity(){
+        if($scope.actual_cart && $scope.actual_cart.positions && $scope.actual_cart.positions.length>0){
+            $scope.actual_cart.positions.each(function(pos){
+                if(pos.product_id == $scope.product.id){
+                    $scope.addedToCart = true;
+                }
+            });
         }
     }
 
@@ -92,9 +103,10 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                 if(res.success){
                     $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');
+                    $scope.addedToCart = true;
                 } else if(res.already){
                     $('<div><p class="dialog_msg"><b>Данный товар уже добавлен в корзину.</b><br/>Если вы хотите заказать несколько одних и тех же ' +
-                    'товаров, их количество вы сможете указать при утверждении заказа. Вы можете продолжить выбор товаров, ' +
+                    'товаров, их количество вы сможете указать при утверждении заказа.<br/>Сейчас вы можете продолжить выбор товаров,<br/>' +
                     'либо перейти к утверждению заказа</p><div>').dialog({ modal: true, position: 'top', width: 440,
                         buttons: [ { text: "Приступить к утверждению заказа", click: function() {
                             $location.path('/carts/view');
