@@ -1,4 +1,4 @@
-%table.product_table{'x-ng-controller'=>'ProductsListController', style:'border-collapse: collapse;'}
+%table.product_table{style:'border-collapse: collapse;'}
   %tr{style: 'height: 36px;', 'x-ng-show'=>'currentUser && admin'}
     %td
       %a.button{href: new_product_path+'{{$parent.paramsPart}}'}

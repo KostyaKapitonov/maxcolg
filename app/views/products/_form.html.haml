@@ -1,4 +1,4 @@
-%form{'x-ng-controller' => 'ProductFormController', 'novalidate'=>''}
+%form{'novalidate'=>''}
   .button_section{style: 'margin: 10px;'}
     %a.button{'x-ng-click'=>'save();'}
       Сохранить
@@ -8,7 +8,6 @@
     %tr{'x-ng-form'=>'productForm'}
       %td{style:'width: 50%;'}
         %table.in_form
-          -# TODO: add css to checkbox / check USD_rate existing / recalculate by "blur"
           %tr
             =table_row 'Название', (tag :input, name: 'name', 'x-ng-model' => 'product.name', 'required'=>'')
             %td

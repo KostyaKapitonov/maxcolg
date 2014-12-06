@@ -59,7 +59,7 @@ ANTALEX.config(['$routeProvider', '$locationProvider', function($routeProvider, 
         })
         .when('/carts', {
             templateUrl: '/carts.html',
-            controller: 'CartsController'
+            controller: 'CartListController'
         })
         .otherwise({
             redirectTo: '/'

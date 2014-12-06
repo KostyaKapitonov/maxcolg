@@ -58,6 +58,7 @@ function($scope, $location, Cart) {
                     $scope.actual_cart.positions.splice(idx,1);
                     $scope.calculateTotal();
                     $a.info('Товар удалён из корзины.');
+                    if($scope.actual_cart.positions.length == 0) $scope.$parent.cartNotEmpty = false;
                 } else $a.err();
             });
         });

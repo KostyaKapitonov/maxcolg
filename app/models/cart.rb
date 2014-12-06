@@ -75,7 +75,7 @@ class Cart < ActiveRecord::Base
     positions.each do |pos|
       sum += pos.sum
     end
-    cart.update(total_price: sum, zone_id: zone.id, confirmed: true, delivery_price: zone.price, usd_rate: Setting.first.usd_rate)
+    cart.update(confirmation_date: DateTime.now, total_price: sum, zone_id: zone.id, confirmed: true, delivery_price: zone.price, usd_rate: Setting.first.usd_rate)
     {success: true}
   end
 

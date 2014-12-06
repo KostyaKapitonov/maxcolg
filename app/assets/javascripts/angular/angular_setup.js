@@ -119,19 +119,25 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-        $scope.load_carts = function(){
+        $scope.load_carts = function(callback){
             someLoadStarted('load_carts');
-            Cart.all(function(res){
-                var carts = res;
-                var waitForProductLoadComplete = function(){
-                    if(isThisLoadFinished('getProducts')){
-                        $scope.carts = bindPositionDataFromProduct(carts);
-                        $scope.lookForActual();
-                        someLoadFinished('load_carts');
-                    } else setTimeout(function(){waitForProductLoadComplete();},100);
-                };
-                waitForProductLoadComplete();
-            });
+            callback = callback || function(){};
+            if($scope.carts){
+                callback($scope.carts);
+            } else {
+                addToCalbacksQ('load_carts', callback);
+                Cart.all(function(res){
+                    var waitForProductLoadComplete = function(){
+                        if(isThisLoadFinished('getProducts')){
+                            $scope.carts = bindPositionDataFromProduct(res);
+                            $scope.lookForActual();
+                            respondToAllCalbacks('load_carts', $scope.carts);
+                            someLoadFinished('load_carts');
+                        } else setTimeout(function(){waitForProductLoadComplete();},100);
+                    };
+                    waitForProductLoadComplete();
+                });
+            }
         };
 
         $scope.getUser = function(from){
@@ -349,7 +355,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         }
 
         function addToCalbacksQ(name,callback){
-            //todo: q
+            callback = callback || function(){};
             $scope.queune = [];
             if($scope.queune[name] == null){
                 $scope.queune[name] = [];

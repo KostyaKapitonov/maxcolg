@@ -89,7 +89,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
     $scope.addToCart = function(){
         if(!$scope.currentUser){
             $('<div><p class="dialog_msg">Оформление заказа доступно только зарегистрированным пользователям.' +
-                'Если вы уже зарегистрированы - зайдите пожалуйста в свой аккаунт.</p><div>').dialog({ modal: true, position: 'top',
+                'Если вы уже зарегистрированы - войдите пожалуйста в свой аккаунт.</p><div>').dialog({ modal: true, position: 'top',
                 buttons: [ { text: "Вход", click: function() {
                     $location.path('/users/login');
                     $scope.$apply();
@@ -105,6 +105,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                     $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');
                     $scope.addedToCart = true;
+                    $scope.$parent.cartNotEmpty = true;
                 } else if(res.already){
                     $('<div><p class="dialog_msg"><b>Данный товар уже добавлен в корзину.</b><br/>Если вы хотите заказать несколько одних и тех же ' +
                     'товаров, их количество вы сможете указать при утверждении заказа.<br/>Сейчас вы можете продолжить выбор товаров,<br/>' +
@@ -123,7 +124,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
             });
         } else {
             $a.confirm('К сожалению вы ещё не заполнили все необходимые данные о себе.<br/>' +
-                'А без этого невозможно оформить заказ.<br/>Хотите заполнить недостающую информацию прямо сейчас?',
+                'А без этого невозможно оформить заказ.<br/>Хотите заполнить недостающую информацию сейчас?',
             function(){
                 $location.path('/users/account');
                 $scope.$apply();
