@@ -3,6 +3,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
 
     $scope.searchProcessing = false;
     $scope.curentPos = 0;
+    $scope.$parent.selectedSearch = $location.search();
 
     function loadViewData(){
         if($scope.product != null) return;

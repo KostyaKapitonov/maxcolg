@@ -10,6 +10,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.asc = true;
         $scope.sortTypes = [{name: 'фирма', val: 'firm'},{name: 'категория', val: 'cat'}];
         $scope.calbacks_q = [];
+        $scope.$parent.selectedSearch = {};
 
         function checkLS(){
             var pathname = localStorage.getItem('pathname');

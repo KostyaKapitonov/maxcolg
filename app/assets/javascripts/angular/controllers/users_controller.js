@@ -23,6 +23,7 @@ function($scope, $location, $routeParams, User, Auth) {
                 $a.alert('Неверный email и/или пароль', 'Ошибка');
             cl(error);
             $a.done();
+            $scope.password = '';
         });
     };
 

@@ -271,6 +271,12 @@ a.head_button:disabled,
   @include gradient(#ffddbb, #eeeeee);
 }
 
+.smal {
+  padding: 0px 2px;
+  margin: 2px;
+}
+
+
 .product_table {
   width: 100%;
 }

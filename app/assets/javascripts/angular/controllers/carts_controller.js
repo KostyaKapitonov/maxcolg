@@ -65,6 +65,7 @@ function($scope, $location, Cart) {
 
     $scope.confirm_order = function(){
         Cart.confirm({cart:$scope.actual_cart},function(res){
+
             console.log(res);
         });
     };

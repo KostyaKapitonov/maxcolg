@@ -13,18 +13,6 @@ class CartsController < ApplicationController
   end
 
   def view
-    # respond_to do |format|
-    #   format.html
-    #   format.json {
-    #     if admin?
-    #       params.require(:id)
-    #       cart = Cart.where_id(params[:id])
-    #     else
-    #       cart = Cart.actual(current_user.id)
-    #     end
-    #     render json: cart
-    #   }
-    # end
   end
 
   def add_position
@@ -36,7 +24,7 @@ class CartsController < ApplicationController
   def remove_position
     pos = Position.where(id: params[:id]).first
     success = false
-    success = pos.destroy if !pos.blank? && pos.cart.user.id == current_user.id
+    success = pos.destroy unless pos.blank? || pos.cart.user.id != current_user.id
     render json: {success: success}
   end
 

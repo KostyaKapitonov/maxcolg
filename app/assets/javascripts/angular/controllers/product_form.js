@@ -55,6 +55,7 @@ function($scope, $routeParams, Products, $location, Global) {
             Products.update({product: $scope.product, id: $scope.product.id, action:'update'}, function(data){
                 if(data.success){
                     $location.path('/products/'+$scope.product.id);
+                    $location.search($scope.$parent.selectedSearch);
                     $location.hash('glob');
                     $scope.$parent.bindAssortment();
                     $a.info('Изменения сохранены');
@@ -65,6 +66,7 @@ function($scope, $routeParams, Products, $location, Global) {
                 if(data.success){
                     $scope.product = data.product;
                     $location.path('/products/'+$scope.product.id);
+                    $location.search($scope.$parent.selectedSearch);
                     $location.hash('glob');
                     $scope.$parent.products.push($scope.product);
                     $scope.$parent.bindAssortment();
@@ -75,9 +77,10 @@ function($scope, $routeParams, Products, $location, Global) {
     };
 
     $scope.cancel = function(){
-        $scope.product = null;
-        $location.path('/products');
+        $location.path('/products/'+$scope.product.id);
+        $location.search($scope.$parent.selectedSearch);
         $location.hash('glob');
+        $scope.product = null;
     };
 
     // categories

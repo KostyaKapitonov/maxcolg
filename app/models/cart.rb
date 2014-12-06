@@ -56,18 +56,26 @@ class Cart < ActiveRecord::Base
     is_invalid = products.size != prod_ids.size
     not_found if is_invalid
     old_data = false
+    prod_ids_old = []
     products.each do |prod|
       if prod.hidden || !prod.exist
+        prod_ids_old << prod.id
         old_data = true
-        break
-      else
-        params[:cart][:positions].each do |pos|
-          # TODO: ........
-        end
       end
     end
-    return {success: false, msg: 'old_data'} if old_data
-
+    if old_data
+      Position.where(product_id: prod_ids_old).destroy_all
+      return {success: false, msg: 'old_data', ids: prod_ids_old}
+    end
+    params[:cart][:positions].each do |pos|
+        positions.update(pos[:id], count: pos[:count])
+    end
+    positions.reload
+    sum = zone.price
+    positions.each do |pos|
+      sum += pos.sum
+    end
+    cart.update(total_price: sum, zone_id: zone.id, confirmed: true, delivery_price: zone.price, usd_rate: Setting.first.usd_rate)
     {success: true}
   end
 

@@ -1,9 +1,11 @@
 class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :firm
+  has_many :positions
   cattr_accessor :skip_filter
 
   before_save :calculate_rub_price, unless: :skip_filter
+  after_update :remove_unconfirmed_positions
 
   def self.update_if_exist(id, params)
     product = Product.where(id: id).first
@@ -37,4 +39,15 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def remove_unconfirmed_positions
+    pos = []
+    Cart.where(confirmed: false).all.each do |cart|
+      pos << cart.positions
+    end
+    pos_to_del = []
+    pos.each do |p|
+      pos_to_del << p if p.product_id == self.id && (self.hidden || !self.exist)
+    end
+    pos_to_del.destroy_all
+  end
 end
