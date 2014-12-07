@@ -104,7 +104,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.goToViewCartPage = function(){
-            if($a.any($scope.currentUser)) $location.path('/carts/view');
+            if($a.any($scope.currentUser)) $location.path('/carts/edit');
             else $a.alert('<b>Ваша корзина пуста.</b>','Корзина');
         };
 
@@ -119,8 +119,17 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
+        function loadStatuses(){
+            someLoadStarted('loadStatuses');
+            Cart.statuses(function(res){
+                $scope.statuses = res;
+                someLoadFinished('loadStatuses');
+            });
+        }
+
         $scope.load_carts = function(callback){
             someLoadStarted('load_carts');
+            loadStatuses();
             callback = callback || function(){};
             if($scope.carts){
                 callback($scope.carts);

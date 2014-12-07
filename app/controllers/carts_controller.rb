@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_filter :only_logged_in, only: [:index, :view, :add_position, :remove_position, :confirm, :zones]
+  before_filter :only_logged_in, only: [:index, :view, :edit, :add_position, :remove_position, :confirm, :zones]
   before_filter :only_admin, only: [:proceed, :destroy, :add_zone]
 
   def index
@@ -12,7 +12,14 @@ class CartsController < ApplicationController
     end
   end
 
+  def statuses
+    render json: Status.all
+  end
+
   def view
+  end
+
+  def edit
   end
 
   def add_position

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206161536) do
+ActiveRecord::Schema.define(version: 20141207110153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20141206161536) do
     t.datetime "updated_at",                            null: false
     t.integer  "zone_id"
     t.datetime "confirmation_date"
+    t.string   "status_title",      default: "pending"
   end
 
   create_table "categories", force: true do |t|
@@ -78,6 +79,13 @@ ActiveRecord::Schema.define(version: 20141206161536) do
     t.boolean  "recalculatable",    default: true
     t.string   "default_sort_type", default: "firm"
     t.string   "map_code"
+  end
+
+  create_table "statuses", force: true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_providers", force: true do |t|

@@ -48,6 +48,6 @@ class Product < ActiveRecord::Base
     pos.each do |p|
       pos_to_del << p if p.product_id == self.id && (self.hidden || !self.exist)
     end
-    pos_to_del.destroy_all
+    pos_to_del.each {|p|p.destroy}
   end
 end

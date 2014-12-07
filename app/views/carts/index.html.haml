@@ -1,6 +1,6 @@
-%p
+%p{'x-ng-show'=>'currentUser && !currentUser.is_admin'}
   Перейти к 
-  %a.button{'x-ng-href'=>'/carts/view'}
+  %a.button{'x-ng-href'=>'/carts/edit'}
     текущему заказу
 %form{'novalidate'=>''}
   %fieldset
@@ -17,17 +17,17 @@
           -#    %td
           %table.cart{'x-ng-show'=>'cart_list.length > 0'}
             %tr
-              %td Статус
-              %td Дата
-              %td Сумма
+              %td Статус заказа
+              %td Дата создания
+              %td Сумма, руб.
             %tr.positions{'x-ng-repeat'=>'cart in cart_list'}
               %td
-                {{cart.status}}
+                %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
+                  {{cart.status_name}}
               %td
-                {{cart.confirmation_date | date}}
+                {{cart.confirmation_date | date:'dd.MM.yyyy г. (HH:mm)'}}
               %td
-                {{cart.total_price}}
-              -# TODO: ...
+                {{cart.total_price | currency:"":2}}
 
     -#.descr_block
     -#  %p{'x-ng-hide'=>'reset_mode'}

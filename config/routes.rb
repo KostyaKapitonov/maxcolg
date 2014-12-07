@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get '/contacts' => 'products#contacts'
 
   resource :carts, only: [:index] do
-    get :view
+    get :edit
+    get 'view/:id' => 'carts#view'
+    get :statuses
     post :add_position
     delete :remove_position
     post :confirm

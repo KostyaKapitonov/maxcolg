@@ -1,6 +1,7 @@
 class Cart < ActiveRecord::Base
   belongs_to :user
   belongs_to :zone
+  belongs_to :status
   has_many :positions, dependent: :destroy
 
   def self.actual(user_id, usd_rate = nil)
