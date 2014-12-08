@@ -77,7 +77,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             return carts;
         }
 
-        $scope.addCartToList = function(data){ // TODO: fill all fields of cart and pos
+        $scope.addCartToList = function(data){
             $scope.products.each(function(p){
                 if(data.position.product_id == p.id) {
                     data.position.prod = p;
