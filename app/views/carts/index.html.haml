@@ -20,7 +20,7 @@
               %td Статус заказа
               %td Дата создания
               %td Сумма, руб.
-            %tr.positions{'x-ng-repeat'=>'cart in cart_list'}
+            %tr.positions{'x-ng-repeat'=>'cart in cart_list | orderBy:"confirmation_date":true'}
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
                   {{cart.status_name}}

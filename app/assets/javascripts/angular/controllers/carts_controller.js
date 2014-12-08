@@ -1,10 +1,24 @@
 ANTALEX.controller('CartsController', ['$scope', '$location', 'Cart',
 function($scope, $location, Cart) {
 
-    $scope.carts = $scope.$parent.carts;
-    $scope.actual_cart = $scope.$parent.actual_cart;
+    $scope.$parent.load_carts(function(){
+        $scope.carts = $scope.$parent.carts;
+        $scope.actual_cart = $scope.$parent.actual_cart;
+        cl($scope.carts);
+        if($scope.actual_cart) {
+            $scope.actual_cart.self_delivery = false;
+            $scope.$parent.loadCurrentUser(function(res){
+//                cl([$scope.actual_cart, res]);
+                $scope.actual_cart.address = res.address;
+            });
+        }
+    });
     $scope.mapCode = $scope.$parent.setting.map_code;
     $scope.zonesDesc = '';
+    $scope.delivery_types = [
+        {name:'Доставка на дом',val:false},
+        {name:'Самовывоз',val:true}
+    ];
 
     $scope.show_delivery_zones = function(){
         $a.confirm($scope.zonesDesc,function(){
@@ -16,7 +30,7 @@ function($scope, $location, Cart) {
     $scope.calculateTotal = function(){
         $scope.actual_cart.zone_id = $scope.zone.id;
         $scope.total_sum = 0;
-        if($scope.zone && $scope.zone.price)
+        if(!$scope.actual_cart.self_delivery && $scope.zone && $scope.zone.price)
             $scope.total_sum = $scope.zone.price;
         $scope.actual_cart.positions.each(function(pos){
             $scope.total_sum += pos.sum;
@@ -65,9 +79,14 @@ function($scope, $location, Cart) {
     };
 
     $scope.confirm_order = function(){
-        Cart.confirm({cart:$scope.actual_cart},function(res){
+        $a.confirm('<b>Оформить заказ?</b>',function(){
+            Cart.confirm({cart:$scope.actual_cart},function(res){
+                if(res.success){
 
-            console.log(res);
+                } else {
+
+                }
+            });
         });
     };
 

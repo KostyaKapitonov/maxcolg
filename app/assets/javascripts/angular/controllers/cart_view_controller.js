@@ -15,10 +15,18 @@ function($scope, $location, Cart, $routeParams) {
         });
     }
 
-    //cl($scope.cart);
+    function bindDeletedProds(){
+        $scope.cart.positions.each(function(pos){
+            if(!pos.prod){
+                pos.prod_deleted = true;
+            }
+        });
+    }
+
     $scope.$parent.load_carts(function(res){
         $scope.cart = res.whereId($routeParams.id);
         bindZone();
+        bindDeletedProds();
     });
 
 }]);

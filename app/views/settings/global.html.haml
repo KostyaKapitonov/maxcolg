@@ -39,6 +39,8 @@
       %tr
         =table_row 'Сортировка<br/>по умолчанию'.html_safe, (tag :select, 'x-ng-change' => 'toggle_dst()', 'x-ng-model' => 'new_default_sort_type', 'x-ng-options'=>'st.val as st.name for st in sortTypes')
       %tr
+        =table_row 'Адрес<br/>самовывоза'.html_safe, (tag :input, 'x-ng-blur' => 'applyNewAddress()', 'x-ng-model' => 'setting.self_delivery_address')
+      %tr
         %td{colspan: 3}
           %hr
       %tr

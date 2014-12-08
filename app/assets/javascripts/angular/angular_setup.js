@@ -149,21 +149,53 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             }
         };
 
+        $scope.loadCurrentUser = function(callback){
+            callback = callback || function(){};
+            if($scope.currentUser){
+                callback($scope.currentUser);
+            } else {
+                if(addToCalbacksQ('loadCurrentUser',callback)){
+                    Auth.currentUser().then(function(user) {
+                        $scope.currentUser = user;
+                        respondToAllCalbacks('loadCurrentUser', $scope.currentUser);
+                    }, function(error) {
+                        respondToAllCalbacks('loadCurrentUser', null);
+                        cl(error);
+                    });
+                }
+            }
+        };
+
         $scope.getUser = function(from){
             someLoadStarted('getUser');
-            Auth.currentUser().then(function(user) {
-                $scope.currentUser = user;
-                if($a.blank($scope.setting)) $scope.getSettings();
-                $scope.load_carts();
-                someLoadFinished('getUser');
-                $scope.userRequestComplete = true; // used in template
-                if(from == 'uLogin') $scope.bindAssortment();
-            }, function(error) {
-                cl(error);
-                someLoadFinished('getUser');
-                if($a.blank($scope.setting)) $scope.getSettings();
-                $scope.userRequestComplete = true; // used in template
+            $scope.loadCurrentUser(function(user){
+                if(user){
+                    $scope.currentUser = user;
+                    if($a.blank($scope.setting)) $scope.getSettings();
+                    $scope.load_carts();
+                    someLoadFinished('getUser');
+                    $scope.userRequestComplete = true; // used in template
+                    if(from == 'uLogin') $scope.bindAssortment();
+                } else {
+//                    cl('unloggened');
+                    someLoadFinished('getUser');
+                    if($a.blank($scope.setting)) $scope.getSettings();
+                    $scope.userRequestComplete = true; // used in template
+                }
             });
+//            Auth.currentUser().then(function(user) {
+//                $scope.currentUser = user;
+//                if($a.blank($scope.setting)) $scope.getSettings();
+//                $scope.load_carts();
+//                someLoadFinished('getUser');
+//                $scope.userRequestComplete = true; // used in template
+//                if(from == 'uLogin') $scope.bindAssortment();
+//            }, function(error) {
+//                cl(error);
+//                someLoadFinished('getUser');
+//                if($a.blank($scope.setting)) $scope.getSettings();
+//                $scope.userRequestComplete = true; // used in template
+//            });
         };
 
         $scope.logout = function(){
@@ -365,16 +397,18 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         function addToCalbacksQ(name,callback){
             callback = callback || function(){};
-            $scope.queune = [];
-            if($scope.queune[name] == null){
-                $scope.queune[name] = [];
+            $scope.queue = [];
+            var isFirstRequest = $scope.queue[name] == null;
+            if(isFirstRequest){
+                $scope.queue[name] = [];
             }
-            $scope.queune[name].push(callback);
+            $scope.queue[name].push(callback);
+            return isFirstRequest;
         }
 
         function respondToAllCalbacks(name, response){
-            if($scope.queune[name] != null && $scope.queune[name].length > 0){
-                $scope.queune[name].each(function(cb){
+            if($scope.queue[name] != null && $scope.queue[name].length > 0){
+                $scope.queue[name].each(function(cb){
                     if(typeof cb == 'function') cb(response);
                 });
             }
@@ -382,12 +416,12 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 
         $scope.loadZones = function(callback){
             if($a.blank($scope.zones) && typeof callback == 'function'){
-                addToCalbacksQ('loadZones',callback);
-                Cart.zones(function(res){
-                    $scope.zones = res;
-                    respondToAllCalbacks('loadZones',$scope.zones);
-//                    callback($scope.zones);
-                });
+                if(addToCalbacksQ('loadZones',callback)){
+                    Cart.zones(function(res){
+                        $scope.zones = res;
+                        respondToAllCalbacks('loadZones',$scope.zones);
+                    });
+                }
             } else if(typeof callback == 'function'){
                 callback($scope.zones);
             }

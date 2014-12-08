@@ -6,6 +6,7 @@ class Product < ActiveRecord::Base
 
   before_save :calculate_rub_price, unless: :skip_filter
   after_update :remove_unconfirmed_positions
+  before_destroy :remove_positions_on_destroy
 
   def self.update_if_exist(id, params)
     product = Product.where(id: id).first
@@ -42,11 +43,27 @@ class Product < ActiveRecord::Base
   def remove_unconfirmed_positions
     pos = []
     Cart.where(confirmed: false).all.each do |cart|
-      pos << cart.positions
+      cart.positions.each do |p|
+        pos << p
+      end
     end
     pos_to_del = []
     pos.each do |p|
       pos_to_del << p if p.product_id == self.id && (self.hidden || !self.exist)
+    end
+    pos_to_del.each {|p|p.destroy}
+  end
+
+  def remove_positions_on_destroy
+    pos = []
+    Cart.where(confirmed: false).all.each do |cart|
+      cart.positions.each do |p|
+        pos << p
+      end
+    end
+    pos_to_del = []
+    pos.each do |p|
+      pos_to_del << p if p.product_id == self.id
     end
     pos_to_del.each {|p|p.destroy}
   end

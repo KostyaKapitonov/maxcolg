@@ -21,17 +21,22 @@
                 %b
                   {{client.mobile}}
                 %br
-                Выбранная зона доставки:
+                Доставка:
                 %b
-                  {{cart.zone.name}}
+                  {{cart.self_delivery ? 'Самовывоз ' : 'На дом'}}
                 %br
-                Cтоимость доставки:
-                %b
-                  {{cart.delivery_price | currency:'':2}} руб.
-                %br
-                Адрес доставки:
-                %b
-                  {{client.address}}
+                %span{'x-ng-hide'=>'cart.self_delivery'}
+                  Выбранная зона доставки:
+                  %b
+                    {{cart.zone.name}}
+                  %br
+                  Cтоимость доставки:
+                  %b
+                    {{cart.delivery_price | currency:'':2}} руб.
+                  %br
+                  Адрес доставки:
+                  %b
+                    {{cart.address}}
             %tr
               %table.cart{'x-ng-show'=>'cart.positions.length > 0'}
                 %tr
@@ -41,19 +46,23 @@
                   %td Сумма, руб.
                 %tr.positions{'x-ng-repeat'=>'pos in cart.positions'}
                   %td
-                    %a{'x-ng-href'=>'/products/{{pos.prod.id}}#glob'}
+                    %a{'x-ng-href'=>'/products/{{pos.prod.id}}#glob', 'x-ng-hide'=>'pos.prod_deleted'}
                       {{pos.prod.name}}
+                    %span{'x-ng-show'=>'pos.prod_deleted', title:'<span style="color:#d00">товар удалён</span>'}
+                      {{pos.name}}
                   %td
                     {{pos.count}}
                   %td
-                    .errblock
-                      %span{'x-ng-show'=>'(cartForm.count_{{$index}}.$error.required || pos.count <= 0) && (cartForm.count_{{$index}}.$touched || showErrors)'}
-                        необходимо заполнить
-                  %td
-                    {{pos.prod.price | currency:"":2}}
+                    {{pos.price | currency:"":2}}
                   %td
                     %b
                       {{pos.sum | currency:"":2}}
+                %tr
+                  %td{colspan:3}
+                    Стоимость доставки:
+                  %td
+                    %b
+                      {{cart.delivery_price | currency:"":2}}
                 %tr
                   %td{colspan:3}
                     %b

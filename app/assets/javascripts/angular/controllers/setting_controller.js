@@ -121,6 +121,17 @@ function($scope, $location, Setting, Cart) {
         });
     };
 
+    $scope.applyNewAddress = function(){
+        Setting.update({setting: {self_delivery_address: $scope.$parent.setting.self_delivery_address}},function(data){
+            if(data.success){
+                $a.info('Новый адрес сохранён')
+            } else {
+                cl(data);
+                $a.err('Ошибка сохранения нового адреса самовывоза');
+            }
+        });
+    };
+
     function rebindZonesTable(idx){
         $scope.zones.splice(idx,1);
         var tmp_z = $scope.zones;

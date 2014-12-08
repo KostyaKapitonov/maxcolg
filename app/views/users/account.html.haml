@@ -34,7 +34,7 @@
                   %span{'x-ng-show'=>'form.mobile.$error.required && (form.mobile.$touched || showErrors)'}
                     необходимо заполнить
             %tr
-              =table_row 'Адрес', (tag :input, name: 'address', 'x-ng-model' => 'currentUser.address', 'maxlength'=>'255', 'required'=>'')
+              =table_row 'Ваш полный адрес', (tag :input, name: 'address', 'x-ng-model' => 'currentUser.address', 'maxlength'=>'255', 'required'=>'')
               %td
                 .errblock
                   %span{'x-ng-show'=>'form.address.$error.required && (form.address.$touched || showErrors)'}
@@ -44,6 +44,9 @@
                 .button_section
                   %a.button{'x-ng-click'=>'applyData();'}
                     Сохранить
+            %tr
+              %td{colspan:3}
+                %hr
         %td
           .descr_block
             %table.in_form.reg_info
@@ -59,4 +62,8 @@
                     %div#uLogin2{'data-ulogin'=>"display=panel;fields=first_name,last_name;providers=vkontakte;hidden=other;redirect_uri=;callback=uLoginOauth"}
                     %script
                       uLogin.initWidget('uLogin2')
-
+    Обращаем ваше внимание на то, что указанный вами адрес
+    %b по умолчанию
+    будет использоваться для доставки ваших заказов. Но при желании, при оформлении заказа, вы можете указать
+    %b другой адрес,
+    по которому вы хотели бы получить заказ.

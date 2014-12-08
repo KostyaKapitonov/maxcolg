@@ -27,6 +27,7 @@ class Cart < ActiveRecord::Base
     prod_ids = []
     pos_ids = []
     cart_ids = []
+    self_delivery = params[:cart][:self_delivery]
     params[:cart][:positions].each do |pos|
       break if is_invalid
       pos[:count] = pos[:count].to_i
@@ -37,7 +38,7 @@ class Cart < ActiveRecord::Base
     end
     not_found if is_invalid
     positions = Position.where(id: pos_ids).all
-    is_invalid = positions.size != params[:cart][:positions].size
+    is_invalid = positions.size != params[:cart][:positions].size # TODO: may be deleted?...
     not_found if is_invalid
     cart_id = positions[0].cart_id
     positions.each do |pos|
@@ -50,8 +51,11 @@ class Cart < ActiveRecord::Base
     not_found if is_invalid
     is_invalid = cart.id != Cart.actual(current_user.id).id
     not_found if is_invalid
-    zone = Zone.where(id: params[:cart][:zone_id]).first
-    is_invalid = zone.blank?
+    zone = nil
+    unless self_delivery
+      zone = Zone.where(id: params[:cart][:zone_id]).first
+      is_invalid = zone.blank?
+    end
     not_found if is_invalid
     products = Product.where(id: prod_ids).all
     is_invalid = products.size != prod_ids.size
@@ -72,11 +76,14 @@ class Cart < ActiveRecord::Base
         positions.update(pos[:id], count: pos[:count])
     end
     positions.reload
-    sum = zone.price
+    sum = params[:cart][:self_delivery] ? 0 : zone.price
     positions.each do |pos|
       sum += pos.sum
     end
-    cart.update(confirmation_date: DateTime.now, total_price: sum, zone_id: zone.id, confirmed: true, delivery_price: zone.price, usd_rate: Setting.first.usd_rate)
+    params[:cart][:address] = nil if self_delivery
+    cart.update(confirmation_date: DateTime.now, total_price: sum, zone_id: self_delivery ? nil : zone.id,
+                confirmed: true, delivery_price: self_delivery ? 0 : zone.price, usd_rate: Setting.first.usd_rate,
+                address: params[:cart][:address], self_delivery: self_delivery)
     {success: true}
   end
 

@@ -15,11 +15,25 @@
 
           %table{'x-ng-show'=>'actual_cart.positions.length > 0'}
             %tr
+              =table_row 'Варианты доставки', (tag :select, style:'width: auto', 'x-ng-model'=>'actual_cart.self_delivery', 'x-ng-options'=>'dt.val as dt.name for dt in delivery_types', 'x-ng-change'=>'calculateTotal()')
+            %tr{'x-ng-hide'=>'actual_cart.self_delivery'}
               =table_row 'Зона доставки', (tag :select, style:'width: auto', 'x-ng-model'=>'zone', 'x-ng-options'=>'zone.name for zone in zones', 'x-ng-change'=>'calculateTotal()')+'<span style="padding-left: 10px;">{{zone.price | currency:"":2}} руб.</span> '.html_safe+'<button class="button" x-ng-click="show_delivery_zones()">Возможные зоны доставки</button>'.html_safe
-            %tr
+            %tr{'x-ng-hide'=>'actual_cart.self_delivery'}
               %td{'colspan'=>'3'}
                 Если вам необходима доставка не по Симферополю (или не по его пригороду), это потребует
                 индивидуального согласования с администрацией
+            %tr{'x-ng-hide'=>'actual_cart.self_delivery'}
+              =table_row 'Адрес доставки', (tag :input, 'x-ng-model'=>'actual_cart.address')
+            %tr{'x-ng-show'=>'actual_cart.self_delivery'}
+              %td{colspan:3}
+                %br
+                Самостоятельно забрать заказа вы сможете по адресу:
+                %br
+                %b
+                  {{setting.self_delivery_address}}
+            %tr
+              %td{colspan:3}
+                %hr
             %tr
               %table.cart{'x-ng-show'=>'actual_cart.positions.length > 0'}
                 %tr
@@ -47,8 +61,14 @@
                       X
                 %tr
                   %td{colspan:3}
+                    Стоимость доставки:
+                  %td{colspan:2}
                     %b
-                      Всего к оплате (влючая доставку):
+                      {{actual_cart.self_delivery ? 0 : zone.price | currency:"":2}}
+                %tr
+                  %td{colspan:3}
+                    %b
+                      Всего к оплате:
                   %td.total_sum{colspan:2}
                     %b
                       {{total_sum | currency:"":2}}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141207110153) do
+ActiveRecord::Schema.define(version: 20141208115220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20141207110153) do
     t.integer  "zone_id"
     t.datetime "confirmation_date"
     t.string   "status_title",      default: "pending"
+    t.boolean  "self_delivery",     default: false
+    t.string   "address"
   end
 
   create_table "categories", force: true do |t|
@@ -72,13 +74,14 @@ ActiveRecord::Schema.define(version: 20141207110153) do
 
   create_table "settings", force: true do |t|
     t.text     "main_page_text"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.text     "contacts_text"
     t.float    "usd_rate"
-    t.boolean  "recalculatable",    default: true
-    t.string   "default_sort_type", default: "firm"
+    t.boolean  "recalculatable",        default: true
+    t.string   "default_sort_type",     default: "firm"
     t.string   "map_code"
+    t.string   "self_delivery_address"
   end
 
   create_table "statuses", force: true do |t|

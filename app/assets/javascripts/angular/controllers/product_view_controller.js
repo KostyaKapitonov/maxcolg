@@ -70,6 +70,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                 if(data.success){
                     $scope.$parent.products.splice($scope.products.whereId(id, true),1);
                     $scope.$parent.bindAssortment();
+                    $a.info("Товар удалён");
                     $location.path('/products');
                 }
             })
