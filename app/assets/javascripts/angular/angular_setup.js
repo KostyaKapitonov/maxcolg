@@ -35,9 +35,9 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $scope.loadInfo[name] = false;
         }
 
-        function isThisLoadFinished(name){
-            return $scope.loadInfo[name];
-        }
+//        function isThisLoadFinished(name){
+//            return $scope.loadInfo[name];
+//        }
 
         function waitForLoadingComplete(pathname, search, hash){
             $a.wait();
@@ -134,14 +134,17 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             if($scope.carts){
                 callback($scope.carts);
             } else {
-                addToCalbacksQ('load_carts', callback);
-                Cart.all(function(res){
-                    $scope.load_products(function(){
-                        $scope.carts = bindPositionDataFromProduct(res);
-                        $scope.lookForActual();
-                        respondToAllCalbacks('load_carts', $scope.carts);
-                        someLoadFinished('load_carts');
+                if(addToCalbacksQ('load_carts', callback)){
+                    Cart.all(function(res) {
+                        $scope.load_products(function () {
+                            $scope.carts = bindPositionDataFromProduct(res);
+                            $scope.lookForActual();
+                            respondToAllCalbacks('load_carts', $scope.carts);
+                            someLoadFinished('load_carts');
+                        });
                     });
+                }
+
 //                    var waitForProductLoadComplete = function(){
 //                        if(isThisLoadFinished('load_products')){
 //                            $scope.carts = bindPositionDataFromProduct(res);
@@ -151,7 +154,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
 //                        } else setTimeout(function(){waitForProductLoadComplete();},100);
 //                    };
 //                    waitForProductLoadComplete();
-                });
+
             }
         };
 

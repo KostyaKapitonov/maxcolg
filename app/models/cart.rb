@@ -17,7 +17,9 @@ class Cart < ActiveRecord::Base
     usd_rate = Setting.first.usd_rate
     cart = Cart.actual(user_id, usd_rate)
     positions = cart.positions.where(product_id: product_id)
-    return {already: true} unless positions.blank?
+    prod = Product.where(id:product_id).first
+    return {success: false, reason: 'invalid product', hide: (prod.blank? || prod.hidden)} if prod.blank? || prod.hidden || !prod.exist
+    return {success: false, reason: 'already'} unless positions.blank?
     cart.positions << Position.new(product_id: product_id)
     {success: true, position: Position.where(product_id: product_id).first, cart: cart}
   end

@@ -2,6 +2,7 @@ ANTALEX.controller('CartViewController', ['$scope', '$location', 'Cart', '$route
 function($scope, $location, Cart, $routeParams) {
 
     $scope.client = {};
+    $scope.statuses = $scope.$parent.statuses;
     if($scope.$parent.currentUser.is_admin){
 
     } else {
@@ -27,6 +28,11 @@ function($scope, $location, Cart, $routeParams) {
         $scope.cart = res.whereId($routeParams.id);
         bindZone();
         bindDeletedProds();
+        $scope.statuses.each(function(st){
+            if($scope.cart.status_title == st.title){
+                $scope.cart.status_name = st.name;
+            }
+        });
     });
 
 }]);

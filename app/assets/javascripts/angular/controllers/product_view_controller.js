@@ -107,7 +107,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                     $a.info('Товар добавлен в корзину');
                     $scope.addedToCart = true;
                     $scope.$parent.cartNotEmpty = true;
-                } else if(res.already){
+                } else if(res.reason == 'already'){
                     $('<div><p class="dialog_msg"><b>Данный товар уже добавлен в корзину.</b><br/>Если вы хотите заказать несколько одних и тех же ' +
                     'товаров, их количество вы сможете указать при утверждении заказа.<br/>Сейчас вы можете продолжить выбор товаров,<br/>' +
                     'либо перейти к утверждению заказа</p><div>').dialog({ modal: true, position: 'top', width: 440,
@@ -118,6 +118,16 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                             { text: "Продолжить выбор товаров", click: function() {
                                 $( this ).dialog( "close" ); } }
                         ], title: 'Выберите действие'});
+                } else if (res.reason == 'invalid product'){
+                    $a.alert('Извините, но данный товар более не доступен для покупки.');
+                    $scope.$parent.products = null;
+                    $scope.$parent.load_products(function(){
+                        if(res.hide) $location.path('/products');
+                        else{
+                            $scope.product = null;
+                            loadViewData();
+                        }
+                    });
                 } else {
                     $a.err('неизвестная ошибка');
                     cl(res);
