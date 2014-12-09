@@ -78,13 +78,40 @@ function($scope, $location, Cart) {
         });
     };
 
+    function noMoreExist(ids){
+        var prods = $scope.$parent.products.whereId(ids);
+        console.log(prods);
+        var msg = 'Приносим вам свои извинения, но некоторые товары, среди тех что вы добавили в корзину,' +
+            ' уже исчесли с прилавка нашего магазина:';
+        prods.each(function(prod,i){
+            msg += '<br/>'+(i+1)+') <b>'+prod.name+'</b>';
+        });
+        msg += '<br/><br/>Но тем не менее, вы всё еще можете заказать те, что есть в наличии.';
+        $a.alert(msg,'Заказ не оформлен');
+        $scope.$parent.products = null;
+        $scope.$parent.carts = null;
+        $scope.$parent.load_products(function(){
+            $scope.load_carts(function(){
+                $scope.actual_cart.positions = $scope.$parent.actual_cart.positions;
+                $scope.setDefaultSums();
+            })
+        });
+    }
+
     $scope.confirm_order = function(){
         $a.confirm('<b>Оформить заказ?</b>',function(){
             Cart.confirm({cart:$scope.actual_cart},function(res){
                 if(res.success){
-
+                    $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Администрация сайта вскоре с вами свяжется, по указанному вами телефону.','Заказ');
+                    $location.path('/');
                 } else {
-
+                    if(res.ids && res.ids.length > 0){
+                        $a.err('заказ <b>НЕ оформлен</b>');
+                        noMoreExist(res.ids);
+                    } else {
+                        $a.err('Неизвестная ошибка');
+                        cl(res);
+                    }
                 }
             });
         });

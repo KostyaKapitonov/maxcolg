@@ -136,15 +136,21 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             } else {
                 addToCalbacksQ('load_carts', callback);
                 Cart.all(function(res){
-                    var waitForProductLoadComplete = function(){
-                        if(isThisLoadFinished('getProducts')){
-                            $scope.carts = bindPositionDataFromProduct(res);
-                            $scope.lookForActual();
-                            respondToAllCalbacks('load_carts', $scope.carts);
-                            someLoadFinished('load_carts');
-                        } else setTimeout(function(){waitForProductLoadComplete();},100);
-                    };
-                    waitForProductLoadComplete();
+                    $scope.load_products(function(){
+                        $scope.carts = bindPositionDataFromProduct(res);
+                        $scope.lookForActual();
+                        respondToAllCalbacks('load_carts', $scope.carts);
+                        someLoadFinished('load_carts');
+                    });
+//                    var waitForProductLoadComplete = function(){
+//                        if(isThisLoadFinished('load_products')){
+//                            $scope.carts = bindPositionDataFromProduct(res);
+//                            $scope.lookForActual();
+//                            respondToAllCalbacks('load_carts', $scope.carts);
+//                            someLoadFinished('load_carts');
+//                        } else setTimeout(function(){waitForProductLoadComplete();},100);
+//                    };
+//                    waitForProductLoadComplete();
                 });
             }
         };
@@ -262,15 +268,23 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-        $scope.getProducts = function(){
-            someLoadStarted('getProducts');
-            Products.getAll(function(data){
-                $scope.products = data.products;
-                $scope.categories = data.categories;
-                $scope.firms = data.firms;
-                $scope.bindAssortment(true);
-                someLoadFinished('getProducts');
-            });
+        $scope.load_products = function(callback){
+            callback = callback || function(){};
+            if($scope.products){
+                callback($scope.products);
+            } else {
+                someLoadStarted('load_products');
+                if(addToCalbacksQ('load_products',callback)){
+                    Products.getAll(function(data){
+                        $scope.products = data.products;
+                        $scope.categories = data.categories;
+                        $scope.firms = data.firms;
+                        $scope.bindAssortment(true);
+                        respondToAllCalbacks('load_products',$scope.products);
+                        someLoadFinished('load_products');
+                    });
+                }
+            }
         };
 
         $scope.handleRebuild = function(){
@@ -373,7 +387,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             someLoadStarted('getSettings');
             Global.main(function(res){
                 $scope.setting = res;
-                if($a.blank($scope.products)) $scope.getProducts();
+                $scope.load_products();
                 someLoadFinished('getSettings');
             });
         };
@@ -411,6 +425,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.queue[name].each(function(cb){
                     if(typeof cb == 'function') cb(response);
                 });
+                delete $scope.queue[name];
             }
         }
 

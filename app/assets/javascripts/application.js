@@ -74,12 +74,23 @@ Array.prototype.each = function(callback){
     }
 };
 
-Array.prototype.whereId = function(id, p){
+Array.prototype.whereId = function(id, getIndex){
     var target = null;
-    for(var i=0; i < this.length; i++){
-        if(this[i].id == id){
-            target = p ? i : this[i];
-            break;
+    if(Object.prototype.toString.call(id) === '[object Array]'){
+        target = [];
+        for(var i=0; i < id.length; i++){
+            for(var j=0; j < this.length; j++){
+                if(this[j].id == id[i]){
+                    target.push(this[j]);
+                }
+            }
+        }
+    } else {
+        for(var n=0; n < this.length; n++){
+            if(this[n].id == id){
+                target = getIndex ? n : this[n];
+                break;
+            }
         }
     }
     return target;

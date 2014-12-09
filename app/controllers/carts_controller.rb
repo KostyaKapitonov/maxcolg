@@ -31,7 +31,7 @@ class CartsController < ApplicationController
   def remove_position
     pos = Position.where(id: params[:id]).first
     success = false
-    success = pos.destroy unless pos.blank? || pos.cart.user.id != current_user.id
+    success = pos.destroy unless pos.blank? || pos.cart.confirmed || (pos.cart.user.id != current_user.id && !current_user.is_admin)
     render json: {success: success}
   end
 

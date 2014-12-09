@@ -38,17 +38,17 @@ class Cart < ActiveRecord::Base
     end
     not_found if is_invalid
     positions = Position.where(id: pos_ids).all
-    is_invalid = positions.size != params[:cart][:positions].size # TODO: may be deleted?...
+    is_invalid = pos_ids.size == 0
     not_found if is_invalid
-    cart_id = positions[0].cart_id
+    cart_id = positions[0].cart_id || params[:cart][:positions][0].cart_id
     positions.each do |pos|
       is_invalid = pos.cart_id != cart_id unless is_invalid
     end
     not_found if is_invalid
     cart = Cart.where(id: cart_ids).all
     is_invalid = cart.size != 1
-    cart = cart[0]
     not_found if is_invalid
+    cart = cart[0]
     is_invalid = cart.id != Cart.actual(current_user.id).id
     not_found if is_invalid
     zone = nil
@@ -58,19 +58,25 @@ class Cart < ActiveRecord::Base
     end
     not_found if is_invalid
     products = Product.where(id: prod_ids).all
-    is_invalid = products.size != prod_ids.size
-    not_found if is_invalid
-    old_data = false
     prod_ids_old = []
-    products.each do |prod|
-      if prod.hidden || !prod.exist
-        prod_ids_old << prod.id
-        old_data = true
+    if products.size != prod_ids.size
+      prod_ids.each do |p_id|
+        prod_exist = false
+        products.each do|prod|
+          prod_exist = prod.id == p_id unless prod_exist
+          break if prod_exist
+        end
+        prod_ids_old << p_id unless prod_exist
       end
     end
-    if old_data
+    products.each do |prod|
+      if prod.hidden || !prod.exist
+        prod_ids_old << prod.id unless prod_ids_old.include? prod.id
+      end
+    end
+    unless prod_ids_old.blank?
       Position.where(product_id: prod_ids_old).destroy_all
-      return {success: false, msg: 'old_data', ids: prod_ids_old}
+      return {success: false, ids: prod_ids_old}
     end
     params[:cart][:positions].each do |pos|
         positions.update(pos[:id], count: pos[:count])
