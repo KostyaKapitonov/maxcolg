@@ -23,9 +23,9 @@ $bej: #f7f7cb;
 }
 
 @mixin b-radius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
   border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
 }
 
 body {
@@ -211,6 +211,7 @@ table.in_form tr {
   margin: 10px 0px;
 
   @include b-radius(8);
+  border-radius: 8px;
   @include gradient(#cccccc, #ffbb99);
 }
 
@@ -247,14 +248,14 @@ a.head_button:disabled,
 
 .button {
   color: $buttonBorder;
+  @include b-radius(5);
   border: 1px solid $buttonColor;
   padding: 3px;
   text-align: center;
-  @include b-radius(5);
   text-decoration: none;
   margin: 5px;
   cursor: pointer;
-
+  border-radius: 5px;
   background: #ccffee;
   @include gradient(#cccccc, #ffbb99);
 }
@@ -339,7 +340,7 @@ a.head_button:disabled,
 }
 
 .pr_list_block {
-  width: 114px;
+  width: 112px;
   height: 180px;
   margin: 5 5 5 5;
   padding: 0px;
