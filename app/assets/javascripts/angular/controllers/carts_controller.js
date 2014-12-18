@@ -86,7 +86,7 @@ function($scope, $location, Cart) {
         prods.each(function(prod,i){
             msg += '<br/>'+(i+1)+') <b>'+prod.name+'</b>';
         });
-        msg += '<br/><br/>Но тем не менее, вы всё еще можете заказать те, что есть в наличии.';
+        msg += '<br/><br/>Но, тем не менее, вы всё еще можете заказать те, что есть в наличии.';
         $a.alert(msg,'Заказ не оформлен');
         $scope.$parent.products = null;
         $scope.$parent.carts = null;
@@ -103,7 +103,10 @@ function($scope, $location, Cart) {
             Cart.confirm({cart:$scope.actual_cart},function(res){
                 if(res.success){
                     $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Администрация сайта вскоре с вами свяжется, по указанному вами телефону.','Заказ');
-                    $location.path('/');
+                    $scope.$parent.carts = null;
+                    $scope.load_carts(function(){
+                        $location.path('/carts/view/'+res.cart_id);
+                    });
                 } else {
                     if(res.ids && res.ids.length > 0){
                         $a.err('заказ <b>НЕ оформлен</b>');

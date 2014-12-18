@@ -68,7 +68,10 @@
               %td
                 Цвет
               %td
-                Цена доставки
+                Стоимость
+              %td
+                %span{title: 'Сумма заказа, при которой<br/>доставка осуществляется бесплатно.<br/>Отсавьте пустым, если<br/>льгота не предусмотрена'}
+                  Льгота(?)
             %tr{'x-ng-repeat'=>'zone in zones'}
               %td
                 %input.ant_input{'x-ng-model'=>'zone.name', name: 'name_{{$index}}','required'=>''}
@@ -88,11 +91,13 @@
                 .errblock
                   %span{'x-ng-show'=>'zonesForm.price_{{$index}}.$error.required && (zonesForm.price_{{$index}}.$touched || showErrors)'}
                     необходимо заполнить
+              %td.mid
+                %input.ant_input.zoneprice{'x-ng-model'=>'zone.free_if_sum', name: 'price_{{$index}}', 'data-index'=>'{{$index}}'}
               %td.action_col
                 %a.button{'x-ng-click'=>'deleteZone($index)', title: 'удалить зону доставки'}
                   &nbsp;X&nbsp;
             %tr
-              %td{colspan:7}
+              %td{colspan:8}
                 .button_section
                   %a.button{'x-ng-click'=>'saveZones()'}
                     Сохранить зоны доставки
