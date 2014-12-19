@@ -15,7 +15,11 @@ Firm.destroy_all
 end
 
 Status.destroy_all
-[{name: 'В ожидании обработки',title: 'pending'},{name: 'Подготовка к доставке',title: 'binding'},{name: 'Товар(ы) в пути',title: 'moving'},{name: 'Заказ доставлен',title: 'delivered'}].each do |s|
+[{name: 'В ожидании обработки',title: 'pending'},
+ {name: 'Подготовка к доставке',title: 'binding'},
+ {name: 'Товар(ы) в пути',title: 'moving'},
+ {name: 'Заказ доставлен',title: 'delivered'},
+ {name: 'Заказ отклонён',title: 'rejected'}].each do |s|
   Status.create(s)
 end
 

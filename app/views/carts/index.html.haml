@@ -17,13 +17,16 @@
           -#    %td
           %table.cart{'x-ng-show'=>'cart_list.length > 0'}
             %tr
+              %td № заказа
               %td Статус заказа
               %td Дата создания
               %td Сумма, руб.
             %tr.positions{'x-ng-repeat'=>'cart in cart_list | orderBy:"confirmation_date":true'}
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
-                  {{cart.status_name}}
+                  {{cart.id}}
+              %td
+                {{cart.status_name}}
               %td
                 {{cart.confirmation_date | date:'dd.MM.yyyy г. (HH:mm)'}}
               %td
