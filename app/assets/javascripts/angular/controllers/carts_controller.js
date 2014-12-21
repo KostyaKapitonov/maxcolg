@@ -30,11 +30,14 @@ function($scope, $location, Cart) {
     $scope.calculateTotal = function(){
         $scope.actual_cart.zone_id = $scope.zone.id;
         $scope.total_sum = 0;
-        if(!$scope.actual_cart.self_delivery && $scope.zone && $scope.zone.price)
-            $scope.total_sum = $scope.zone.price;
         $scope.actual_cart.positions.each(function(pos){
             $scope.total_sum += pos.sum;
         });
+        if(!$scope.actual_cart.self_delivery && $scope.zone && $scope.zone.price){
+            if(!$scope.zone.free_if_sum || ($scope.zone.free_if_sum && $scope.zone.free_if_sum > $scope.total_sum))
+                $scope.total_sum += $scope.zone.price; //todo: 123
+        }
+
     };
 
     $scope.to_int = function(idx){

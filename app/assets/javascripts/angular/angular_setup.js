@@ -23,7 +23,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         }
 
         function someLoadFinished(name){
-            cl(['Finished',name]);
             $scope.loadInfo[name] = true;
             var allFinished = true;
             Object.keys($scope.loadInfo).each(function(key){
@@ -33,7 +32,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         }
 
         function someLoadStarted(name){
-            cl(['started',name]);
             $scope.loadInfo[name] = false;
         }
 
@@ -49,7 +47,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     function(){
                         if(!$scope.loadFinished && i < 120) refresh(i);
                         else {
-                            cl(['ERROR: $scope.loadInfo ',$scope.loadInfo]);
+                            if(i == 120) cl(['ERROR: $scope.loadInfo ',$scope.loadInfo]);
                             setTimeout(function(){ $scope.$apply(function(){ $scope.loadFinishedCompletly = true; $a.done(); }); },1000);
                             $location.path(pathname).search(search).hash(hash);
                         }
