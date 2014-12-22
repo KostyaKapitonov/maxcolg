@@ -84,13 +84,15 @@ class Cart < ActiveRecord::Base
         positions.update(pos[:id], count: pos[:count])
     end
     positions.reload
-    sum = params[:cart][:self_delivery] ? 0 : zone.price
+    sum = 0
     positions.each do |pos|
       sum += pos.sum
     end
     params[:cart][:address] = nil if self_delivery
+    delivery_price = self_delivery || (zone.free_if_sum && zone.free_if_sum < sum) ? 0 : zone.price
+    sum += delivery_price
     cart.update(confirmation_date: DateTime.now, total_price: sum, zone_id: self_delivery ? nil : zone.id,
-                confirmed: true, delivery_price: self_delivery ? 0 : zone.price, usd_rate: Setting.first.usd_rate,
+                confirmed: true, delivery_price: delivery_price, usd_rate: Setting.first.usd_rate,
                 address: params[:cart][:address], self_delivery: self_delivery)
     {success: true, cart_id: cart.id}
   end

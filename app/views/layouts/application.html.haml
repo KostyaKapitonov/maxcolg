@@ -40,9 +40,12 @@
             %td
               .tdBox
                 = link_to '<div class="head_spacer">Контакты</div>'.html_safe, '/contacts'
-            %td{'x-ng-class'=>'{full_cart_bg: cartNotEmpty}'}
+            %td{'x-ng-class'=>'{full_cart_bg: cartNotEmpty}', 'x-ng-hide'=>'currentUser.is_admin'}
               .tdBox
                 = link_to '<div class="head_spacer">Корзина</div>'.html_safe, '', 'x-ng-click'=>'goToViewCartPage()'
+            %td{'x-ng-class'=>'{full_cart_bg: anyNesOrders}', 'x-ng-show'=>'currentUser.is_admin'}
+              .tdBox
+                = link_to '<div class="head_spacer">Заказы</div>'.html_safe, '/carts'
       %div
         %table{style: 'width: 100%;'}
           %tbody

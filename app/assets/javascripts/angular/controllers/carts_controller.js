@@ -4,11 +4,9 @@ function($scope, $location, Cart) {
     $scope.$parent.load_carts(function(){
         $scope.carts = $scope.$parent.carts;
         $scope.actual_cart = $scope.$parent.actual_cart;
-        cl($scope.carts);
         if($scope.actual_cart) {
             $scope.actual_cart.self_delivery = false;
             $scope.$parent.loadCurrentUser(function(res){
-//                cl([$scope.actual_cart, res]);
                 $scope.actual_cart.address = res.address;
             });
         }
@@ -34,10 +32,11 @@ function($scope, $location, Cart) {
             $scope.total_sum += pos.sum;
         });
         if(!$scope.actual_cart.self_delivery && $scope.zone && $scope.zone.price){
-            if(!$scope.zone.free_if_sum || ($scope.zone.free_if_sum && $scope.zone.free_if_sum > $scope.total_sum))
-                $scope.total_sum += $scope.zone.price; //todo: 123
+            if(!$scope.zone.free_if_sum || ($scope.zone.free_if_sum && $scope.zone.free_if_sum > $scope.total_sum)){
+                $scope.total_sum += $scope.zone.price;
+                $scope.delivery_free = false;
+            } else $scope.delivery_free = true;
         }
-
     };
 
     $scope.to_int = function(idx){
@@ -105,10 +104,12 @@ function($scope, $location, Cart) {
         $a.confirm('<b>Оформить заказ?</b>',function(){
             Cart.confirm({cart:$scope.actual_cart},function(res){
                 if(res.success){
-                    $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Администрация сайта вскоре с вами свяжется, по указанному вами телефону.','Заказ');
                     $scope.$parent.carts = null;
+                    $scope.$parent.actual_cart = null;
                     $scope.load_carts(function(){
+                        $scope.$parent.lookForActual();
                         $location.path('/carts/view/'+res.cart_id);
+                        $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Администрация сайта вскоре с вами свяжется, по указанному вами телефону.','Заказ');
                     });
                 } else {
                     if(res.ids && res.ids.length > 0){

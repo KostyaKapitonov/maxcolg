@@ -299,11 +299,13 @@ Number.prototype.toPhrase=function(c)
 
 //----------------------------------------------------Alerts------------------------------------------------
 $a.alert = function(text, title){
-    var alertElement = $('<div><p class="dialog_msg">'+text+'</p><div>');
-    var onClose = function(){alertElement.dialog('destroy').remove();};
-    alertElement.dialog({ modal: true, position: 'top',
-        buttons: [ { text: "Ok", click: function() { $( this ).dialog( "close" ); } } ], title: title,
-        beforeClose: onClose});
+    setTimeout(function(){
+        var alertElement = $('<div><p class="dialog_msg">'+text+'</p><div>');
+        var onClose = function(){alertElement.dialog('destroy').remove();};
+        alertElement.dialog({ modal: true, position: 'top',
+            buttons: [ { text: "Ok", click: function() { $( this ).dialog( "close" ); } } ], title: title,
+            beforeClose: onClose});
+    },100);
 };
 
 $a.infoDurationMs = 450;

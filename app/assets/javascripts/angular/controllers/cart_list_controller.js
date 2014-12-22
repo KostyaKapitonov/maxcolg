@@ -3,6 +3,8 @@ function($scope, $location, Cart, $filter) {
 
     //$scope.cart_list
     $scope.statuses = $scope.$parent.statuses;
+    $scope.statuses.push({name:'Все статусы'});
+    $scope.current_status = $scope.statuses[$scope.statuses.length-1];
     $scope.$parent.load_carts(function(res){
         $scope.cart_list = $filter('onlyConfirmed')(res);
         applyStatuses();

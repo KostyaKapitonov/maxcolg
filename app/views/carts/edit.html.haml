@@ -18,6 +18,13 @@
               =table_row 'Варианты доставки', (tag :select, style:'width: auto', 'x-ng-model'=>'actual_cart.self_delivery', 'x-ng-options'=>'dt.val as dt.name for dt in delivery_types', 'x-ng-change'=>'calculateTotal()')
             %tr{'x-ng-hide'=>'actual_cart.self_delivery'}
               =table_row 'Зона доставки', (tag :select, style:'width: auto', 'x-ng-model'=>'zone', 'x-ng-options'=>'zone.name for zone in zones', 'x-ng-change'=>'calculateTotal()')+'<span style="padding-left: 10px;">{{zone.price | currency:"":2}} руб.</span> '.html_safe+'<button class="button" x-ng-click="show_delivery_zones()">Возможные зоны доставки</button>'.html_safe
+            %tr{'x-ng-show'=>'(zone.free_if_sum && zone.free_if_sum > 0) && !actual_cart.self_delivery'}
+              %td{'colspan'=>'3'}
+                Обратите пожалуйста внимание, что при заказе на сумму от
+                %b
+                  {{zone.free_if_sum | currency:"":2}} руб.
+                Доставка в данную зону будет осуществлена
+                %b бесплатно.
             %tr{'x-ng-hide'=>'actual_cart.self_delivery'}
               %td{'colspan'=>'3'}
                 Если вам необходима доставка не по Симферополю (или не по его пригороду), это потребует
@@ -62,9 +69,12 @@
                 %tr
                   %td{colspan:3}
                     Стоимость доставки:
-                  %td{colspan:2}
+                  %td
                     %b
-                      {{actual_cart.self_delivery ? 0 : zone.price | currency:"":2}}
+                      {{actual_cart.self_delivery || delivery_free ? 0 : zone.price | currency:"":2}}
+                  %td
+                    %b{'x-ng-hide'=>'actual_cart.self_delivery',title:'<b style="color:green;">Бесплатно</b>, при заказе<br/>на сумму от <b>{{zone.free_if_sum | currency:"":2}}</b> руб.'}
+                      (?)
                 %tr
                   %td{colspan:3}
                     %b

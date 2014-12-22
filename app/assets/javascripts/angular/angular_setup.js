@@ -11,6 +11,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.sortTypes = [{name: 'фирма', val: 'firm'},{name: 'категория', val: 'cat'}];
         $scope.calbacks_q = [];
         $scope.$parent.selectedSearch = {};
+        $scope.users = [];
 
         function checkLS(){
             var pathname = localStorage.getItem('pathname');
@@ -35,9 +36,13 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $scope.loadInfo[name] = false;
         }
 
-//        function isThisLoadFinished(name){
-//            return $scope.loadInfo[name];
-//        }
+        function isAllFinished(){
+            var allFinished = true;
+            Object.keys($scope.loadInfo).each(function(key){
+                if(!$scope.loadInfo[key]) allFinished = false;
+            });
+            return allFinished;
+        }
 
         function waitForLoadingComplete(pathname, search, hash){
             $a.wait();
@@ -45,7 +50,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 i = ++i || 0;
                 setTimeout(
                     function(){
-                        if(!$scope.loadFinished && i < 120) refresh(i);
+                        if(!isAllFinished() && i < 120) refresh(i);
                         else {
                             if(i == 120) cl(['ERROR: $scope.loadInfo ',$scope.loadInfo]);
                             setTimeout(function(){ $scope.$apply(function(){ $scope.loadFinishedCompletly = true; $a.done(); }); },1000);
@@ -82,16 +87,17 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             $scope.products.each(function(p){
                 if(data.position.product_id == p.id) {
                     data.position.prod = p;
+                    console.log('prod found');
                 }
             });
             if($scope.carts.length == 0){
                 data.cart.positions = [data.position];
                 $scope.carts.push(data.cart);
-                $scope.lookForActual();
             } else {
                 var exist = false;
                 $scope.carts.each(function(c){
                     if(data.cart.id == c.id) {
+                        console.log('exist!');
                         exist = true;
                         if(c.positions && c.positions.length > 0) c.positions.push(data.position);
                         else c.positions = [data.position];
@@ -102,6 +108,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $scope.carts.push(data.cart);
                 }
             }
+            if(!$scope.actual_cart)$scope.lookForActual();
         };
 
         $scope.goToViewCartPage = function(){
@@ -216,6 +223,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.cartNotEmpty = false;
                 $scope.carts = null;
                 $scope.actual_cart = null;
+                $scope.users = [];
                 $scope.bindAssortment();
                 $location.path('/');
                 $a.info('Вы успешно покинули свой аккаунт');
@@ -445,6 +453,19 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 callback($scope.zones);
             }
 
+        };
+
+        $scope.lodadUserInfo = function(user_id, callback){
+            console.log(['user_id',user_id]);
+            callback = callback || function(){};
+            if($scope.users.whereId(user_id)){
+                callback($scope.users.whereId(user_id));
+            } else {
+                User.show({id: user_id, action: user_id}, function(res){
+                    $scope.users.push(res);
+                    callback(res);
+                });
+            }
         };
 
         $scope.htmlSafe = function(html_code) {

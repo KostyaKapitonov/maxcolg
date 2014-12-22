@@ -102,6 +102,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                 ], title: 'Добавление в корзину невозможно'});
         } else if($scope.currentUser && isAllRequiredInfoComplete()){
             Cart.add_position({product_id: $scope.product.id}, function(res){
+                cl(['Cart.add_position', res]);
                 if(res.success){
                     $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');

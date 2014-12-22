@@ -5,14 +5,13 @@
 %form{'novalidate'=>''}
   %fieldset
     %legend
-      %b{'x-ng-hide'=>'reset_mode'}
-        Текущий заказ
+      %b Заказ № {{cart.id}}
     %table{style:'width: 100%;', 'x-ng-form'=>'cartForm'}
       %tr
         %td{style:'vertical-align: middle;'}
           %table
             %tr
-              %td{style:'padding-left: 10px;'}
+              %td{style:'padding-left: 10px;', 'x-ng-show'=>'client'}
                 Статус заказа:
                 %b
                   {{cart.status_name}}
@@ -28,6 +27,12 @@
                 Доставка:
                 %b
                   {{cart.self_delivery ? 'Самовывоз ' : 'На дом'}}
+                %span{'x-ng-show'=>'!currentUser.is_admin && cart.self_delivery'}
+                  %br
+                  Самостоятельно забрать заказа вы сможете по адресу:
+                  %br
+                  %b
+                    {{setting.self_delivery_address}}
                 %br
                 %span{'x-ng-hide'=>'cart.self_delivery'}
                   Выбранная зона доставки:
@@ -41,6 +46,8 @@
                   Адрес доставки:
                   %b
                     {{cart.address}}
+              %td{style:'padding-left: 10px;', 'x-ng-hide'=>'client'}
+                Загрузка...
             %tr
               %table.cart{'x-ng-show'=>'cart.positions.length > 0'}
                 %tr

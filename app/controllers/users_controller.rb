@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :only_logged_in, except: [:u_login, :login, :is_email_free, :create, :confirm_email,
     :password_reset, :email_to_reset_pass]
+  before_filter :only_admin, only: [:show]
 
   def login # only for template render
   end
@@ -9,6 +10,10 @@ class UsersController < ApplicationController
   end
 
   def create # only for template render
+  end
+
+  def show
+    render json: User.where(id: params[:id]).first
   end
 
   def u_login

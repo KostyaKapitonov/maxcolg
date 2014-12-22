@@ -7,24 +7,26 @@
     %legend
       %b{'x-ng-hide'=>'reset_mode'}
         Список заказов
+      %span{style: 'padding-left: 15px;', 'x-ng-show'=>'currentUser.is_admin'}
+        Статус:
+        %select{style: 'width: auto;', 'x-ng-model'=>'current_status', 'x-ng-options'=>'st as st.name for st in statuses'}
     %table{style:'width: 100%;', 'x-ng-form'=>'cartForm'}
       %tr
         %td{style:'width: 65%; vertical-align: middle;'}
           %p{'x-ng-hide'=>'cart_list.length > 0'}
             Корзина пуста.
-          -#%table.in_form{'x-ng-show'=>'cart_list.length > 0'}
-          -#  %tr.positions{'x-ng-repeat'=>'pos in actual_cart.positions'}
-          -#    %td
           %table.cart{'x-ng-show'=>'cart_list.length > 0'}
             %tr
-              %td № заказа
+              %td №
               %td Статус заказа
               %td Дата создания
               %td Сумма, руб.
-            %tr.positions{'x-ng-repeat'=>'cart in cart_list | orderBy:"confirmation_date":true'}
+              -# todo: ... add filter
+            %tr.positions{'x-ng-repeat'=>'cart in cart_list | orderBy:"confirmation_date":true ' }
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
-                  {{cart.id}}
+                  %b
+                    {{cart.id}}
               %td
                 {{cart.status_name}}
               %td

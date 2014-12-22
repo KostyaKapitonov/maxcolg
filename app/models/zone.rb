@@ -1,6 +1,8 @@
 class Zone < ActiveRecord::Base
   has_many :carts
 
+  before_save :validate_zones
+
   def self.create_or_update(params)
     new_zones =[]
     success = false
@@ -15,6 +17,13 @@ class Zone < ActiveRecord::Base
       success = true
     end
     success
+  end
+
+  private
+
+  def validate_zones
+    self.free_if_sum = self.free_if_sum.to_f
+    self.free_if_sum.blank? || (!self.free_if_sum.blank? && self.free_if_sum > 0)
   end
 
 end
