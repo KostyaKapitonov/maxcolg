@@ -1,5 +1,5 @@
 ANTALEX.factory('User', ['$resource', function($resource) {
-    return $resource('/users/:action|:id', null,
+    return $resource('/users/:action', null,
         {
             account: {method: 'POST', params: {format: 'json', action: 'account'}},
             uLogin: {params: {format: 'json', action: 'u_login'}},

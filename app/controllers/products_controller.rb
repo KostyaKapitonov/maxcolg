@@ -23,7 +23,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        return render json: {products: Product.all, categories: Category.all, firms: Firm.all} if current_user.is_admin
+        return render json: {products: Product.all, categories: Category.all, firms: Firm.all} if current_user && current_user.is_admin
         render json: {products: Product.where(hidden: false).all, categories: Category.all, firms: Firm.all}
       }
     end
