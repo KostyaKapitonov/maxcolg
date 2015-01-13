@@ -460,7 +460,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             if($scope.users.whereId(user_id)){
                 callback($scope.users.whereId(user_id));
             } else {
-                User.show({id: user_id, action: user_id}, function(res){
+                User.show({id: user_id, action: 'view'}, function(res){
                     $scope.users.push(res);
                     callback(res);
                 });

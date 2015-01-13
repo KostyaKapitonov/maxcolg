@@ -109,7 +109,7 @@ function($scope, $location, Cart) {
                     $scope.load_carts(function(){
                         $scope.$parent.lookForActual();
                         $location.path('/carts/view/'+res.cart_id);
-                        $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Администрация сайта вскоре с вами свяжется, по указанному вами телефону.','Заказ');
+                        $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Наш сотрудник вскоре с вами свяжется, по указанному вами телефону.','Заказ');
                     });
                 } else {
                     if(res.ids && res.ids.length > 0){

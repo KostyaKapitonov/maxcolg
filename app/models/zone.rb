@@ -1,7 +1,7 @@
 class Zone < ActiveRecord::Base
   has_many :carts
 
-  before_save :validate_zones
+  #before_save :validate_zones
 
   def self.create_or_update(params)
     new_zones =[]

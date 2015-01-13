@@ -25,7 +25,8 @@ Rails.application.routes.draw do
   #   get 'omniauth_callbacks/facebook'
   # end
 
-  resource :users, :only => [:show] do
+  resource :users, :only => [] do
+    get 'view/:id' => 'users#show'
     get 'u_login'
     get 'login'
     get 'create'
