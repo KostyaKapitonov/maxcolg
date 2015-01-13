@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   def u_login
+    p 'here!'
     params.require(:u_token)
     authorized = false
     user_login_info = get_ulogin_data(params[:u_token])

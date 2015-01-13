@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141217105326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "carts", force: true do |t|
+  create_table "carts", force: :cascade do |t|
     t.integer  "user_id"
     t.float    "usd_rate",          default: 0.0
     t.float    "delivery_price",    default: 0.0
@@ -32,19 +32,19 @@ ActiveRecord::Schema.define(version: 20141217105326) do
     t.string   "address"
   end
 
-  create_table "categories", force: true do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "firms", force: true do |t|
+  create_table "firms", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "positions", force: true do |t|
+  create_table "positions", force: :cascade do |t|
     t.integer  "cart_id"
     t.integer  "product_id"
     t.integer  "count",      default: 1
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20141217105326) do
     t.string   "name"
   end
 
-  create_table "products", force: true do |t|
+  create_table "products", force: :cascade do |t|
     t.string   "name"
     t.integer  "type"
     t.float    "price"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20141217105326) do
     t.boolean  "hidden",          default: false
   end
 
-  create_table "settings", force: true do |t|
+  create_table "settings", force: :cascade do |t|
     t.text     "main_page_text"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
@@ -84,21 +84,21 @@ ActiveRecord::Schema.define(version: 20141217105326) do
     t.string   "self_delivery_address"
   end
 
-  create_table "statuses", force: true do |t|
+  create_table "statuses", force: :cascade do |t|
     t.string   "name"
     t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_providers", force: true do |t|
+  create_table "user_providers", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
     t.string   "email",                  default: "",    null: false
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20141217105326) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "zones", force: true do |t|
+  create_table "zones", force: :cascade do |t|
     t.string   "name"
     t.string   "color"
     t.float    "price"

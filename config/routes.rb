@@ -20,12 +20,12 @@ Rails.application.routes.draw do
 
   devise_for :users #, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks"}
 
-  resources :users, :only => [:destroy, :show] do
-    get 'omniauth_callbacks/vkontakte'
-    get 'omniauth_callbacks/facebook'
-  end
+  # resources :users, :only => [:destroy, :show] do
+  #   get 'omniauth_callbacks/vkontakte'
+  #   get 'omniauth_callbacks/facebook'
+  # end
 
-  resource :users, :only => [] do
+  resource :users, :only => [:show] do
     get 'u_login'
     get 'login'
     get 'create'

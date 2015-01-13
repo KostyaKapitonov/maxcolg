@@ -194,7 +194,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     $scope.userRequestComplete = true; // used in template
                     if(from == 'uLogin') $scope.bindAssortment();
                 } else {
-//                    cl('unloggened');
                     someLoadFinished('getUser');
                     if($a.blank($scope.setting)) $scope.getSettings();
                     $scope.userRequestComplete = true; // used in template
@@ -244,7 +243,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 if(res.authorized === true){
                     if(res.provider == 'welcome'){
                         $scope.getUser('uLogin');
-                        $a.info('Приветствуем вас в нашем интернет-магазине.');
+                        $a.info('Интернет-магазин Antalex<br/>приветствует Вас!');
                         $location.path('/');
                     } else if (res.provider == 'added'){
                         $a.alert('Вы успешно прикрепили аккаунт своей социальной сети к аккаунту нашего интернет магазина. Теперь вам доступен быстрый вход через свою соц сеть (без ввода пароля от аккаунта интернет-магазина Antalex).');
