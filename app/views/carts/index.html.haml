@@ -9,7 +9,7 @@
         Список заказов
       %span{style: 'padding-left: 15px;', 'x-ng-show'=>'currentUser.is_admin'}
         Статус:
-        %select{style: 'width: auto;', 'x-ng-model'=>'current_status', 'x-ng-options'=>'st as st.name for st in statuses'}
+        %select{style: 'width: auto;', 'x-ng-model'=>'current_status', 'x-ng-options'=>'st as st.name for st in statuses', 'x-ng-change'=>'applyFilter()'}
     %table{style:'width: 100%;', 'x-ng-form'=>'cartForm'}
       %tr
         %td{style:'width: 65%; vertical-align: middle;'}
@@ -22,7 +22,7 @@
               %td Дата создания
               %td Сумма, руб.
               -# todo: ... add filter
-            %tr.positions{'x-ng-repeat'=>'cart in cart_list | orderBy:"confirmation_date":true ' }
+            %tr.positions{'x-ng-repeat'=>'cart in selected_carts | orderBy:"confirmation_date":true ' }
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
                   %b
@@ -33,9 +33,3 @@
                 {{cart.confirmation_date | date:'dd.MM.yyyy г. (HH:mm)'}}
               %td
                 {{cart.total_price | currency:"":2}}
-
-    -#.descr_block
-    -#  %p{'x-ng-hide'=>'reset_mode'}
-    -#    После регистрации (при желании) вы сможете прикрепить ваш аккаунт любой из перечисленных сверху социальных сетей к
-    -#    аккаунту на нашем сайте. После этого будет достаточно шёлкнуть по значку вашей социальной сети, и зайти в нашу систему
-    -#    без необходимости вводить email и пароль, в случае если вы уже авторизированы в своей социальной сети.

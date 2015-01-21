@@ -127,17 +127,26 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             });
         };
 
-        function loadStatuses(){
+        $scope.loadStatuses = function(callback){
             someLoadStarted('loadStatuses');
-            Cart.statuses(function(res){
-                $scope.statuses = res;
-                someLoadFinished('loadStatuses');
-            });
-        }
+            callback = callback || function(){};
+            if($scope.statuses){
+                callback($scope.statuses);
+            } else {
+                if(addToCalbacksQ('loadStatuses', callback)){
+                    Cart.statuses(function(res){
+                        $scope.statuses = res;
+                        callback($scope.statuses);
+                        respondToAllCalbacks('loadStatuses',$scope.statuses);
+                        someLoadFinished('loadStatuses');
+                    });
+                }
+            }
+        };
 
         $scope.load_carts = function(callback){
             someLoadStarted('load_carts');
-            loadStatuses();
+            $scope.loadStatuses();
             callback = callback || function(){};
             if($scope.carts){
                 callback($scope.carts);

@@ -18,7 +18,8 @@ Status.destroy_all
 [{name: 'В ожидании обработки',title: 'pending'},
  {name: 'Подготовка к доставке',title: 'binding'},
  {name: 'Товар(ы) в пути',title: 'moving'},
- {name: 'Заказ доставлен',title: 'delivered'},
+ {name: 'Товар(ы) в пунке самовывоза',title: 'ready'},
+ {name: 'Заказ выполнен',title: 'delivered'},
  {name: 'Заказ отклонён',title: 'rejected'}].each do |s|
   Status.create(s)
 end
