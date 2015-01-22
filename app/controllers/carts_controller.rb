@@ -41,7 +41,10 @@ class CartsController < ApplicationController
   end
 
   def proceed
-    render json: {}
+    params.require(:cart_id)
+    params.require(:status)
+    res = Cart.where(id: params[:cart_id]).first.update({status: params[:status]})
+    render json: {success: res}
   end
 
   def destroy

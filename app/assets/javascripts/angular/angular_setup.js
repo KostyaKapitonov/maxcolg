@@ -464,7 +464,6 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.lodadUserInfo = function(user_id, callback){
-            console.log(['user_id',user_id]);
             callback = callback || function(){};
             if($scope.users.whereId(user_id)){
                 callback($scope.users.whereId(user_id));

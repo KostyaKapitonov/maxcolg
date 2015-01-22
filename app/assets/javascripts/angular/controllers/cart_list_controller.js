@@ -5,8 +5,9 @@ function($scope, $location, Cart, $filter) {
 
     function applyStatuses(){
         $scope.cart_list.each(function(cart){
-            $scope.statuses.each(function(st){
-                if(cart.status_title == st.title){
+            $scope.order_statuses.each(function(st){
+                if(cart.status == st.title){
+                    console.log(['order_statuses: ',st]);
                     cart.status_name = st.name;
                 }
             });
@@ -24,14 +25,15 @@ function($scope, $location, Cart, $filter) {
 
     $scope.$parent.load_carts(function(res){
         $scope.cart_list = $filter('onlyConfirmed')(res);
-        $scope.$parent.loadStatuses(function(res){
-            $scope.statuses = res;
-            $scope.statuses.push({name:'Все статусы'});
+        $scope.$parent.loadStatuses(function(statuses){
+            $scope.order_statuses = [];
+            statuses.each(function(s){$scope.order_statuses.push(s)});
+            $scope.order_statuses.push({name:'Все статусы'});
             applyStatuses();
-            cl($scope.statuses);
-            $scope.current_status = $scope.statuses[$scope.statuses.length-1];
+            $scope.current_status = $scope.order_statuses[$scope.order_statuses.length-1];
             $scope.applyFilter();
         });
-    });        // TODO : Commit this !
+    });
+
 
 }]);

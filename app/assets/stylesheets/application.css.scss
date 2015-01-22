@@ -655,3 +655,8 @@ fieldset table tr td{
 a:focus {
   outline: none;
 }
+
+select.compact{
+  width: auto;
+  margin-top: -6px;
+}

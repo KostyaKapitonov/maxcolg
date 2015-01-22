@@ -13,8 +13,10 @@
             %tr
               %td{style:'padding-left: 10px;', 'x-ng-show'=>'client'}
                 Статус заказа:
-                %b
+                %b{'x-ng-hide'=>'currentUser.is_admin'}
                   {{cart.status_name}}
+                %b{'x-ng-show'=>'currentUser.is_admin'}
+                  %select.compact{'x-ng-model'=>'currentStatus','x-ng-options'=>'st as st.name for st in statuses','x-ng-change'=>'set_new_status()'}
                 %br
                 Заказчик:
                 %b
