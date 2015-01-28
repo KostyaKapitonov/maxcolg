@@ -21,8 +21,7 @@
               %td Статус заказа
               %td Дата оформления
               %td Сумма, руб.
-              -# todo: ... add filter
-            %tr.positions{'dir-paginate'=>'cart in selected_carts |  orderBy:"confirmation_date":true | itemsPerPage: 10'  }
+            %tr.positions{'dir-paginate'=>'cart in selected_carts |  orderBy:"confirmation_date":true | itemsPerPage: setting.orders_per_page'  }
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
                   %b

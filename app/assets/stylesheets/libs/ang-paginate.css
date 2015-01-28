@@ -17,9 +17,9 @@
     border: 1px solid #f7f7cb;
     background-color: #dfc9c0;
     padding: 5px 9px;
-    border-radius: 7px;
-    -moz-border-radius: 7px;
-    -webkit-border-radius: 7px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .pgnt-controller li.active a{

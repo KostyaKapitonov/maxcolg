@@ -105,6 +105,7 @@ function($scope, $location, Cart) {
             $a.wait();
             Cart.confirm({cart:$scope.actual_cart},function(res){
                 if(res.success){
+                    $scope.$parent.cartNotEmpty = false;
                     $scope.$parent.carts = null;
                     $scope.$parent.actual_cart = null;
                     $scope.load_carts(function(){

@@ -2,6 +2,7 @@ ANTALEX.controller('CartListController', ['$scope', '$location', 'Cart', '$filte
 function($scope, $location, Cart, $filter) {
 
     $scope.selected_carts = [];
+    $scope.ordersSize = 3;
 
     function applyStatuses(){
         $scope.cart_list.each(function(cart){

@@ -132,6 +132,28 @@ function($scope, $location, Setting, Cart) {
         });
     };
 
+    $scope.applyPaginate = function(type){
+        var setting = {};
+        if(isNaN($scope.$parent.setting[type])){
+            $a.err('Ошибка сохранения кол-ва строк!<br/>Необходимо вводить только цифры!');
+            $scope.$parent.setting[type] = type == 'orders_per_page' ? 3 : 10;
+            return;
+        } else if ($scope.$parent.setting[type] < 3){
+            $a.err('Ошибка сохранения кол-ва строк!<br/>Должно быть более 3 строк!');
+            $scope.$parent.setting[type] = type == 'orders_per_page' ? 3 : 10;
+            return;
+        }
+        setting[type] = $scope.$parent.setting[type];
+        Setting.update({setting: setting},function(data){
+            if(data.success){
+                $a.info('Кол-во строк сохранено.')
+            } else {
+                cl(data);
+                $a.err('Ошибка сохранения кол-ва строк!');
+            }
+        });
+    };
+
     function rebindZonesTable(idx){
         $scope.zones.splice(idx,1);
         var tmp_z = $scope.zones;

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122130627) do
+ActiveRecord::Schema.define(version: 20150128150120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(version: 20150122130627) do
     t.string   "default_sort_type",     default: "firm"
     t.string   "map_code"
     t.string   "self_delivery_address"
+    t.integer  "orders_per_page",       default: 3
+    t.integer  "products_per_page",     default: 10
   end
 
   create_table "statuses", force: :cascade do |t|

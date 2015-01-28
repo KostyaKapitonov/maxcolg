@@ -41,6 +41,10 @@
       %tr
         =table_row 'Адрес<br/>самовывоза'.html_safe, (tag :input, 'x-ng-blur' => 'applyNewAddress()', 'x-ng-model' => 'setting.self_delivery_address')
       %tr
+        =table_row 'Кол-во строк на<br/>странице заказов'.html_safe, (tag :input, 'x-ng-blur' => 'applyPaginate("orders_per_page")', 'x-ng-model' => 'setting.orders_per_page')
+      %tr
+        =table_row 'Кол-во строк на<br/>странице товаров'.html_safe, (tag :input, 'x-ng-blur' => 'applyPaginate("products_per_page")', 'x-ng-model' => 'setting.products_per_page')
+      %tr
         %td{colspan: 3}
           %hr
       %tr
