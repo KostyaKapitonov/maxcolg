@@ -30,8 +30,8 @@ function($scope, $location, Cart, $filter) {
             statuses.each(function(s){$scope.order_statuses.push(s)});
             $scope.order_statuses.push({name:'Все статусы'});
             applyStatuses();
-            //$scope.current_status = $scope.order_statuses[$scope.order_statuses.length-1];
-            $scope.current_status = $scope.order_statuses.where('title','pending');
+            $scope.current_status = ($scope.$parent.currentUser && $scope.$parent.currentUser.is_admin) ?
+                $scope.order_statuses.where('title','pending') : $scope.order_statuses[$scope.order_statuses.length-1];
             $scope.applyFilter();
         });
     });
