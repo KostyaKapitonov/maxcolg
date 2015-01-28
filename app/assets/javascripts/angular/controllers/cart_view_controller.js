@@ -50,6 +50,7 @@ function($scope, $location, Cart, $routeParams) {
         Cart.proceed({cart_id: $scope.cart.id, status: $scope.currentStatus.title},function(res){
             if(res.success){
                 $scope.cart.status = $scope.currentStatus.title;
+                $scope.$parent.getCountOfPandingCarts();
             }
         });
     }

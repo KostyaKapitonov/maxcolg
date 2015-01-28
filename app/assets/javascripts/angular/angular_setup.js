@@ -1,4 +1,4 @@
-var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise']);
+var ANTALEX = angular.module('antalex', ['ngRoute', 'ngResource', 'ngSanitize', 'Devise','angularUtils.directives.dirPagination']);
 ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Global', 'Products', 'User', 'Auth', 'Cart', '$sce', '$anchorScroll',
     function($scope, $routeParams, $location, Global, Products, User, Auth, Cart, $sce, $anchorScroll) {
 
@@ -50,9 +50,9 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 i = ++i || 0;
                 setTimeout(
                     function(){
-                        if(!isAllFinished() && i < 120) refresh(i);
+                        if(!isAllFinished() && i < 30) refresh(i);
                         else {
-                            if(i == 120) cl(['ERROR: $scope.loadInfo ',$scope.loadInfo]);
+                            if(i == 30) cl(['ERROR: $scope.loadInfo ',$scope.loadInfo]);
                             setTimeout(function(){ $scope.$apply(function(){ $scope.loadFinishedCompletly = true; $a.done(); }); },1000);
                             $location.path(pathname).search(search).hash(hash);
                         }
@@ -144,6 +144,10 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             }
         };
 
+        $scope.getCountOfPandingCarts = function(){
+            $scope.pendingCount = $scope.carts.countWhere('status','pending');
+        };
+
         $scope.load_carts = function(callback){
             someLoadStarted('load_carts');
             $scope.loadStatuses();
@@ -158,6 +162,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                             $scope.lookForActual();
                             respondToAllCalbacks('load_carts', $scope.carts);
                             someLoadFinished('load_carts');
+                            if($scope.currentUser && $scope.currentUser.is_admin) $scope.getCountOfPandingCarts();
                         });
                     });
                 }
@@ -302,6 +307,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $scope.bindAssortment(true);
                         respondToAllCalbacks('load_products',$scope.products);
                         someLoadFinished('load_products');
+                        if($scope.currentUser.is_admin) $scope.load_carts();
                     });
                 }
             }
@@ -445,7 +451,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                 $scope.queue[name].each(function(cb){
                     if(typeof cb == 'function') cb(response);
                 });
-                delete $scope.queue[name];
+                $scope.queue[name] = null;
             }
         }
 

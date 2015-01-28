@@ -7,7 +7,6 @@ function($scope, $location, Cart, $filter) {
         $scope.cart_list.each(function(cart){
             $scope.order_statuses.each(function(st){
                 if(cart.status == st.title){
-                    console.log(['order_statuses: ',st]);
                     cart.status_name = st.name;
                 }
             });
@@ -30,7 +29,8 @@ function($scope, $location, Cart, $filter) {
             statuses.each(function(s){$scope.order_statuses.push(s)});
             $scope.order_statuses.push({name:'Все статусы'});
             applyStatuses();
-            $scope.current_status = $scope.order_statuses[$scope.order_statuses.length-1];
+            //$scope.current_status = $scope.order_statuses[$scope.order_statuses.length-1];
+            $scope.current_status = $scope.order_statuses.where('title','pending');
             $scope.applyFilter();
         });
     });

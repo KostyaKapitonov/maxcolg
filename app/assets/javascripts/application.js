@@ -13,6 +13,7 @@
 //= require ckeditor-jquery
 //= require blockui
 //= require ang-devise/angular-devise/lib/devise
+//= require ang-paginate/dirPagination.js
 // = require_tree .
 
 // -------------------------------------------------- System -------------------------------------------------
@@ -72,6 +73,24 @@ Array.prototype.each = function(callback){
     for(var i=0; i < this.length; i++){
         callback(this[i], i);
     }
+};
+
+Array.prototype.countWhere = function(name,val){
+    var total = 0;
+    this.each(function(el){
+        total += el[name] == val ? 1 : 0;
+    });
+    return total;
+};
+
+Array.prototype.where = function(name,val){
+    var res = 0;
+    this.each(function(el){
+        if(el[name] == val) {
+            res = el;
+        }
+    });
+    return res;
 };
 
 Array.prototype.whereId = function(id, getIndex){
@@ -298,14 +317,15 @@ Number.prototype.toPhrase=function(c)
 };
 
 //----------------------------------------------------Alerts------------------------------------------------
-$a.alert = function(text, title){
+$a.alert = function(text, title, delay){
+    delay = delay || 100;
     setTimeout(function(){
         var alertElement = $('<div><p class="dialog_msg">'+text+'</p><div>');
         var onClose = function(){alertElement.dialog('destroy').remove();};
         alertElement.dialog({ modal: true, position: 'top',
             buttons: [ { text: "Ok", click: function() { $( this ).dialog( "close" ); } } ], title: title,
             beforeClose: onClose});
-    },100);
+    },delay);
 };
 
 $a.infoDurationMs = 450;

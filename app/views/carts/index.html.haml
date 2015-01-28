@@ -19,10 +19,10 @@
             %tr
               %td №
               %td Статус заказа
-              %td Дата создания
+              %td Дата оформления
               %td Сумма, руб.
               -# todo: ... add filter
-            %tr.positions{'x-ng-repeat'=>'cart in selected_carts | orderBy:"confirmation_date":true ' }
+            %tr.positions{'dir-paginate'=>'cart in selected_carts |  orderBy:"confirmation_date":true | itemsPerPage: 10'  }
               %td
                 %a{'x-ng-href'=>'carts/view/{{cart.id}}'}
                   %b
@@ -33,3 +33,7 @@
                 {{cart.confirmation_date | date:'dd.MM.yyyy г. (HH:mm)'}}
               %td
                 {{cart.total_price | currency:"":2}}
+            %tr
+              %td.pgnt-controller{colspan: 4}
+                %div
+                  <dir-pagination-controls boundary-links="true" template-url="dirPagination.tpl.html"></dir-pagination-controls>

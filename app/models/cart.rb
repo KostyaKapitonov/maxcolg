@@ -20,8 +20,10 @@ class Cart < ActiveRecord::Base
     prod = Product.where(id:product_id).first
     return {success: false, reason: 'invalid product', hide: (prod.blank? || prod.hidden)} if prod.blank? || prod.hidden || !prod.exist
     return {success: false, reason: 'already'} unless positions.blank?
-    cart.positions << Position.new(product_id: product_id)
-    {success: true, position: Position.where(product_id: product_id).first, cart: cart}
+    new_pos = Position.new(product_id: product_id)
+    cart.positions << new_pos
+    new_pos.reload
+    {success: true, position: new_pos, cart: cart}
   end
 
   def self.validate_and_create(params, current_user)
@@ -38,27 +40,27 @@ class Cart < ActiveRecord::Base
       pos_ids << pos[:id]
       cart_ids << pos[:cart_id]
     end
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     positions = Position.where(id: pos_ids).all
     is_invalid = pos_ids.size == 0
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     cart_id = positions[0].cart_id || params[:cart][:positions][0].cart_id
     positions.each do |pos|
       is_invalid = pos.cart_id != cart_id unless is_invalid
     end
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     cart = Cart.where(id: cart_ids).all
     is_invalid = cart.size != 1
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     cart = cart[0]
     is_invalid = cart.id != Cart.actual(current_user.id).id
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     zone = nil
     unless self_delivery
       zone = Zone.where(id: params[:cart][:zone_id]).first
       is_invalid = zone.blank?
     end
-    not_found if is_invalid
+    raise ActionController::RoutingError.new('Not Found') if is_invalid
     products = Product.where(id: prod_ids).all
     prod_ids_old = []
     if products.size != prod_ids.size

@@ -88,7 +88,9 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
     }
 
     $scope.addToCart = function(){
+        $a.wait();
         if(!$scope.currentUser){
+            $a.done();
             $('<div><p class="dialog_msg">Оформление заказа доступно только зарегистрированным пользователям.' +
                 'Если вы уже зарегистрированы - войдите пожалуйста в свой аккаунт.</p><div>').dialog({ modal: true, position: 'top',
                 buttons: [ { text: "Вход", click: function() {
@@ -102,7 +104,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                 ], title: 'Добавление в корзину невозможно'});
         } else if($scope.currentUser && isAllRequiredInfoComplete()){
             Cart.add_position({product_id: $scope.product.id}, function(res){
-                cl(['Cart.add_position', res]);
+                $a.done();
                 if(res.success){
                     $scope.$parent.addCartToList(res);
                     $a.info('Товар добавлен в корзину');
@@ -135,6 +137,7 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                 }
             });
         } else {
+            $a.done();
             $a.confirm('К сожалению вы ещё не заполнили все необходимые данные о себе.<br/>' +
                 'А без этого невозможно оформить заказ.<br/>Хотите заполнить недостающую информацию сейчас?',
             function(){

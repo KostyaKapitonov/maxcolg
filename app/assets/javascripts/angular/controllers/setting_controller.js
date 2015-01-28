@@ -44,9 +44,9 @@ function($scope, $location, Setting, Cart) {
         $a.wait();
         Setting.update({setting: {default_sort_type: $scope.new_default_sort_type}},function(data){
             if(data.success){
-                $a.alert('По умолчанию выбрана сортировка по '+
+                $a.info('По умолчанию выбрана сортировка по '+
                     ($scope.new_default_sort_type == 'firm' ? '<b>фирме</b>':'<b>категории</b>'));
-                $location.path('/settings/global');
+//                $location.path('/settings/global');
                 $a.done();
             }
         });

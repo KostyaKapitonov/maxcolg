@@ -102,6 +102,7 @@ function($scope, $location, Cart) {
 
     $scope.confirm_order = function(){
         $a.confirm('<b>Оформить заказ?</b>',function(){
+            $a.wait();
             Cart.confirm({cart:$scope.actual_cart},function(res){
                 if(res.success){
                     $scope.$parent.carts = null;
@@ -109,9 +110,11 @@ function($scope, $location, Cart) {
                     $scope.load_carts(function(){
                         $scope.$parent.lookForActual();
                         $location.path('/carts/view/'+res.cart_id);
-                        $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Наш сотрудник вскоре с вами свяжется, по указанному вами телефону.','Заказ');
+                        $a.done();
+                        $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Наш сотрудник вскоре с вами свяжется, по указанному вами телефону.','Заказ',800);
                     });
                 } else {
+                    $a.done();
                     if(res.ids && res.ids.length > 0){
                         $a.err('заказ <b>НЕ оформлен</b>');
                         noMoreExist(res.ids);
