@@ -1,5 +1,5 @@
 class SettingsController < ApplicationController
-  before_filter :only_admin
+  before_filter :only_admin, except: [:get_new_captcha]
   layout 'angular'
 
   def update
@@ -10,6 +10,10 @@ class SettingsController < ApplicationController
   def global
   end
   def page_editor
+  end
+
+  def get_new_captcha
+    render json: get_captcha
   end
 
 end

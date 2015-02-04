@@ -43,6 +43,7 @@ Rails.application.routes.draw do
   get '/get_category_and_firm_options' => 'products#get_category_and_firm_options'
   post '/create_category_or_firm_option' => 'products#create_category_or_firm_option'
   delete '/delete_category_or_firm_option' => 'products#delete_category_or_firm_option'
+  get '/captcha' => 'settings#get_new_captcha'
 
   resource :settings, :only => [] do
     post :update

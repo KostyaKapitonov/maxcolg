@@ -307,7 +307,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                         $scope.bindAssortment(true);
                         respondToAllCalbacks('load_products',$scope.products);
                         someLoadFinished('load_products');
-                        if($scope.currentUser.is_admin) $scope.load_carts();
+                        if($scope.currentUser && $scope.currentUser.is_admin) $scope.load_carts();
                     });
                 }
             }

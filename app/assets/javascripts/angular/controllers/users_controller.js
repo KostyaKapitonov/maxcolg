@@ -1,9 +1,22 @@
-ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth',
-function($scope, $location, $routeParams, User, Auth) {
+ANTALEX.controller('UsersController', ['$scope', '$location','$routeParams', 'User', 'Auth', 'Global',
+function($scope, $location, $routeParams, User, Auth, Global) {
 
     $scope.user = null;
     $scope.credentials = null;
     $scope.unconfirmed = true;
+    $scope.captcha = null;
+
+    $scope.init = function(secured_page){
+        console.log('$scope.init');
+        $scope.secured_page = secured_page === true;
+        console.log(['secured_page',$scope.secured_page]);
+        if(secured_page){
+            Global.captcha(function(res){
+                $scope.captcha = res;
+                cl($scope.captcha); // todo: continue...
+            })
+        }
+    };
 
     $scope.login = function(){
         if($a.blocked) return;

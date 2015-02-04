@@ -6,7 +6,7 @@ function($scope, $location, Cart, $routeParams) {
     $scope.currentStatus = null;
 
     function bindUser(){
-        if($scope.$parent.currentUser.is_admin){
+        if($scope.$parent.currentUser && $scope.$parent.currentUser.is_admin){
             $scope.$parent.lodadUserInfo($scope.cart.user_id,function(res){
                 $scope.client = res;
                 $scope.client.full_name = $scope.client.last_name+' '+$scope.client.first_name+' '+$scope.client.father_name;
@@ -46,7 +46,7 @@ function($scope, $location, Cart, $routeParams) {
     });
 
     $scope.set_new_status = function(){
-        if(!$scope.$parent.currentUser.is_admin) return;
+        if(!$scope.$parent.currentUser || !$scope.$parent.currentUser.is_admin) return;
         Cart.proceed({cart_id: $scope.cart.id, status: $scope.currentStatus.title},function(res){
             if(res.success){
                 $scope.cart.status = $scope.currentStatus.title;

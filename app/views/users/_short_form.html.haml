@@ -1,4 +1,4 @@
-%form{'novalidate'=>''}
+%form{'novalidate'=>'', 'x-ng-init'=>'init(true);'}
   %fieldset
     %legend
       %b{'x-ng-hide'=>'reset_mode'}
@@ -34,6 +34,18 @@
                     необходимо заполнить
                   %span{'x-ng-show'=>'unconfirmed && !userForm.password_confirmation.$error.required && (userForm.password_confirmation.$touched || showErrors)'}
                     пароли не совпадают
+            %tr
+              %td
+              %td
+              %td
+                %iframe{width:'200', height:'60', style:'border: none;'}
+                  Загрузка...
+            %tr
+              =table_row 'Введите код', (tag :input, name: 'captcha','x-ng-model' => 'captcha', 'required'=>'')
+              %td
+                .errblock
+                  %span{'x-ng-show'=>'userForm.password_confirmation.$error.required && (userForm.password_confirmation.$touched || showErrors)'}
+                    необходимо заполнить
             %tr
               %td{'colspan'=>'3'}
                 .button_section
