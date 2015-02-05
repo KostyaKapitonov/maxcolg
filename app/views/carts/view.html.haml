@@ -17,6 +17,10 @@
                   {{cart.status_name}}
                 %b{'x-ng-show'=>'currentUser.is_admin'}
                   %select.compact{'x-ng-model'=>'currentStatus','x-ng-options'=>'st as st.name for st in statuses','x-ng-change'=>'set_new_status()'}
+                  %span
+                    %a.button{'x-ng-click'=>'del_cart()'}
+                      Удалть этот заказ
+                %br
                 %br
                 Заказчик:
                 %b

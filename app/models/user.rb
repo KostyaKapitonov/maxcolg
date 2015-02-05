@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+  attr_accessor :captcha_id, :captcha
 
 
   def self.find_or_create auth_params

@@ -115,12 +115,14 @@ function($scope, $location, $routeParams, Products, $sce, $anchorScroll, $filter
                     'товаров, их количество вы сможете указать при утверждении заказа.<br/>Сейчас вы можете продолжить выбор товаров,<br/>' +
                     'либо перейти к утверждению заказа</p><div>').dialog({ modal: true, position: 'top', width: 440,
                         buttons: [ { text: "Приступить к утверждению заказа", click: function() {
-                            $location.path('/carts/view');
+                            $location.path('/carts/edit');
                             $scope.$apply();
                             $( this ).dialog( "close" ); } },
                             { text: "Продолжить выбор товаров", click: function() {
                                 $( this ).dialog( "close" ); } }
                         ], title: 'Выберите действие'});
+                    $scope.addedToCart = true;
+                    $scope.$parent.cartNotEmpty = true;
                 } else if (res.reason == 'invalid product'){
                     $a.alert('Извините, но данный товар более не доступен для покупки.');
                     $scope.$parent.products = null;

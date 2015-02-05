@@ -1,5 +1,5 @@
-ANTALEX.controller('CartsController', ['$scope', '$location', 'Cart',
-function($scope, $location, Cart) {
+ANTALEX.controller('CartsController', ['$scope', '$location', 'Cart', 'Global',
+function($scope, $location, Cart, Global) {
 
     $scope.$parent.load_carts(function(){
         $scope.carts = $scope.$parent.carts;
@@ -9,6 +9,10 @@ function($scope, $location, Cart) {
             $scope.$parent.loadCurrentUser(function(res){
                 $scope.actual_cart.address = res.address;
             });
+            Global.captcha(function(res){
+                $scope.c_data = res;
+                angular.element('#code').attr('src', $scope.c_data.url);
+            })
         }
     });
     $scope.mapCode = $scope.$parent.setting.map_code;
@@ -100,10 +104,30 @@ function($scope, $location, Cart) {
         });
     }
 
+    function is_pos_invalid(){
+        var invalid = false;
+        $scope.actual_cart.positions.each(function(p){
+            if(!p.count || p.count < 1) invalid = true;
+        });
+        return invalid;
+    }
+
+    function isFormInvalid(){
+        $scope.showErrors = true;
+        if($scope.cartForm.$invalid || is_pos_invalid()) {
+            $a.err('введённые вами данные содержат <br/>ошибки. Пожалуйста, исправьте их');
+            return true;
+        }
+        return false;
+    }
+
     $scope.confirm_order = function(){
+        if(isFormInvalid()) return;
         $a.confirm('<b>Оформить заказ?</b>',function(){
             $a.wait();
-            Cart.confirm({cart:$scope.actual_cart},function(res){
+            Cart.confirm({cart:$scope.actual_cart,
+                captcha: $scope.captcha,
+                captcha_id: $scope.c_data.captcha},function(res){
                 if(res.success){
                     $scope.$parent.cartNotEmpty = false;
                     $scope.$parent.carts = null;
@@ -111,11 +135,16 @@ function($scope, $location, Cart) {
                     $scope.load_carts(function(){
                         $scope.$parent.lookForActual();
                         $location.path('/carts/view/'+res.cart_id);
-                        $a.done();
                         $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Наш сотрудник вскоре с вами свяжется, по указанному вами телефону.','Заказ',800);
                     });
+                } else if(res.success === false && res.new_captcha) {
+                    $scope.c_data = res.new_captcha;
+                    angular.element('#code').attr('src', $scope.c_data.url);
+                    $a.err('Неверно введён код с картинки');
+                    $scope.captcha = '';
+                    $scope.showErrors = false;
+                    $scope.cartForm.captcha.$touched = false;
                 } else {
-                    $a.done();
                     if(res.ids && res.ids.length > 0){
                         $a.err('заказ <b>НЕ оформлен</b>');
                         noMoreExist(res.ids);
@@ -124,6 +153,7 @@ function($scope, $location, Cart) {
                         cl(res);
                     }
                 }
+                $a.done();
             });
         });
     };

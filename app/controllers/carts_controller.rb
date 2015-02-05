@@ -37,7 +37,11 @@ class CartsController < ApplicationController
 
   def confirm
     params.require(:cart).require(:positions)
-    render json: Cart.validate_and_create(params, current_user)
+    if check_captcha(params[:captcha_id],params[:captcha])
+      render json: Cart.validate_and_create(params, current_user)
+    else
+      render json: {success: false, new_captcha: get_captcha}
+    end
   end
 
   def proceed
@@ -48,7 +52,7 @@ class CartsController < ApplicationController
   end
 
   def destroy
-    render json: {}
+    render json: {success: Cart.where(id: params[:id]).first.try(:destroy)}
   end
 
   def zones

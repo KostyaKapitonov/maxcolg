@@ -7,13 +7,11 @@ function($scope, $location, $routeParams, User, Auth, Global) {
     $scope.captcha = null;
 
     $scope.init = function(secured_page){
-        console.log('$scope.init');
         $scope.secured_page = secured_page === true;
-        console.log(['secured_page',$scope.secured_page]);
         if(secured_page){
             Global.captcha(function(res){
-                $scope.captcha = res;
-                cl($scope.captcha); // todo: continue...
+                $scope.c_data = res;
+                angular.element('#code').attr('src', $scope.c_data.url);
             })
         }
     };
@@ -33,7 +31,7 @@ function($scope, $location, $routeParams, User, Auth, Global) {
             if(error.data.error == 'You have to confirm your email address before continuing.')
                 $a.alert('Вы еще не подтвердили свой email. Проверьте свою почту и перейдите по ссылке для завершения регистрации');
             else
-                $a.alert('Неверный email и/или пароль', 'Ошибка');
+                $a.err('Неверный email и/или пароль');
             cl(error);
             $a.done();
             $scope.password = '';
@@ -67,12 +65,23 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         $a.wait();
         $scope.credentials = {email: $scope.email.toLocaleLowerCase(),
                             password: $scope.password,
-                            password_confirmation: $scope.password_confirmation};
-        Auth.register($scope.credentials).then(function(registeredUser) {
-            $location.path('/');
-            $a.alert('Проверьте пожалуйста свою почту.');
+                            password_confirmation: $scope.password_confirmation,
+                            captcha: $scope.captcha, captcha_id: $scope.c_data.captcha};
+        Auth.register($scope.credentials).then(function(res) {
+            if(res.success === false){
+                $scope.c_data = res.new_captcha;
+                angular.element('#code').attr('src', $scope.c_data.url);
+                $a.err('Неверно введён код с картинки');
+                $scope.captcha = '';
+                $scope.showErrors = false;
+                $scope.userForm.captcha.$touched = false;
+            } else {
+                $location.path('/');
+                $a.alert('Проверьте свою почту.');
+            }
             $a.done();
         }, function(res) {
+            console.log(['res',res]);
             if(res.data && res.data.errors && res.data.errors.email && res.data.errors.email[0] == "has already been taken"){
                 $('<div><p class="dialog_msg">Такой Email уже используется.<br/>Если это ваш Email, но вы забыли пароль, вы можете воспользоватся восстановлением пароля.</p><div>').dialog(
                     { modal: true, position: 'top', buttons: [
@@ -108,11 +117,22 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         if(isFormInvalid()) return;
         $a.wait();
         User.is_email_free({email: $scope.email},function(check_data){
-            if(check_data.free == false){
-                User.mail_to_reset({user:{email: $scope.email}},function(res){
+            if(check_data.free === false){
+                User.mail_to_reset({user:{email: $scope.email},
+                    captcha: $scope.captcha, captcha_id: $scope.c_data.captcha},function(res){
+                    console.log(['captcha - res',res]);
+                    if(res.success === false){
+                        $scope.c_data = res.new_captcha;
+                        angular.element('#code').attr('src', $scope.c_data.url);
+                        $a.err('Неверно введён код с картинки');
+                        $scope.captcha = '';
+                        $scope.showErrors = false;
+                        $scope.userForm.captcha.$touched = false;
+                    }else {
+                        $location.path('/');
+                        $a.alert('Проверьте свою электронную почту.','Email');
+                    }
                     $a.done();
-                    $location.path('/');
-                    $a.alert('Проверьте свою электронную почту.','Email');
                 });
             } else {
                 $a.done();
@@ -126,11 +146,23 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         $a.wait();
         User.apply_new_password({password: $scope.password,
                 password_confirmation: $scope.password_confirmation,
-                token: $scope.token
+                token: $scope.token,
+                captcha: $scope.captcha,
+                captcha_id: $scope.c_data.captcha
             },
             function(res){
-                $location.path('/');
-                $a.alert('Пароль успешно изменён.');
+                if(res.success === false){
+                    $scope.c_data = res.new_captcha;
+                    angular.element('#code').attr('src', $scope.c_data.url);
+                    $a.err('Неверно введён код с картинки');
+                    $scope.captcha = '';
+                    $scope.showErrors = false;
+                    $scope.userForm.captcha.$touched = false;
+
+                } else {
+                    $location.path('/');
+                    $a.alert('Пароль успешно изменён.');
+                }
                 $a.done();
             });
     };

@@ -661,3 +661,7 @@ select.compact{
   width: auto;
   margin-top: -6px;
 }
+
+tr.code td.input input {
+  width: 200px;
+}

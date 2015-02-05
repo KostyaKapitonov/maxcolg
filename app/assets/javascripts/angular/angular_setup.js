@@ -90,7 +90,11 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
                     console.log('prod found');
                 }
             });
-            if($scope.carts.length == 0){
+            if(!$scope.carts){
+                $scope.load_carts(function(){
+                    $scope.addCartToList(data);
+                });
+            } else if($scope.carts.length == 0){
                 data.cart.positions = [data.position];
                 $scope.carts.push(data.cart);
             } else {

@@ -45,6 +45,18 @@ function($scope, $location, Cart, $routeParams) {
         });
     });
 
+    $scope.del_cart = function(){
+        $a.confirm('Не рекомендуется удалять свежие заказы, т.к. клиенты не смогут увидить их статус. ' +
+            'Возможно, если вы не можете выполнить этот заказ ' +
+            '(по какой либо причине), стоит выбрать статус "Отклонён". ' +
+            '<br/><br/><b>Вы действительно хотите удалить этот заказ?</b>',function(){
+            Cart.destroy({id: $scope.cart.id},function(res){
+                $a.info('Заказ удалён.');
+                $location.path('/carts');
+            });
+        });
+    };
+
     $scope.set_new_status = function(){
         if(!$scope.$parent.currentUser || !$scope.$parent.currentUser.is_admin) return;
         Cart.proceed({cart_id: $scope.cart.id, status: $scope.currentStatus.title},function(res){
