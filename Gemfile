@@ -55,7 +55,7 @@ gem 'rails-html-sanitizer', '~> 1.0'
 group :development do
   gem 'rake', '~> 10.3.2'
   gem 'debase'
-  #gem 'ruby-debug-ide'
+  gem 'ruby-debug-ide'
   gem 'figaro'
 end
 

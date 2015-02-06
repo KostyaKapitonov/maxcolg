@@ -39,8 +39,25 @@ function($scope, $location, Cart, $filter) {
             $a.alert('Введите номер заказа','Номер заказа');
             angular.element('[x-ng-model="order_number"]').focus();
         } else {
-            //todo: continue
-            $a.alert("Временно не работает");
+            var display_order = function(cart){
+                $a.confirm('Заказ <b>№'+cart.id+'</b> найден.<br/>Отобразить содержимое?',function(){
+                    $location.path('/carts/view/'+cart.id);
+                    $scope.$apply();
+                });
+            };
+            var found_cart = $scope.cart_list.whereId($scope.order_number);
+            var n = $scope.order_number;
+            if($a.blank(found_cart)){
+                Cart.view({id: $scope.order_number},function(res){
+                    if(res.id){
+                        $scope.$parent.carts.push(res);
+                        display_order(res);
+                    } else {
+                        $a.err('Заказ <b>№'+n+'</b> не найден');
+                    }
+                })
+            } else display_order(found_cart);
+            $scope.order_number = null;
         }
     };
 

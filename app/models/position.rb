@@ -13,7 +13,6 @@ class Position < ActiveRecord::Base
     self.name = self.product.name
     self.price = self.product.price
     self.sum = self.price*self.count
-    !self.product.blank? && self.product.exist && !self.product.hidden &&
-        self.count > 0 && !pids.include?(self.product_id)
+    !self.product.blank? && self.product.exist && !self.product.hidden && self.count > 0
   end
 end

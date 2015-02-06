@@ -17,6 +17,13 @@ class CartsController < ApplicationController
   end
 
   def view
+    respond_to do |f|
+      f.html{}
+      f.json{
+        not_found if current_user.blank? || !current_user.is_admin
+        render json: Cart.where(id: params[:id]).first.to_json(include: :positions)
+      }
+    end
   end
 
   def edit

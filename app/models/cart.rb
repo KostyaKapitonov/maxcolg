@@ -82,8 +82,8 @@ class Cart < ActiveRecord::Base
       Position.where(product_id: prod_ids_old).destroy_all
       return {success: false, ids: prod_ids_old}
     end
-    positions.each do |pos|
-      Position.update(pos[:id], count: pos[:count])
+    params[:cart][:positions].each do |pos|
+      Position.where(id: pos[:id]).first.update(count: pos[:count])
     end
     positions.reload
     sum = 0
