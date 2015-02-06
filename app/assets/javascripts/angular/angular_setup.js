@@ -12,6 +12,7 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         $scope.calbacks_q = [];
         $scope.$parent.selectedSearch = {};
         $scope.users = [];
+        $scope.first_load = true;
 
         function checkLS(){
             var pathname = localStorage.getItem('pathname');
@@ -132,12 +133,12 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.loadStatuses = function(callback){
-            someLoadStarted('loadStatuses');
             callback = callback || function(){};
             if($scope.statuses){
                 callback($scope.statuses);
             } else {
                 if(addToCalbacksQ('loadStatuses', callback)){
+                    someLoadStarted('loadStatuses');
                     Cart.statuses(function(res){
                         $scope.statuses = res;
                         callback($scope.statuses);
@@ -153,34 +154,28 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
         };
 
         $scope.load_carts = function(callback){
-            someLoadStarted('load_carts');
             $scope.loadStatuses();
             callback = callback || function(){};
             if($scope.carts){
                 callback($scope.carts);
             } else {
                 if(addToCalbacksQ('load_carts', callback)){
-                    Cart.all(function(res) {
+                    someLoadStarted('load_carts');
+                    if($scope.first_load) {
+                        $scope.first_load = false;
+                        $scope.period = $scope.currentUser && $scope.currentUser.is_admin ? 30 : null;
+                    }
+                    Cart.all({days_before: $scope.period},function(res) {
                         $scope.load_products(function () {
                             $scope.carts = bindPositionDataFromProduct(res);
                             $scope.lookForActual();
+                            console.log(['period', $scope.period]);
                             respondToAllCalbacks('load_carts', $scope.carts);
                             someLoadFinished('load_carts');
                             if($scope.currentUser && $scope.currentUser.is_admin) $scope.getCountOfPandingCarts();
                         });
                     });
                 }
-
-//                    var waitForProductLoadComplete = function(){
-//                        if(isThisLoadFinished('load_products')){
-//                            $scope.carts = bindPositionDataFromProduct(res);
-//                            $scope.lookForActual();
-//                            respondToAllCalbacks('load_carts', $scope.carts);
-//                            someLoadFinished('load_carts');
-//                        } else setTimeout(function(){waitForProductLoadComplete();},100);
-//                    };
-//                    waitForProductLoadComplete();
-
             }
         };
 
@@ -302,8 +297,8 @@ ANTALEX.controller('MainController',['$scope', '$routeParams', '$location', 'Glo
             if($scope.products){
                 callback($scope.products);
             } else {
-                someLoadStarted('load_products');
                 if(addToCalbacksQ('load_products',callback)){
+                    someLoadStarted('load_products');
                     Products.getAll(function(data){
                         $scope.products = data.products;
                         $scope.categories = data.categories;

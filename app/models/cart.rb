@@ -99,4 +99,18 @@ class Cart < ActiveRecord::Base
     {success: true, cart_id: cart.id}
   end
 
+  def self.get_carts_list(current_user, days_before)
+    carts = []
+    if(current_user && current_user.is_admin)
+      # days_before = 0
+      db = days_before.blank? ? nil : (Date.today - days_before.to_i)
+      carts = Cart.where('confirmation_date > :db or :db is NULL', {db: db}).all
+    else
+      if(current_user)
+        carts = current_user.carts
+      end
+    end
+    carts
+  end
+
 end

@@ -43,6 +43,7 @@ body {
   color: $primary-color;
   margin: 0px 0px 0px 0px;
   font-weight: normal;
+  margin: 0px;
 }
 
 .global{
@@ -664,4 +665,16 @@ select.compact{
 
 tr.code td.input input {
   width: 200px;
+}
+
+img#code, image#code {
+  @include b-radius(0);
+  width: 200px;
+  height: 60px;
+}
+
+legend span,legend p {
+  padding-left: 15px;
+  text-align: right;
+  margin: 3px auto;
 }

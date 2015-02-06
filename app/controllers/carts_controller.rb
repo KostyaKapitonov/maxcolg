@@ -6,7 +6,7 @@ class CartsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        carts = admin? ? Cart.all : current_user.carts
+        carts = Cart.get_carts_list(current_user, params[:days_before])
         render json: carts.to_json(include: :positions)
       }
     end

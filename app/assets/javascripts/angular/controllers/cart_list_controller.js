@@ -2,7 +2,13 @@ ANTALEX.controller('CartListController', ['$scope', '$location', 'Cart', '$filte
 function($scope, $location, Cart, $filter) {
 
     $scope.selected_carts = [];
-    $scope.ordersSize = 3;
+    $scope.order_statuses = [];
+    $scope.periods = [];
+    [30,90,180,360].each(function(val){
+        $scope.periods.push({name: 'за последние '+val+' дней', val: val});
+    });
+    $scope.periods.push({name: 'за всё время'});
+//    $scope.period = $scope.$parent.period;
 
     function applyStatuses(){
         $scope.cart_list.each(function(cart){
@@ -23,18 +29,40 @@ function($scope, $location, Cart, $filter) {
         } else $scope.selected_carts = $scope.cart_list;
     };
 
-    $scope.$parent.load_carts(function(res){
-        $scope.cart_list = $filter('onlyConfirmed')(res);
-        $scope.$parent.loadStatuses(function(statuses){
-            $scope.order_statuses = [];
-            statuses.each(function(s){$scope.order_statuses.push(s)});
-            $scope.order_statuses.push({name:'Все статусы'});
-            applyStatuses();
-            $scope.current_status = ($scope.$parent.currentUser && $scope.$parent.currentUser.is_admin) ?
-                $scope.order_statuses.where('title','pending') : $scope.order_statuses[$scope.order_statuses.length-1];
-            $scope.applyFilter();
+    $scope.applyDateFilter = function(){
+        $scope.$parent.carts = null;
+        $scope.reload_carts();
+    };
+
+    $scope.searchByN = function(){
+        if($a.blank($scope.order_number)){
+            $a.alert('Введите номер заказа','Номер заказа');
+            angular.element('[x-ng-model="order_number"]').focus();
+        } else {
+            //todo: continue
+            $a.alert("Временно не работает");
+        }
+    };
+
+    $scope.reload_carts = function(){
+        $scope.$parent.load_carts(function(res){
+            $scope.cart_list = $filter('onlyConfirmed')(res);
+            if($scope.order_statuses.length == 0){
+                $scope.$parent.loadStatuses(function(statuses){
+                    $scope.order_statuses = [];
+                    statuses.each(function(s){$scope.order_statuses.push(s)});
+                    $scope.order_statuses.push({name:'Все статусы'});
+                    applyStatuses();
+                    $scope.current_status = ($scope.$parent.currentUser && $scope.$parent.currentUser.is_admin) ?
+                        $scope.order_statuses.where('title','pending') : $scope.order_statuses[$scope.order_statuses.length-1];
+                    $scope.applyFilter();
+                });
+            } else {
+                applyStatuses();
+                $scope.applyFilter();
+            }
         });
-    });
+    };
 
-
+    $scope.reload_carts();
 }]);
