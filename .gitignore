@@ -5,3 +5,4 @@ app/assets/javascripts/test.js
 
 # Ignore application configuration
 /config/application.yml
+/config/environment_variables.yml
