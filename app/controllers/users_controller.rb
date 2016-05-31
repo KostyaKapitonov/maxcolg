@@ -64,13 +64,13 @@ class UsersController < ApplicationController
         }
       end
     elsif request.post?
-      if check_captcha(params[:captcha_id],params[:captcha])
+      if check_captcha(params[:captcha])
         user = User.find_to_reset_email(params[:token])
         not_found if user.blank?
         result = user.update_password(user, params.permit(:password, :password_confirmation))
         render json: result
       else
-        render json: {success: false, new_captcha: get_captcha}
+        render json: {success: false, error: 'captcha'}
       end
     end
   end

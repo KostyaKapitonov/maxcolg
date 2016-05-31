@@ -19,13 +19,8 @@
               %td
               %td
               %td
-                %iframe#code{width:'200', height:'60', style:'border: none;'}
-            %tr
-              =table_row 'Введите код', (tag :input, name: 'captcha', 'x-ng-model' => 'captcha', 'required'=>'')
-              %td
-                .errblock
-                  %span{'x-ng-show'=>'userForm.captcha.$error.required && (userForm.captcha.$touched || showErrors)'}
-                    необходимо заполнить
+                .g-recaptcha{'data-sitekey'=>"6LeyWiETAAAAAI0ZUkQcnTCOb8YlaV-FPSBGe1VS"}
+                %script{src: 'https://www.google.com/recaptcha/api.js'}
             %tr
               %td{'colspan'=>'3'}
                 .button_section

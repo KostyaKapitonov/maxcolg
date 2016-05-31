@@ -4,10 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    if check_captcha(params[:user][:captcha_id],params[:user][:captcha])
+    if check_captcha(params[:user][:captcha])
       super
     else
-      render json: {success: false, new_captcha: get_captcha}
+      render json: {success: false, error: 'captcha'}
     end
   end
 

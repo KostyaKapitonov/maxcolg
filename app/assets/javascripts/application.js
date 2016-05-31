@@ -14,7 +14,7 @@
 //= require blockui
 //= require ang-devise/angular-devise/lib/devise
 //= require ang-paginate/dirPagination.js
-// = require_tree .
+//= require_tree .
 
 // -------------------------------------------------- System -------------------------------------------------
 

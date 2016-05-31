@@ -8,12 +8,12 @@ function($scope, $location, $routeParams, User, Auth, Global) {
 
     $scope.init = function(secured_page){
         $scope.secured_page = secured_page === true;
-        if(secured_page){
+        /*if(secured_page){
             Global.captcha(function(res){
                 $scope.c_data = res;
                 angular.element('#code').attr('src', $scope.c_data.url);
             })
-        }
+        }*/
     };
 
     $scope.login = function(){
@@ -57,6 +57,10 @@ function($scope, $location, $routeParams, User, Auth, Global) {
             $a.err('введённые вами данные содержат <br/>ошибки, пожалуйста исправьте их');
             return true;
         }
+        if(!angular.element('#g-recaptcha-response').val()){
+            $a.err('Не пройдена проверка reCAPTCHA');
+            return true;
+        }
         return false;
     }
 
@@ -66,15 +70,10 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         $scope.credentials = {email: $scope.email.toLocaleLowerCase(),
                             password: $scope.password,
                             password_confirmation: $scope.password_confirmation,
-                            captcha: $scope.captcha, captcha_id: $scope.c_data.captcha};
+                            captcha: angular.element('#g-recaptcha-response').val()};
         Auth.register($scope.credentials).then(function(res) {
             if(res.success === false){
-                $scope.c_data = res.new_captcha;
-                angular.element('#code').attr('src', $scope.c_data.url);
-                $a.err('Неверно введён код с картинки');
-                $scope.captcha = '';
                 $scope.showErrors = false;
-                $scope.userForm.captcha.$touched = false;
             } else {
                 $location.path('/');
                 $a.alert('Проверьте свою почту.');
@@ -119,15 +118,9 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         User.is_email_free({email: $scope.email},function(check_data){
             if(check_data.free === false){
                 User.mail_to_reset({user:{email: $scope.email},
-                    captcha: $scope.captcha, captcha_id: $scope.c_data.captcha},function(res){
-                    console.log(['captcha - res',res]);
+                    captcha: angular.element('#g-recaptcha-response').val()},function(res){
                     if(res.success === false){
-                        $scope.c_data = res.new_captcha;
-                        angular.element('#code').attr('src', $scope.c_data.url);
-                        $a.err('Неверно введён код с картинки');
-                        $scope.captcha = '';
                         $scope.showErrors = false;
-                        $scope.userForm.captcha.$touched = false;
                     }else {
                         $location.path('/');
                         $a.alert('Проверьте свою электронную почту.','Email');
@@ -147,18 +140,11 @@ function($scope, $location, $routeParams, User, Auth, Global) {
         User.apply_new_password({password: $scope.password,
                 password_confirmation: $scope.password_confirmation,
                 token: $scope.token,
-                captcha: $scope.captcha,
-                captcha_id: $scope.c_data.captcha
+                captcha: angular.element('#g-recaptcha-response').val()
             },
             function(res){
                 if(res.success === false){
-                    $scope.c_data = res.new_captcha;
-                    angular.element('#code').attr('src', $scope.c_data.url);
-                    $a.err('Неверно введён код с картинки');
-                    $scope.captcha = '';
                     $scope.showErrors = false;
-                    $scope.userForm.captcha.$touched = false;
-
                 } else {
                     $location.path('/');
                     $a.alert('Пароль успешно изменён.');

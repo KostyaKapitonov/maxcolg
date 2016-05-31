@@ -13,7 +13,7 @@ class SettingsController < ApplicationController
   end
 
   def get_new_captcha
-    render json: get_captcha
+    render json: {}# get_captcha
   end
 
 end

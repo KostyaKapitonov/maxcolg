@@ -106,12 +106,12 @@ function($scope, $location, Setting, Cart) {
 
     $scope.applyNewMap = function(){
         $a.wait();
-        $scope.setting.map_code = $scope.setting.map_code.replace(/(\&width\=\d+|\&height\=\d+)/g,'');
+        //$scope.setting.map_code = $scope.setting.map_code.replace(/(\&width\=\d+|\&height\=\d+)/g,'');
         Setting.update({setting: {map_code: $scope.$parent.setting.map_code}},function(data){
             if(data.success){
                 $a.confirm('Код карты успешно сохранён.<br/>Хотите проверить работоспособность ' +
                     'кода, открыв сейчас карту?',function(){
-                    window.open().document.write('<div>'+$scope.$parent.setting.map_code+'</div>');
+                    window.open($scope.$parent.setting.map_code,'Зона доставки','');
                 })
             } else {
                 cl(data);

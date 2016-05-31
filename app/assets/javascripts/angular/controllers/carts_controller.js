@@ -9,10 +9,6 @@ function($scope, $location, Cart, Global) {
             $scope.$parent.loadCurrentUser(function(res){
                 $scope.actual_cart.address = res.address;
             });
-            Global.captcha(function(res){
-                $scope.c_data = res;
-                angular.element('#code').attr('src', $scope.c_data.url);
-            })
         }
     });
     $scope.mapCode = $scope.$parent.setting.map_code;
@@ -25,7 +21,7 @@ function($scope, $location, Cart, Global) {
     $scope.show_delivery_zones = function(){
         $a.confirm($scope.zonesDesc,function(){
             var map = '<div>'+$scope.mapCode+'</div>';
-            window.open().document.write(map);
+            window.open($scope.mapCode,'Зона доставки','');
         },{width:500});
     };
 
@@ -118,6 +114,10 @@ function($scope, $location, Cart, Global) {
             $a.err('введённые вами данные содержат <br/>ошибки. Пожалуйста, исправьте их');
             return true;
         }
+        if(!angular.element('#g-recaptcha-response').val()){
+            $a.err('Не пройдена проверка reCAPTCHA');
+            return true;
+        }
         return false;
     }
 
@@ -126,8 +126,7 @@ function($scope, $location, Cart, Global) {
         $a.confirm('<b>Оформить заказ?</b>',function(){
             $a.wait();
             Cart.confirm({cart:$scope.actual_cart,
-                captcha: $scope.captcha,
-                captcha_id: $scope.c_data.captcha},function(res){
+                captcha: angular.element('#g-recaptcha-response').val()},function(res){
                 if(res.success){
                     $scope.$parent.cartNotEmpty = false;
                     $scope.$parent.carts = null;
@@ -137,13 +136,8 @@ function($scope, $location, Cart, Global) {
                         $location.path('/carts/view/'+res.cart_id);
                         $a.alert('<b>Заказ успешно оформлен!<b/><br/><br/>Наш сотрудник вскоре с вами свяжется, по указанному вами телефону.','Заказ',800);
                     });
-                } else if(res.success === false && res.new_captcha) {
-                    $scope.c_data = res.new_captcha;
-                    angular.element('#code').attr('src', $scope.c_data.url);
-                    $a.err('Неверно введён код с картинки');
-                    $scope.captcha = '';
+                } else if(res.success === false && res.error == 'captcha') {
                     $scope.showErrors = false;
-                    $scope.cartForm.captcha.$touched = false;
                 } else {
                     if(res.ids && res.ids.length > 0){
                         $a.err('заказ <b>НЕ оформлен</b>');

@@ -44,10 +44,10 @@ class CartsController < ApplicationController
 
   def confirm
     params.require(:cart).require(:positions)
-    if check_captcha(params[:captcha_id],params[:captcha])
+    if check_captcha(params[:captcha])
       render json: Cart.validate_and_create(params, current_user)
     else
-      render json: {success: false, new_captcha: get_captcha}
+      render json: {success: false, error: 'captcha'}
     end
   end
 

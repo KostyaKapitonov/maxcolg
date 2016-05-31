@@ -5,7 +5,6 @@ ANTALEX.factory('Global', ['$resource', function($resource) {
             get_category_and_firm_options: {params: {action: 'get_category_and_firm_options'}},
             create_category_or_firm_option: {method:'POST', params: {action: 'create_category_or_firm_option'}},
             delete_category_or_firm_option: {method:'DELETE', params: {action: 'delete_category_or_firm_option'}},
-            update_settings: {method:'POST', params: {action: 'update_settings'}},
-            captcha: {params: {action:'captcha'}}
+            update_settings: {method:'POST', params: {action: 'update_settings'}}
         });
 }]);
