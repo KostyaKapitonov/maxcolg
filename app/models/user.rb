@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
   attr_accessor :captcha_id, :captcha
 
-
   def self.find_or_create auth_params
     user = User.where(provider: auth_params[:provider], vk_id: auth_params[:vk_id]).first || User.create!(auth_params)
     user
