@@ -72,6 +72,7 @@ function($scope, $location, $routeParams, User, Auth, Global) {
                             password_confirmation: $scope.password_confirmation,
                             captcha: angular.element('#g-recaptcha-response').val()};
         Auth.register($scope.credentials).then(function(res) {
+            console.log(['res',res]);
             if(res.success === false){
                 $scope.showErrors = false;
             } else {
