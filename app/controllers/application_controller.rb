@@ -33,8 +33,8 @@ class ApplicationController < ActionController::Base
 
   def check_captcha(val)
     res = get_request('https://www.google.com/recaptcha/api/siteverify', ENV['RECAPTCHA_KEY'], val.to_s)
-    p 'check_captcha res '+res
-    p "(JSON.parse(res.body)['success'] === true) "+(JSON.parse(res.body)['success'])
+    p 'check_captcha res '+res.to_s
+    p "(JSON.parse(res.body)['success'] === true) "+(JSON.parse(res.body)['success']).to_s
     res && res.body && JSON.parse(res.body)['success'] === true
   end
 
